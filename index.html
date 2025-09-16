@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسم متحرك لمنهجية 5S</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #a94442 0%, #4a4a4a 100%); /* Red and gray gradient */
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 2.5em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin: 0;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            margin-bottom: 20px;
+        }
+
+        .step {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background: #f5f5f5; /* Light gray background for cards */
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(100px) scale(0.9);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .step.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .step h2 {
+            font-size: 2.2em;
+            margin: 10px 0;
+            color: #a94442; /* Red for headings */
+            text-align: center;
+        }
+
+        .step p {
+            font-size: 1.1em;
+            text-align: center;
+            max-width: 90%;
+            color: #4a4a4a; /* Gray for text */
+            line-height: 1.6;
+        }
+
+        .step ul {
+            list-style-type: disc;
+            text-align: left;
+            max-width: 80%;
+            color: #4a4a4a; /* Gray for list items */
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .step img {
+            max-width: 50%;
+            height: auto;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            font-size: 0.9em;
+            color: #a94442; /* Red for footer */
+            text-align: center;
+            margin-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #a94442, #7f2a2a); /* Red gradient for buttons */
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #7f2a2a, #a94442);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a94442, #7f2a2a); /* Red gradient for progress */
+            width: 16.67%;
+            transition: width 0.5s ease;
+            border-radius: 5px;
+        }
+
+        /* WKW Automotive Cool Animation for First Slide */
+        .logo-animation {
+            font-size: 3em;
+            font-weight: bold;
+            color: #a94442; /* Red */
+            text-shadow: 2px 2px 4px #4a4a4a; /* Gray shadow */
+            animation: coolSpin 3s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes coolSpin {
+            0% {
+                transform: rotate(0deg);
+                color: #a94442; /* Red */
+            }
+            50% {
+                transform: rotate(10deg);
+                color: #4a4a4a; /* Gray */
+            }
+            100% {
+                transform: rotate(0deg);
+                color: #a94442; /* Red */
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Enhanced entrance animation */
+        .step.entering {
+            animation: slideInUp 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px) rotateX(90deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
+        /* RTL for Arabic */
+        [lang="ar"] .step {
+            direction: rtl;
+            text-align: right;
+        }
+
+        [lang="ar"] .step h2,
+        [lang="ar"] .step p,
+        [lang="ar"] .step ul,
+        [lang="ar"] .footer {
+            font-family: 'Arial', sans-serif;
+        }
+
+        [lang="ar"] .step ul {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title" id="title">رسم متحرك لمنهجية 5S</h1>
+    </div>
+
+    <div class="container">
+        <!-- Tunisian Arabic Content -->
+        <div class="step active" data-step="0" data-lang="ar">
+            <div class="logo-animation">WKW AUTOMOTIVE</div>
+            <h2 id="h2-0-ar">تقديم منهجية 5S</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies">
+            <p id="p-0-ar">منهجية 5S هي طريقة من التصنيع النظيف باش تحسن تنظيم مكان الخدمة وتزيد في الكفاءة. جاية من اليابان، وفيها خمس خطوات: الفرز، الترتيب، التنظيف، التوحيد، والالتزام. كل خطوة تعمل أساس باش تبني بيئة خدمة منظمة وآمنة ومنتجة.</p>
+            <ul>
+                <li>تزيد الكفاءة بإزالة الهدر.</li>
+                <li>تحسن الأمان بالتنظيم والنظافة.</li>
+                <li>تشجع على ثقافة تحسين مستمر.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 16.67%;"></div></div>
+            <div class="footer">قسم التحسين المستمر WKW تونس</div>
+        </div>
+        <div class="step" data-step="1" data-lang="ar">
+            <h2 id="h2-1-ar">1. الفرز (Seiri)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After">
+            <p id="p-1-ar">الخطوة الأولى هي إزالة الأغراض اللي ما تحتاجهاش في مكان الخدمة باش نقلل الفوضى ونركز أكثر. الطريقة هذي تخلي غير الأدوات والمواد والمعدات الضرورية، وهكا العمليات تصير أسهل.</p>
+            <ul>
+                <li>تعرف على الأغراض اللي قديمة أو ما تستعملش وشيلهم.</li>
+                <li>استعمل علامات حمراء باش تميز الأغراض اللي لازم تراجعها أو ترميها.</li>
+                <li>قلل التشتت وحرر مكان للخدمة المنتجة.</li>
+                <li>دقق في المخزون باستمرار باش تحتفظ بالنظام.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+            <div class="footer">قسم التحسين المستمر WKW تونس</div>
+        </div>
+        <div class="step" data-step="2" data-lang="ar">
+            <h2 id="h2-2-ar">2. الترتيب (Seiton)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After">
+            <p id="p-2-ar">نظم الأغراض الضرورية باش تكون سهلة تتلقاها وتستعملها. الخطوة هذي تركز على عمل تخطيطات وأنظمة تخزين فعالة باش تقلل الوقت اللي تضيعو في البحث على الأدوات أو المواد.</p>
+            <ul>
+                <li>عين بلاصة محددة لكل غرض.</li>
+                <li>استعمل ملصقات أو ألوان أو لوحات ظل باش تكون الأمور واضحة.</li>
+                <li>صمم تدفقات الخدمة باش تقلل الحركة وتحسن الراحة في العمل.</li>
+                <li>تأكد إنو الأغراض ترجع لبلاصتها بعد الاستعمال.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+            <div class="footer">قسم التحسين المستمر WKW تونس</div>
+        </div>
+        <div class="step" data-step="3" data-lang="ar">
+            <h2 id="h2-3-ar">3. التنظيف (Seiso)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After">
+            <p id="p-3-ar">حافظ على مكان خدمة نظيف ومنظم باش تضمن الأمان والكفاءة. التنظيف والفحص المنتظم يساعدك تلقى المشاكل قبل ما تكبر.</p>
+            <ul>
+                <li>حط برامج تنظيف يومية.</li>
+                <li>فحص المعدات والأدوات أثناء التنظيف باش تلقى التلف أو الخراب.</li>
+                <li>شجع العمال باش يهتمو بمناطقهم.</li>
+                <li>خلي مكان الخدمة جذاب بصريًا وآمن.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+            <div class="footer">قسم التحسين المستمر WKW تونس</div>
+        </div>
+        <div class="step" data-step="4" data-lang="ar">
+            <h2 id="h2-4-ar">4. التوحيد (Seiketsu)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After">
+            <p id="p-4-ar">حط إجراءات ثابتة باش تحافظ على الخطوات الثلاثة الأولى. التوحيد يضمن إنو التنظيم والنظافة يستمرو في كل مكان الخدمة.</p>
+            <ul>
+                <li>اعمل قوائم تدقيق وأدلة بصرية للمهام.</li>
+                <li>درب العمال على الإجراءات القياسية.</li>
+                <li>خطط لتدقيقات منتظمة باش تتأكد من الالتزام.</li>
+                <li>استعمل أدوات إدارة بصرية زي اللافتات والرسوم البيانية.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 83.33%;"></div></div>
+            <div class="footer">قسم التحسين المستمر WKW تونس</div>
+        </div>
+        <div class="step" data-step="5" data-lang="ar">
+            <h2 id="h2-5-ar">5. الالتزام (Shitsuke)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After">
+            <p id="p-5-ar">شجع ثقافة الانضباط باش تحافظ على ممارسات 5S على المدى الطويل. الخطوة هذي تركز على التحسين المستمر ومشاركة العمال لنجاح دايم.</p>
+            <ul>
+                <li>وفر تدريب وورش عمل مستمرة.</li>
+                <li>كرم وكافئ اللي يتبعو مبادئ 5S.</li>
+                <li>اعمل مراجعات وتحديثات منتظمة للمعايير.</li>
+                <li>شجع على الاقتراحات باش تحسن العمليات.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+            <div class="footer">قسم التحسين المستمر WKW تونس</div>
+        </div>
+
+        <!-- French Content -->
+        <div class="step" data-step="0" data-lang="fr" style="display:none;">
+            <div class="logo-animation">WKW AUTOMOTIVE</div>
+            <h2 id="h2-0-fr">Introduction à la méthodologie 5S</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies">
+            <p id="p-0-fr">La méthodologie 5S est un outil de lean manufacturing conçu pour améliorer l'organisation et l'efficacité du lieu de travail. Originaire du Japon, elle comprend cinq étapes : Séparer, Ranger, Nettoyer, Standardiser et Suivre. Chaque étape pose les bases pour créer un environnement de travail productif, sûr et organisé.</p>
+            <ul>
+                <li>Améliore l'efficacité en éliminant les gaspillages.</li>
+                <li>Renforce la sécurité grâce à l'organisation et la propreté.</li>
+                <li>Favorise une culture d'amélioration continue.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 16.67%;"></div></div>
+            <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+        </div>
+        <div class="step" data-step="1" data-lang="fr" style="display:none;">
+            <h2 id="h2-1-fr">1. Séparer (Seiri)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After">
+            <p id="p-1-fr">La première étape consiste à éliminer les éléments inutiles du lieu de travail pour réduire l'encombrement et améliorer la concentration. Ce processus garantit que seuls les outils, matériaux et équipements essentiels restent, simplifiant les opérations.</p>
+            <ul>
+                <li>Identifier et retirer les objets obsolètes ou inutilisés.</li>
+                <li>Utiliser des étiquettes rouges pour marquer les éléments à examiner ou à éliminer.</li>
+                <li>Réduire les distractions et libérer de l'espace pour un travail productif.</li>
+                <li>Auditer régulièrement l'inventaire pour maintenir l'ordre.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+            <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+        </div>
+        <div class="step" data-step="2" data-lang="fr" style="display:none;">
+            <h2 id="h2-2-fr">2. Ranger (Seiton)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After">
+            <p id="p-2-fr">Organiser les éléments nécessaires pour qu'ils soient faciles à trouver et à accéder. Cette étape se concentre sur la création de dispositions et de systèmes de rangement efficaces pour minimiser le temps passé à chercher des outils ou des matériaux.</p>
+            <ul>
+                <li>Attribuer des emplacements spécifiques pour chaque élément.</li>
+                <li>Utiliser des étiquettes, des codes couleur ou des tableaux d'ombre pour plus de clarté.</li>
+                <li>Concevoir des flux de travail pour réduire les mouvements et améliorer l'ergonomie.</li>
+                <li>S'assurer que les éléments sont remis à leur place après utilisation.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+            <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+        </div>
+        <div class="step" data-step="3" data-lang="fr" style="display:none;">
+            <h2 id="h2-3-fr">3. Nettoyer (Seiso)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After">
+            <p id="p-3-fr">Maintenir un lieu de travail propre et organisé pour garantir la sécurité et l'efficacité. Le nettoyage et les inspections régulières permettent d'identifier les problèmes potentiels avant qu'ils ne s'aggravent.</p>
+            <ul>
+                <li>Mettre en place des programmes de nettoyage quotidiens.</li>
+                <li>Inspecter les équipements et outils pendant le nettoyage pour détecter l'usure ou les dommages.</li>
+                <li>Encourager les employés à prendre en charge leurs zones de travail.</li>
+                <li>Promouvoir un environnement visuellement attrayant et sûr.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+            <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+        </div>
+        <div class="step" data-step="4" data-lang="fr" style="display:none;">
+            <h2 id="h2-4-fr">4. Standardiser (Seiketsu)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After">
+            <p id="p-4-fr">Établir des procédures cohérentes pour maintenir les trois premières étapes. La standardisation garantit que l'organisation et la propreté sont maintenues dans tout le lieu de travail.</p>
+            <ul>
+                <li>Créer des listes de contrôle et des guides visuels pour les tâches.</li>
+                <li>Former les employés aux procédures standard.</li>
+                <li>Planifier des audits réguliers pour assurer la conformité.</li>
+                <li>Utiliser des outils de gestion visuelle comme des panneaux et des graphiques.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 83.33%;"></div></div>
+            <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+        </div>
+        <div class="step" data-step="5" data-lang="fr" style="display:none;">
+            <h2 id="h2-5-fr">5. Suivre (Shitsuke)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After">
+            <p id="p-5-fr">Favoriser une culture de discipline pour maintenir les pratiques 5S dans le temps. Cette étape met l'accent sur l'amélioration continue et l'engagement des employés pour assurer un succès à long terme.</p>
+            <ul>
+                <li>Fournir des formations et des ateliers continus.</li>
+                <li>Reconnaître et récompenser le respect des principes 5S.</li>
+                <li>Effectuer des révisions régulières et des mises à jour des normes.</li>
+                <li>Encourager les retours pour améliorer les processus.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+            <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+        </div>
+
+        <!-- English Content -->
+        <div class="step" data-step="0" data-lang="en" style="display:none;">
+            <div class="logo-animation">WKW AUTOMOTIVE</div>
+            <h2 id="h2-0-en">Introduction to 5S Methodology</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies">
+            <p id="p-0-en">The 5S methodology is a lean manufacturing tool designed to improve workplace organization and efficiency. Originating from Japan, it consists of five steps: Sort, Set in Order, Shine, Standardize, and Sustain. Each step builds a foundation for creating a productive, safe, and organized work environment.</p>
+            <ul>
+                <li>Improves efficiency by eliminating waste.</li>
+                <li>Enhances safety through organization and cleanliness.</li>
+                <li>Promotes a culture of continuous improvement.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 16.67%;"></div></div>
+            <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+        </div>
+        <div class="step" data-step="1" data-lang="en" style="display:none;">
+            <h2 id="h2-1-en">1. Sort (Seiri)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After">
+            <p id="p-1-en">The first step involves removing unnecessary items from the workplace to reduce clutter and improve focus. This process ensures that only essential tools, materials, and equipment remain, streamlining operations.</p>
+            <ul>
+                <li>Identify and remove obsolete or unused items.</li>
+                <li>Use red tags to mark items for review or disposal.</li>
+                <li>Reduce distractions and free up space for productive work.</li>
+                <li>Regularly audit inventory to maintain order.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+            <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+        </div>
+        <div class="step" data-step="2" data-lang="en" style="display:none;">
+            <h2 id="h2-2-en">2. Set in Order (Seiton)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After">
+            <p id="p-2-en">Organize necessary items so they are easy to find and access. This step focuses on creating efficient layouts and storage systems to minimize time spent searching for tools or materials.</p>
+            <ul>
+                <li>Assign specific locations for each item.</li>
+                <li>Use labels, color-coding, or shadow boards for clarity.</li>
+                <li>Design workflows to reduce movement and improve ergonomics.</li>
+                <li>Ensure items are returned to their designated places after use.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+            <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+        </div>
+        <div class="step" data-step="3" data-lang="en" style="display:none;">
+            <h2 id="h2-3-en">3. Shine (Seiso)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After">
+            <p id="p-3-en">Maintain a clean and organized workplace to ensure safety and efficiency. Regular cleaning and inspections help identify potential issues before they escalate.</p>
+            <ul>
+                <li>Implement daily cleaning schedules.</li>
+                <li>Inspect equipment and tools during cleaning to detect wear or damage.</li>
+                <li>Encourage employee ownership of their work areas.</li>
+                <li>Promote a visually appealing and safe environment.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+            <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+        </div>
+        <div class="step" data-step="4" data-lang="en" style="display:none;">
+            <h2 id="h2-4-en">4. Standardize (Seiketsu)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After">
+            <p id="p-4-en">Establish consistent procedures to maintain the first three steps. Standardization ensures that organization and cleanliness are sustained across the workplace.</p>
+            <ul>
+                <li>Create checklists and visual guides for tasks.</li>
+                <li>Train employees on standard procedures.</li>
+                <li>Schedule regular audits to ensure compliance.</li>
+                <li>Use visual management tools like signs and charts.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 83.33%;"></div></div>
+            <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+        </div>
+        <div class="step" data-step="5" data-lang="en" style="display:none;">
+            <h2 id="h2-5-en">5. Sustain (Shitsuke)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After">
+            <p id="p-5-en">Foster a culture of discipline to maintain 5S practices over time. This step emphasizes continuous improvement and employee engagement to ensure long-term success.</p>
+            <ul>
+                <li>Provide ongoing training and workshops.</li>
+                <li>Recognize and reward adherence to 5S principles.</li>
+                <li>Conduct regular reviews and updates of standards.</li>
+                <li>Encourage feedback to improve processes.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+            <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+        </div>
+
+        <!-- German Content -->
+        <div class="step" data-step="0" data-lang="de" style="display:none;">
+            <div class="logo-animation">WKW AUTOMOTIVE</div>
+            <h2 id="h2-0-de">Einführung in die 5S-Methodik</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies">
+            <p id="p-0-de">Die 5S-Methodik ist ein Lean-Management-Tool, das darauf abzielt, die Organisation und Effizienz am Arbeitsplatz zu verbessern. Ursprünglich aus Japan stammend, besteht sie aus fünf Schritten: Sortieren, Systematisieren, Säubern, Standardisieren und Selbstdisziplin. Jeder Schritt legt die Grundlage für ein produktives, sicheres und organisiertes Arbeitsumfeld.</p>
+            <ul>
+                <li>Verbessert die Effizienz durch Beseitigung von Verschwendung.</li>
+                <li>Erhöht die Sicherheit durch Organisation und Sauberkeit.</li>
+                <li>Fördert eine Kultur der kontinuierlichen Verbesserung.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 16.67%;"></div></div>
+            <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
+        </div>
+        <div class="step" data-step="1" data-lang="de" style="display:none;">
+            <h2 id="h2-1-de">1. Sortieren (Seiri)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After">
+            <p id="p-1-de">Der erste Schritt besteht darin, unnötige Gegenstände vom Arbeitsplatz zu entfernen, um Unordnung zu reduzieren und die Konzentration zu verbessern. Dieser Prozess stellt sicher, dass nur wesentliche Werkzeuge, Materialien und Geräte verbleiben, was die Abläufe optimiert.</p>
+            <ul>
+                <li>Erkennung und Entfernung veralteter oder ungenutzter Gegenstände.</li>
+                <li>Verwendung von roten Etiketten zur Markierung von Gegenständen zur Überprüfung oder Entsorgung.</li>
+                <li>Reduzierung von Ablenkungen und Freigabe von Platz für produktive Arbeit.</li>
+                <li>Regelmäßige Inventarprüfungen zur Aufrechterhaltung der Ordnung.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+            <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
+        </div>
+        <div class="step" data-step="2" data-lang="de" style="display:none;">
+            <h2 id="h2-2-de">2. Systematisieren (Seiton)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After">
+            <p id="p-2-de">Notwendige Gegenstände so organisieren, dass sie leicht zu finden und zugänglich sind. Dieser Schritt konzentriert sich auf die Erstellung effizienter Layouts und Lagersysteme, um die Zeit für die Suche nach Werkzeugen oder Materialien zu minimieren.</p>
+            <ul>
+                <li>Festlegung spezifischer Standorte für jeden Gegenstand.</li>
+                <li>Verwendung von Etiketten, Farbcodierung oder Schattenbrettern für Klarheit.</li>
+                <li>Gestaltung von Arbeitsabläufen zur Reduzierung von Bewegungen und Verbesserung der Ergonomie.</li>
+                <li>Sicherstellung, dass Gegenstände nach Gebrauch an ihren vorgesehenen Platz zurückgelegt werden.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+            <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
+        </div>
+        <div class="step" data-step="3" data-lang="de" style="display:none;">
+            <h2 id="h2-3-de">3. Säubern (Seiso)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After">
+            <p id="p-3-de">Ein sauberes und organisiertes Arbeitsumfeld aufrechterhalten, um Sicherheit und Effizienz zu gewährleisten. Regelmäßige Reinigung und Inspektionen helfen, potenzielle Probleme frühzeitig zu erkennen.</p>
+            <ul>
+                <li>Einführung täglicher Reinigungspläne.</li>
+                <li>Inspektion von Geräten und Werkzeugen während der Reinigung auf Verschleiß oder Schäden.</li>
+                <li>Förderung der Eigenverantwortung der Mitarbeiter für ihre Arbeitsbereiche.</li>
+                <li>Schaffung eines visuell ansprechenden und sicheren Umfelds.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+            <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
+        </div>
+        <div class="step" data-step="4" data-lang="de" style="display:none;">
+            <h2 id="h2-4-de">4. Standardisieren (Seiketsu)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After">
+            <p id="p-4-de">Einheitliche Verfahren etablieren, um die ersten drei Schritte aufrechtzuerhalten. Die Standardisierung stellt sicher, dass Organisation und Sauberkeit im gesamten Arbeitsplatz erhalten bleiben.</p>
+            <ul>
+                <li>Erstellung von Checklisten und visuellen Leitfäden für Aufgaben.</li>
+                <li>Schulung der Mitarbeiter zu Standardverfahren.</li>
+                <li>Planung regelmäßiger Audits zur Sicherstellung der Einhaltung.</li>
+                <li>Verwendung visueller Management-Tools wie Schilder und Diagramme.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 83.33%;"></div></div>
+            <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
+        </div>
+        <div class="step" data-step="5" data-lang="de" style="display:none;">
+            <h2 id="h2-5-de">5. Selbstdisziplin (Shitsuke)</h2>
+            <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After">
+            <p id="p-5-de">Eine Kultur der Disziplin fördern, um die 5S-Praktiken langfristig aufrechtzuerhalten. Dieser Schritt betont kontinuierliche Verbesserung und das Engagement der Mitarbeiter für langfristigen Erfolg.</p>
+            <ul>
+                <li>Bereitstellung fortlaufender Schulungen und Workshops.</li>
+                <li>Anerkennung und Belohnung der Einhaltung von 5S-Prinzipien.</li>
+                <li>Durchführung regelmäßiger Überprüfungen und Aktualisierungen der Standards.</li>
+                <li>Förderung von Rückmeldungen zur Verbesserung der Prozesse.</li>
+            </ul>
+            <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+            <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="prevStep()">Previous</button>
+        <button onclick="nextStep()">Next</button>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let currentLangIndex = 0;
+        const languages = ['ar', 'fr', 'en', 'de'];
+        let currentLang = languages[currentLangIndex];
+        const steps = document.querySelectorAll('.step');
+        const totalSteps = 6; // Including presentation slide
+
+        const translations = {
+            ar: {
+                title: 'رسم متحرك لمنهجية 5S'
+            },
+            fr: {
+                title: 'Animation de la Méthodologie 5S'
+            },
+            en: {
+                title: '5S Methodology Animation'
+            },
+            de: {
+                title: '5S-Methodik Animation'
+            }
+        };
+
+        function showStep(stepNumber, lang = currentLang) {
+            steps.forEach(step => {
+                step.classList.remove('active', 'entering');
+                if (parseInt(step.getAttribute('data-step')) === stepNumber && step.getAttribute('data-lang') === lang) {
+                    step.style.display = 'flex';
+                    step.classList.add('active', 'entering');
+                } else {
+                    step.style.display = 'none';
+                }
+            });
+            document.body.setAttribute('lang', lang);
+            document.getElementById('title').textContent = translations[lang].title;
+            updateProgress(stepNumber);
+        }
+
+        function updateProgress(step) {
+            const progressFills = document.querySelectorAll('.progress-fill');
+            progressFills.forEach((fill, index) => {
+                if (index <= step) {
+                    fill.style.width = ((index + 1) / totalSteps * 100) + '%';
+                }
+            });
+        }
+
+        function nextStep() {
+            currentStep = currentStep < totalSteps - 1 ? currentStep + 1 : 0;
+            if (currentStep === 0) {
+                currentLangIndex = (currentLangIndex + 1) % languages.length;
+                currentLang = languages[currentLangIndex];
+            }
+            showStep(currentStep, currentLang);
+        }
+
+        function prevStep() {
+            currentStep = currentStep > 0 ? currentStep - 1 : totalSteps - 1;
+            if (currentStep === totalSteps - 1) {
+                currentLangIndex = currentLangIndex === 0 ? languages.length - 1 : currentLangIndex - 1;
+                currentLang = languages[currentLangIndex];
+            }
+            showStep(currentStep, currentLang);
+        }
+
+        // Initialize
+        showStep(currentStep, currentLang);
+
+        // Auto-cycle every 20 seconds
+        setInterval(nextStep, 20000);
+    </script>
+</body>
+</html>
