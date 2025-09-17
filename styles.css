@@ -1,322 +1,487 @@
+/* ==========================================================================
+   CSS Variables
+   ========================================================================== */
+:root {
+    --primary-color: #1a3c87; /* Deep blue for headers and accents */
+    --secondary-color: #007a7c; /* Vibrant teal for buttons and progress */
+    --secondary-hover: #00a3a6; /* Lighter teal for hover */
+    --background-color: #f7fafc; /* Clean off-white background */
+    --card-background: #ffffff; /* White for card backgrounds */
+    --text-color: #2d3748; /* Dark gray for text */
+    --footer-color: #718096; /* Muted gray for footer */
+    --progress-bg: #e2e8f0; /* Light gray for progress bar */
+    --shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    --shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.15); /* Deeper hover shadow */
+    --border-radius: 10px; /* Rounded corners */
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 20px;
+    --spacing-lg: 32px;
+    --transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   Global Styles
+   ========================================================================== */
 body {
+    font-family: 'Roboto', 'Noto Sans Arabic', sans-serif;
     margin: 0;
-    font-family: 'Roboto', sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #a94442 0%, #4a4a4a 100%), url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.05" fill-rule="evenodd"%3E%3Cpath d="M0 40L40 0H20L0 20z"/%3E%3C/g%3E%3C/svg%3E');
-    background-blend-mode: overlay;
-    color: #333;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.7;
+    direction: ltr;
     overflow-x: hidden;
 }
 
+html[lang="ar"] {
+    direction: rtl;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
 .header {
+    background: linear-gradient(135deg, var(--primary-color), #2650a3);
+    color: white;
     text-align: center;
-    margin-bottom: 2vh;
-    z-index: 10;
-    width: 90%;
+    padding: var(--spacing-lg);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+    animation: gradientShift 10s infinite linear;
+}
+
+@keyframes gradientShift {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(20px); }
+    100% { transform: translateX(0); }
 }
 
 .title {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
-    color: white;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
     margin: 0;
-    animation: fadeInDown 1s ease-out;
-}
-
-.container {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
     position: relative;
-    width: 90vw;
-    max-width: 900px;
-    height: clamp(450px, 75vh, 650px);
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    margin-bottom: 2vh;
+    z-index: 1;
 }
 
+/* ==========================================================================
+   Container
+   ========================================================================== */
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+/* ==========================================================================
+   Landing Page
+   ========================================================================== */
 .landing-page {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: clamp(15px, 2.5vw, 25px);
-    box-sizing: border-box;
+    gap: var(--spacing-md);
 }
 
 .landing-page h2 {
-    font-size: clamp(1.6rem, 4.5vw, 2.4rem);
-    font-weight: 500;
-    color: #a94442;
-    margin: clamp(10px, 2vw, 20px) 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    padding: 10px 20px;
-    border-radius: 10px;
-}
-
-.landing-page h2:hover {
-    transform: translateY(-3px);
-    background: #a94442;
+    background: linear-gradient(90deg, var(--secondary-color), var(--secondary-hover));
     color: white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1.875rem;
+    font-weight: 500;
+    text-align: center;
+    width: 85%;
+    max-width: 800px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    will-change: transform, box-shadow;
 }
 
+.landing-page h2:hover,
+.landing-page h2:focus {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    background: var(--secondary-hover);
+}
+
+.landing-page h2:focus {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Steps
+   ========================================================================== */
 .step {
-    position: absolute;
-    width: 100%;
-    height: 100%;
     display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: clamp(15px, 2.5vw, 25px);
-    box-sizing: border-box;
     opacity: 0;
-    transform: translateY(50px) scale(0.95);
-    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    background: var(--card-background);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: opacity 0.5s ease-in-out;
 }
 
 .step.active {
-    display: flex;
+    display: block;
     opacity: 1;
-    transform: translateY(0) scale(1);
+}
+
+.step.entering {
+    animation: slideIn 0.6s ease-in-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%) scale(0.95); opacity: 0; }
+    to { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+html[lang="ar"] .step.entering {
+    animation: slideInRTL 0.6s ease-in-out;
+}
+
+@keyframes slideInRTL {
+    from { transform: translateX(-100%) scale(0.95); opacity: 0; }
+    to { transform: translateX(0) scale(1); opacity: 1; }
 }
 
 .step h2 {
-    font-size: clamp(1.6rem, 4.5vw, 2.4rem);
-    font-weight: 500;
-    margin: clamp(10px, 2vw, 15px) 0;
-    color: #a94442;
-    text-align: center;
+    color: var(--primary-color);
+    font-size: 2.25rem;
+    font-weight: 600;
+    margin: 0 0 var(--spacing-md);
+    animation: fadeInText 0.8s ease-in-out;
 }
 
 .step p {
-    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-    font-weight: 400;
-    text-align: center;
-    max-width: 85%;
-    color: #333333;
-    line-height: 1.7;
-    margin: clamp(5px, 1vw, 10px) auto;
+    font-size: 1.25rem;
+    margin: var(--spacing-sm) 0;
+    animation: fadeInText 1s ease-in-out;
 }
 
 .step ul {
+    font-size: 1.125rem;
     list-style-type: disc;
-    text-align: left;
-    max-width: 80%;
-    color: #333333;
-    font-size: clamp(0.8rem, 2.2vw, 1rem);
-    font-weight: 400;
-    line-height: 1.7;
-    margin: clamp(10px, 2vw, 15px) auto;
-    padding-left: clamp(20px, 3vw, 30px);
+    margin-left: var(--spacing-lg);
+    padding-left: var(--spacing-md);
+    animation: fadeInText 1.2s ease-in-out;
+}
+
+html[lang="ar"] .step ul {
+    margin-right: var(--spacing-lg);
+    margin-left: 0;
+    padding-right: var(--spacing-md);
+    padding-left: 0;
 }
 
 .step img {
-    max-width: clamp(200px, 50%, 400px);
+    max-width: 100%;
     height: auto;
-    border-radius: 12px;
-    margin: clamp(10px, 2vw, 15px) 0;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-    transform: scale(0.8);
-    opacity: 0;
-    transition: transform 0.5s ease, opacity 0.5s ease;
+    border-radius: var(--border-radius);
+    margin: var(--spacing-md) 0;
+    box-shadow: var(--shadow);
+    animation: fadeInImage 1s ease-in-out;
 }
 
+@keyframes fadeInText {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInImage {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ==========================================================================
+   Image Container
+   ========================================================================== */
 .image-container {
     display: flex;
-    gap: 10px;
+    gap: var(--spacing-md);
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .image-container img {
-    max-width: clamp(150px, 25%, 300px);
+    max-width: 45%;
     height: auto;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-    transform: scale(0.8);
-    opacity: 0;
-    transition: transform 0.5s ease, opacity 0.5s ease;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
 }
 
-.step.active img, .step.active .image-container img {
-    transform: scale(1);
-    opacity: 1;
+.image-container img:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-hover);
 }
 
-.footer {
-    font-size: clamp(0.7rem, 2vw, 0.9rem);
-    font-weight: 400;
-    color: #a94442;
-    text-align: center;
-    margin-top: clamp(5px, 1vw, 10px);
-    padding-bottom: clamp(5px, 1vw, 10px);
-}
-
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: clamp(12px, 2.5vw, 18px);
-    z-index: 10;
-    flex-wrap: wrap;
-}
-
-button {
-    padding: clamp(10px, 2.5vw, 14px) clamp(20px, 3.5vw, 28px);
-    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-    font-weight: 500;
-    border: none;
-    border-radius: 30px;
-    background: linear-gradient(45deg, #a94442, #7f2a2a);
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    background: linear-gradient(45deg, #7f2a2a, #a94442);
-}
-
-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.4s ease, height 0.4s ease;
-}
-
-button:hover::after {
-    width: 200px;
-    height: 200px;
-}
-
+/* ==========================================================================
+   Progress Bar
+   ========================================================================== */
 .progress-bar {
     width: 100%;
-    height: 6px;
-    background: rgba(0,0,0,0.1);
-    border-radius: 3px;
-    margin-top: clamp(10px, 2vw, 15px);
+    height: 14px;
+    background-color: var(--progress-bg);
+    border-radius: var(--border-radius);
     overflow: hidden;
+    margin: var(--spacing-md) 0;
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #a94442, #7f2a2a);
-    border-radius: 3px;
-    transition: width 0.6s ease-in-out;
-}
-
-.logo-animation {
-    font-size: clamp(2.2rem, 5.5vw, 3.2rem);
-    font-weight: 700;
-    color: #a94442;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-    animation: pulse 2s ease-in-out infinite;
-    margin-bottom: clamp(10px, 2vw, 20px);
+    background: linear-gradient(90deg, var(--secondary-color), var(--secondary-hover));
+    transition: width 0.5s ease-in-out;
+    position: relative;
+    animation: pulse 2s infinite ease-in-out;
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% { opacity: 1; }
+    50% { opacity: 0.85; }
+    100% { opacity: 1; }
 }
 
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-30px); }
-    to { opacity: 1; transform: translateY(0); }
+.progress-16 { width: 16.67%; }
+.progress-25 { width: 25%; }
+.progress-33 { width: 33.33%; }
+.progress-50 { width: 50%; }
+.progress-66 { width: 66.67%; }
+.progress-75 { width: 75%; }
+.progress-83 { width: 83.33%; }
+.progress-100 { width: 100%; }
+
+/* ==========================================================================
+   Controls
+   ========================================================================== */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
 }
 
-@keyframes fadeScaleIn {
-    from { opacity: 0; transform: translateY(50px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+.controls button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 1.125rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    border-radius: var(--border-radius);
+    background: linear-gradient(90deg, var(--secondary-color), var(--secondary-hover));
+    color: white;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    will-change: transform, box-shadow;
 }
 
-.step.entering {
-    animation: fadeScaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+.controls button:hover,
+.controls button:focus {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
 }
 
-[lang="ar"] .step {
-    direction: rtl;
-    text-align: right;
+.controls button:focus {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
-[lang="ar"] .step h2,
-[lang="ar"] .step p,
-[lang="ar"] .step ul,
-[lang="ar"] .footer {
-    font-family: 'Noto Sans Arabic', 'Arial', sans-serif;
+.hidden {
+    display: none;
 }
 
-[lang="ar"] .step ul {
-    text-align: right;
-    padding-right: clamp(20px, 3vw, 30px);
-    padding-left: 0;
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.footer {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--footer-color);
+    margin-top: var(--spacing-lg);
+    opacity: 0.9;
 }
 
-@media (max-width: 600px) {
+/* ==========================================================================
+   Logo Animation
+   ========================================================================== */
+.logo-animation {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    animation: typewriter 2s steps(20) forwards, fadeIn 1s ease-in-out;
+}
+
+.logo-animation::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 2px;
+    height: 1.5em;
+    background: var(--primary-color);
+    animation: blink 0.75s step-end infinite;
+}
+
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media (max-width: 1024px) {
     .container {
-        height: clamp(350px, 80vh, 550px);
+        padding: var(--spacing-md);
     }
 
-    .landing-page h2,
+    .title {
+        font-size: 2rem;
+    }
+
+    .landing-page h2 {
+        font-size: 1.5rem;
+        width: 90%;
+    }
+
     .step h2 {
-        font-size: clamp(1.3rem, 4vw, 2rem);
+        font-size: 1.75rem;
     }
 
-    .step p {
-        font-size: clamp(0.8rem, 2.5vw, 1rem);
-        max-width: 90%;
-    }
-
+    .step p,
     .step ul {
-        font-size: clamp(0.7rem, 2vw, 0.9rem);
-        max-width: 90%;
+        font-size: 1.125rem;
     }
 
-    .step img, .image-container img {
-        max-width: clamp(120px, 80%, 250px);
+    .image-container img {
+        max-width: 100%;
     }
 
     .logo-animation {
-        font-size: clamp(1.8rem, 5vw, 2.8rem);
-    }
-
-    button {
-        padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
-        font-size: clamp(0.8rem, 2.5vw, 1rem);
-    }
-
-    .footer {
-        font-size: clamp(0.6rem, 2vw, 0.8rem);
+        font-size: 1.75rem;
     }
 }
 
-@media (max-width: 400px) {
-    .container {
-        height: clamp(300px, 85vh, 500px);
+@media (max-width: 768px) {
+    .header {
+        padding: var(--spacing-md);
     }
 
-    .step img, .image-container img {
-        max-width: clamp(100px, 90%, 200px);
+    .title {
+        font-size: 1.75rem;
+    }
+
+    .landing-page h2 {
+        font-size: 1.25rem;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .step h2 {
+        font-size: 1.5rem;
+    }
+
+    .step p,
+    .step ul {
+        font-size: 1rem;
+    }
+
+    .step img {
+        margin: var(--spacing-sm) 0;
+    }
+
+    .controls button {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 1rem;
+    }
+
+    .logo-animation {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: var(--spacing-sm);
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .landing-page h2 {
+        font-size: 1.125rem;
+        width: 95%;
+    }
+
+    .step h2 {
+        font-size: 1.25rem;
+    }
+
+    .step p,
+    .step ul {
+        font-size: 0.875rem;
+    }
+
+    .progress-bar {
+        height: 12px;
+    }
+
+    .controls button {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.875rem;
+    }
+
+    .footer {
+        font-size: 0.75rem;
+    }
+
+    .logo-animation {
+        font-size: 1.25rem;
+    }
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+:focus {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .step.entering,
+    html[lang="ar"] .step.entering,
+    .progress-fill,
+    .logo-animation,
+    .logo-animation::after,
+    .landing-page h2,
+    .controls button,
+    .header::before {
+        animation: none;
+        transition: none;
     }
 }
