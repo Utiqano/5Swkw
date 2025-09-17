@@ -3,332 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://*.learnleansigma.com https://*.ahaslides.com https://*.bukitvista-wordpress-storage.s3.us-east-2.amazonaws.com https://*.sesa-systems.com https://*.t4.ftcdn.net https://*.freepik.com https://*.cartlyapp.com;">
     <title>WKW Automotive - Amélioration Continue</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #a94442 0%, #4a4a4a 100%), url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ffffff" fill-opacity="0.05" fill-rule="evenodd"%3E%3Cpath d="M0 40L40 0H20L0 20z"/%3E%3C/g%3E%3C/svg%3E');
-            background-blend-mode: overlay;
-            color: #333;
-            overflow-x: hidden;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 2vh;
-            z-index: 10;
-            width: 90%;
-        }
-
-        .title {
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 700;
-            color: white;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
-            margin: 0;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        .container {
-            position: relative;
-            width: 90vw;
-            max-width: 900px;
-            height: clamp(450px, 75vh, 650px);
-            background: #ffffff; /* Changed to pure white */
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            margin-bottom: 2vh;
-        }
-
-        .landing-page {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: clamp(15px, 2.5vw, 25px);
-            box-sizing: border-box;
-        }
-
-        .landing-page h2 {
-            font-size: clamp(1.6rem, 4.5vw, 2.4rem);
-            font-weight: 500;
-            color: #a94442;
-            margin: clamp(10px, 2vw, 20px) 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            padding: 10px 20px;
-            border-radius: 10px;
-        }
-
-        .landing-page h2:hover {
-            transform: translateY(-3px);
-            background: #a94442;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        .step {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: clamp(15px, 2.5vw, 25px);
-            box-sizing: border-box;
-            opacity: 0;
-            transform: translateY(50px) scale(0.95);
-            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .step.active {
-            display: flex;
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .step h2 {
-            font-size: clamp(1.6rem, 4.5vw, 2.4rem);
-            font-weight: 500;
-            margin: clamp(10px, 2vw, 15px) 0;
-            color: #a94442;
-            text-align: center;
-        }
-
-        .step p {
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-            font-weight: 400;
-            text-align: center;
-            max-width: 85%;
-            color: #333333; /* Darker color for better contrast on white background */
-            line-height: 1.7;
-            margin: clamp(5px, 1vw, 10px) auto;
-        }
-
-        .step ul {
-            list-style-type: disc;
-            text-align: left;
-            max-width: 80%;
-            color: #333333; /* Darker color for better contrast */
-            font-size: clamp(0.8rem, 2.2vw, 1rem);
-            font-weight: 400;
-            line-height: 1.7;
-            margin: clamp(10px, 2vw, 15px) auto;
-            padding-left: clamp(20px, 3vw, 30px);
-        }
-
-        .step img {
-            max-width: clamp(200px, 50%, 400px);
-            height: auto;
-            border-radius: 12px;
-            margin: clamp(10px, 2vw, 15px) 0;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-            transform: scale(0.8);
-            opacity: 0;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-
-        .image-container {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .image-container img {
-            max-width: clamp(150px, 25%, 300px);
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-            transform: scale(0.8);
-            opacity: 0;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-
-        .step.active img, .step.active .image-container img {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .footer {
-            font-size: clamp(0.7rem, 2vw, 0.9rem);
-            font-weight: 400;
-            color: #a94442;
-            text-align: center;
-            margin-top: clamp(5px, 1vw, 10px);
-            padding-bottom: clamp(5px, 1vw, 10px);
-        }
-
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: clamp(12px, 2.5vw, 18px);
-            z-index: 10;
-            flex-wrap: wrap;
-        }
-
-        button {
-            padding: clamp(10px, 2.5vw, 14px) clamp(20px, 3.5vw, 28px);
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-            font-weight: 500;
-            border: none;
-            border-radius: 30px;
-            background: linear-gradient(45deg, #a94442, #7f2a2a);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-            background: linear-gradient(45deg, #7f2a2a, #a94442);
-        }
-
-        button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-        }
-
-        button:hover::after {
-            width: 200px;
-            height: 200px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(0,0,0,0.1); /* Adjusted for white background */
-            border-radius: 3px;
-            margin-top: clamp(10px, 2vw, 15px);
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #a94442, #7f2a2a);
-            border-radius: 3px;
-            transition: width 0.6s ease-in-out;
-        }
-
-        .logo-animation {
-            font-size: clamp(2.2rem, 5.5vw, 3.2rem);
-            font-weight: 700;
-            color: #a94442;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-            animation: pulse 2s ease-in-out infinite;
-            margin-bottom: clamp(10px, 2vw, 20px);
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeScaleIn {
-            from { opacity: 0; transform: translateY(50px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .step.entering {
-            animation: fadeScaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        [lang="ar"] .step {
-            direction: rtl;
-            text-align: right;
-        }
-
-        [lang="ar"] .step h2,
-        [lang="ar"] .step p,
-        [lang="ar"] .step ul,
-        [lang="ar"] .footer {
-            font-family: 'Noto Sans Arabic', 'Arial', sans-serif;
-        }
-
-        [lang="ar"] .step ul {
-            text-align: right;
-            padding-right: clamp(20px, 3vw, 30px);
-            padding-left: 0;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                height: clamp(350px, 80vh, 550px);
-            }
-
-            .landing-page h2,
-            .step h2 {
-                font-size: clamp(1.3rem, 4vw, 2rem);
-            }
-
-            .step p {
-                font-size: clamp(0.8rem, 2.5vw, 1rem);
-                max-width: 90%;
-            }
-
-            .step ul {
-                font-size: clamp(0.7rem, 2vw, 0.9rem);
-                max-width: 90%;
-            }
-
-            .step img, .image-container img {
-                max-width: clamp(120px, 80%, 250px);
-            }
-
-            .logo-animation {
-                font-size: clamp(1.8rem, 5vw, 2.8rem);
-            }
-
-            button {
-                padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
-                font-size: clamp(0.8rem, 2.5vw, 1rem);
-            }
-
-            .footer {
-                font-size: clamp(0.6rem, 2vw, 0.8rem);
-            }
-        }
-
-        @media (max-width: 400px) {
-            .container {
-                height: clamp(300px, 85vh, 500px);
-            }
-
-            .step img, .image-container img {
-                max-width: clamp(100px, 90%, 200px);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <div class="header">
@@ -795,10 +474,80 @@
 
         <!-- Gemba OJT Section -->
         <div id="gemba-ojt" style="display: none;">
-            <div class="step active">
-                <h2>Gemba OJT</h2>
-                <p>Test content for Gemba OJT.</p>
+            <!-- Tunisian Arabic -->
+            <div class="step active" data-step="0" data-lang="ar">
+                <div class="logo-animation">WKW AUTOMOTIVE</div>
+                <h2>ما هو Gemba OJT</h2>
+                <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
+                <p>الـ Gemba هو مصطلح ياباني يعني "المكان الحقيقي" أو "المكان اللي يصير فيه العمل" وفيه القيمة تتخلق.</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+                <div class="footer">قسم التحسين المستمر WKW تونس</div>
+            </div>
+            <div class="step" data-step="1" data-lang="ar">
+                <div class="logo-animation">WKW AUTOMOTIVE</div>
+                <h2>اختبار</h2>
+                <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
+                <p>هذه صفحة اختبار لتدريب Gemba OJT. يمكن استبدال هذا النص بمحتوى محدد لاحقًا.</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+                <div class="footer">قسم التحسين المستمر WKW تونس</div>
+            </div>
+            <div class="step" data-step="2" data-lang="ar">
+                <div class="logo-animation">WKW AUTOMOTIVE</div>
+                <h2>اختبار</h2>
+                <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
+                <p>هذه صفحة اختبار أخرى لتدريب Gemba OJT. يمكن استبدال هذا النص بمحتوى محدد لاحقًا.</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="footer">قسم التحسين المستمر WKW تونس</div>
+            </div>
+            <!-- French -->
+            <div class="step" data-step="0" data-lang="fr">
+                <div class="logo-animation">WKW AUTOMOTIVE</div>
+                <h2>Qu'est-ce que Gemba OJT</h2>
+                <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
+                <p>Gemba est un terme japonais signifiant "le lieu réel" ou "l'endroit où le travail est effectué" et où la valeur est créée.</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+            </div>
+            <div class="step" data-step="1" data-lang="fr">
+                <div class="logo-animation">WKW AUTOMOTIVE</div>
+                <h2>Test</h2>
+                <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
+                <p>Ceci est une page de test pour la formation Gemba OJT. Ce texte peut être remplacé par un contenu spécifique ultérieurement.</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+            </div>
+            <div class="step" data-step="2" data-lang="fr">
+                <div class="logo-animation">WKW AUTOMOTIVE</div>
+                <h2>Test</h2>
+                <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
+                <p>Ceci est une autre page de test pour la formation Gemba OJT. Ce texte peut être remplacé par un contenu spécifique ultérieurement.</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+            </div>
+            <!-- English -->
+            <div class="step" data-step="0" data-lang="en">
+                <div class="logo-animation">WKW AUTOMOTIVE</div>
+                <h2>What is Gemba OJT</h2>
+                <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
+                <p>Gemba is a Japanese term meaning "the actual place" or "the real place" where value is created and work is done.</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+            </div>
+            <div class="step" data-step="1" data-lang="en">
+                <div class="logo-animation">WKW AUTOMOTIVE</div>
+                <h2>Test</h2>
+                <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
+                <p>This is a test slide for Gemba OJT training. This content can be replaced with specific details later.</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+            </div>
+            <div class="step" data-step="2" data-lang="en">
+                <div class="logo-animation">WKW AUTOMOTIVE</div>
+                <h2>Test</h2>
+                <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
+                <p>This is another test slide for Gemba OJT training. This content can be replaced with specific details later.</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
         </div>
     </div>
@@ -809,159 +558,6 @@
         <button onclick="nextStep()" id="next-button" style="display: none;">Next</button>
     </div>
 
-    <script>
-        // Metrologie 5S Variables
-        let fiveSStep = 0;
-        let fiveSLangIndex = 0;
-        const fiveSLanguages = ['ar', 'fr', 'en', 'de'];
-        let fiveSLang = fiveSLanguages[fiveSLangIndex];
-        const fiveSTotalSteps = 6;
-
-        // Proposition d'Amélioration Variables
-        let propStep = 0;
-        let propLangIndex = 0;
-        const propLanguages = ['ar', 'fr', 'en'];
-        let propLang = propLanguages[propLangIndex];
-        const propTotalSteps = 4;
-
-        let currentSection = 'landing';
-        let autoCycleInterval = null;
-
-        const translations = {
-            ar: { title: 'WKW Automotive - التحسين المستمر' },
-            fr: { title: 'WKW Automotive - Amélioration Continue' },
-            en: { title: 'WKW Automotive - Continuous Improvement' },
-            de: { title: 'WKW Automotive - Kontinuierliche Verbesserung' }
-        };
-
-        function showSection(sectionId) {
-            currentSection = sectionId;
-            document.getElementById('landing-page').style.display = sectionId === 'landing' ? 'flex' : 'none';
-            document.getElementById('metrologie-5s').style.display = sectionId === 'metrologie-5s' ? 'block' : 'none';
-            document.getElementById('proposition-amelioration').style.display = sectionId === 'proposition-amelioration' ? 'block' : 'none';
-            document.getElementById('gemba-ojt').style.display = sectionId === 'gemba-ojt' ? 'block' : 'none';
-
-            const prevBtn = document.getElementById('prev-button');
-            const nextBtn = document.getElementById('next-button');
-            prevBtn.style.display = (sectionId === 'metrologie-5s' || sectionId === 'proposition-amelioration') ? 'inline-block' : 'none';
-            nextBtn.style.display = (sectionId === 'metrologie-5s' || sectionId === 'proposition-amelioration') ? 'inline-block' : 'none';
-
-            if (sectionId === 'metrologie-5s') {
-                fiveSStep = 0;
-                fiveSLang = fiveSLanguages[fiveSLangIndex];
-                showFiveSStep(fiveSStep, fiveSLang);
-                startAutoCycle('fiveS');
-            } else if (sectionId === 'proposition-amelioration') {
-                propStep = 0;
-                propLang = propLanguages[propLangIndex];
-                showPropStep(propStep, propLang);
-                startAutoCycle('prop');
-            } else {
-                stopAutoCycle();
-                document.getElementById('title').textContent = translations.fr.title;
-            }
-        }
-
-        function showFiveSStep(stepNumber, lang) {
-            const steps = document.querySelectorAll('#metrologie-5s .step');
-            steps.forEach(step => {
-                step.classList.remove('active', 'entering');
-                if (parseInt(step.getAttribute('data-step')) === stepNumber && step.getAttribute('data-lang') === lang) {
-                    step.style.display = 'flex';
-                    step.classList.add('active', 'entering');
-                } else {
-                    step.style.display = 'none';
-                }
-            });
-            document.body.setAttribute('lang', lang);
-            document.getElementById('title').textContent = translations[lang].title;
-            updateProgress(stepNumber, '#metrologie-5s', fiveSTotalSteps);
-        }
-
-        function showPropStep(stepNumber, lang) {
-            const steps = document.querySelectorAll('#proposition-amelioration .step');
-            steps.forEach(step => {
-                step.classList.remove('active', 'entering');
-                if (parseInt(step.getAttribute('data-step')) === stepNumber && step.getAttribute('data-lang') === lang) {
-                    step.style.display = 'flex';
-                    step.classList.add('active', 'entering');
-                } else {
-                    step.style.display = 'none';
-                }
-            });
-            document.body.setAttribute('lang', lang);
-            document.getElementById('title').textContent = translations[lang].title;
-            updateProgress(stepNumber, '#proposition-amelioration', propTotalSteps);
-        }
-
-        function updateProgress(step, sectionSelector, total) {
-            const progressFills = document.querySelectorAll(`${sectionSelector} .progress-fill`);
-            progressFills.forEach((fill, index) => {
-                if (index <= step) {
-                    fill.style.width = ((index + 1) / total * 100) + '%';
-                }
-            });
-        }
-
-        function nextStep() {
-            if (currentSection === 'metrologie-5s') {
-                fiveSStep = fiveSStep < fiveSTotalSteps - 1 ? fiveSStep + 1 : 0;
-                if (fiveSStep === 0) {
-                    fiveSLangIndex = (fiveSLangIndex + 1) % fiveSLanguages.length;
-                    fiveSLang = fiveSLanguages[fiveSLangIndex];
-                }
-                showFiveSStep(fiveSStep, fiveSLang);
-            } else if (currentSection === 'proposition-amelioration') {
-                propStep = propStep < propTotalSteps - 1 ? propStep + 1 : 0;
-                if (propStep === 0) {
-                    propLangIndex = (propLangIndex + 1) % propLanguages.length;
-                    propLang = propLanguages[propLangIndex];
-                }
-                showPropStep(propStep, propLang);
-            }
-        }
-
-        function prevStep() {
-            if (currentSection === 'metrologie-5s') {
-                fiveSStep = fiveSStep > 0 ? fiveSStep - 1 : fiveSTotalSteps - 1;
-                if (fiveSStep === fiveSTotalSteps - 1) {
-                    fiveSLangIndex = fiveSLangIndex === 0 ? fiveSLanguages.length - 1 : fiveSLangIndex - 1;
-                    fiveSLang = fiveSLanguages[fiveSLangIndex];
-                }
-                showFiveSStep(fiveSStep, fiveSLang);
-            } else if (currentSection === 'proposition-amelioration') {
-                propStep = propStep > 0 ? propStep - 1 : propTotalSteps - 1;
-                if (propStep === propTotalSteps - 1) {
-                    propLangIndex = propLangIndex === 0 ? propLanguages.length - 1 : propLangIndex - 1;
-                    propLang = propLanguages[propLangIndex];
-                }
-                showPropStep(propStep, propLang);
-            }
-        }
-
-        function goToLanding() {
-            currentSection = 'landing';
-            showSection('landing');
-            stopAutoCycle();
-        }
-
-        function startAutoCycle(sectionType) {
-            stopAutoCycle();
-            autoCycleInterval = setInterval(() => {
-                if (sectionType === 'fiveS' || sectionType === 'prop') {
-                    nextStep();
-                }
-            }, 20000);
-        }
-
-        function stopAutoCycle() {
-            if (autoCycleInterval) {
-                clearInterval(autoCycleInterval);
-                autoCycleInterval = null;
-            }
-        }
-
-        showSection('landing');
-    </script>
+    <script src="./script.js"></script>
 </body>
 </html>
