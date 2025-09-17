@@ -17,7 +17,7 @@ let gembaStep = 0;
 let gembaLangIndex = 0;
 const gembaLanguages = ['ar', 'fr', 'en'];
 let gembaLang = gembaLanguages[gembaLangIndex];
-const gembaTotalSteps = 3; // Updated to 3 slides
+const gembaTotalSteps = 3;
 
 let currentSection = 'landing';
 let autoCycleInterval = null;
@@ -32,15 +32,15 @@ const translations = {
 function showSection(sectionId) {
     console.log(`Switching to section: ${sectionId}`);
     currentSection = sectionId;
-    document.getElementById('landing-page').style.display = sectionId === 'landing' ? 'flex' : 'none';
-    document.getElementById('metrologie-5s').style.display = sectionId === 'metrologie-5s' ? 'block' : 'none';
-    document.getElementById('proposition-amelioration').style.display = sectionId === 'proposition-amelioration' ? 'block' : 'none';
-    document.getElementById('gemba-ojt').style.display = sectionId === 'gemba-ojt' ? 'block' : 'none';
+    document.getElementById('landing-page').classList.toggle('hidden', sectionId !== 'landing');
+    document.getElementById('metrologie-5s').classList.toggle('hidden', sectionId !== 'metrologie-5s');
+    document.getElementById('proposition-amelioration').classList.toggle('hidden', sectionId !== 'proposition-amelioration');
+    document.getElementById('gemba-ojt').classList.toggle('hidden', sectionId !== 'gemba-ojt');
 
     const prevBtn = document.getElementById('prev-button');
     const nextBtn = document.getElementById('next-button');
-    prevBtn.style.display = sectionId !== 'landing' ? 'inline-block' : 'none';
-    nextBtn.style.display = sectionId !== 'landing' ? 'inline-block' : 'none';
+    prevBtn.classList.toggle('hidden', sectionId === 'landing');
+    nextBtn.classList.toggle('hidden', sectionId === 'landing');
 
     if (sectionId === 'metrologie-5s') {
         fiveSStep = 0;
@@ -210,4 +210,17 @@ function goToLanding() {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Page loaded, initializing landing page');
     showSection('landing');
+
+    // Add event listeners for section links
+    document.querySelectorAll('.section-link').forEach(link => {
+        link.addEventListener('click', () => {
+            const section = link.getAttribute('data-section');
+            showSection(section);
+        });
+    });
+
+    // Add event listeners for control buttons
+    document.getElementById('return-button').addEventListener('click', goToLanding);
+    document.getElementById('prev-button').addEventListener('click', prevStep);
+    document.getElementById('next-button').addEventListener('click', nextStep);
 });
