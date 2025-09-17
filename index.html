@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://*.learnleansigma.com https://*.ahaslides.com https://*.bukitvista-wordpress-storage.s3.us-east-2.amazonaws.com https://*.sesa-systems.com https://*.t4.ftcdn.net https://*.freepik.com https://*.cartlyapp.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https://*.learnleansigma.com https://*.ahaslides.com https://*.bukitvista-wordpress-storage.s3.us-east-2.amazonaws.com https://*.sesa-systems.com https://*.t4.ftcdn.net https://*.freepik.com https://*.cartlyapp.com;">
     <title>WKW Automotive - Amélioration Continue</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
@@ -17,13 +17,13 @@
     <div class="container">
         <!-- Landing Page -->
         <div class="landing-page" id="landing-page">
-            <h2 onclick="showSection('metrologie-5s')">Metrologie 5S</h2>
-            <h2 onclick="showSection('proposition-amelioration')">Proposition d'Amélioration</h2>
-            <h2 onclick="showSection('gemba-ojt')">Gemba OJT</h2>
+            <h2 class="section-link" data-section="metrologie-5s">Metrologie 5S</h2>
+            <h2 class="section-link" data-section="proposition-amelioration">Proposition d'Amélioration</h2>
+            <h2 class="section-link" data-section="gemba-ojt">Gemba OJT</h2>
         </div>
 
         <!-- Metrologie 5S Section -->
-        <div id="metrologie-5s" style="display: none;">
+        <div id="metrologie-5s" class="hidden">
             <!-- Tunisian Arabic -->
             <div class="step active" data-step="0" data-lang="ar">
                 <div class="logo-animation">WKW AUTOMOTIVE</div>
@@ -35,7 +35,7 @@
                     <li>تحسن الأمان بالتنظيم والنظافة.</li>
                     <li>تشجع على ثقافة تحسين مستمر.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 16.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-16"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <div class="step" data-step="1" data-lang="ar">
@@ -48,7 +48,7 @@
                     <li>قلل التشتت وحرر مكان للخدمة المنتجة.</li>
                     <li>دقق في المخزون باستمرار باش تحتفظ بالنظام.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <div class="step" data-step="2" data-lang="ar">
@@ -61,7 +61,7 @@
                     <li>صمم تدفقات الخدمة باش تقلل الحركة وتحسن الراحة في العمل.</li>
                     <li>تأكد إنو الأغراض ترجع لبلاصتها بعد الاستعمال.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <div class="step" data-step="3" data-lang="ar">
@@ -74,7 +74,7 @@
                     <li>شجع العمال باش يهتمو بمناطقهم.</li>
                     <li>خلي مكان الخدمة جذاب بصريًا وآمن.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <div class="step" data-step="4" data-lang="ar">
@@ -87,7 +87,7 @@
                     <li>خطط لتدقيقات منتظمة باش تتأكد من الالتزام.</li>
                     <li>استعمل أدوات إدارة بصرية زي اللافتات والرسوم البيانية.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 83.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-83"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <div class="step" data-step="5" data-lang="ar">
@@ -100,7 +100,7 @@
                     <li>اعمل مراجعات وتحديثات منتظمة للمعايير.</li>
                     <li>شجع على الاقتراحات باش تحسن العمليات.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <!-- French -->
@@ -114,7 +114,7 @@
                     <li>Renforce la sécurité grâce à l'organisation et la propreté.</li>
                     <li>Favorise une culture d'amélioration continue.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 16.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-16"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <div class="step" data-step="1" data-lang="fr">
@@ -127,7 +127,7 @@
                     <li>Réduire les distractions et libérer de l'espace pour un travail productif.</li>
                     <li>Auditer régulièrement l'inventaire pour maintenir l'ordre.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <div class="step" data-step="2" data-lang="fr">
@@ -140,7 +140,7 @@
                     <li>Concevoir des flux de travail pour réduire les mouvements et améliorer l'ergonomie.</li>
                     <li>S'assurer que les éléments sont remis à leur place après utilisation.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <div class="step" data-step="3" data-lang="fr">
@@ -153,7 +153,7 @@
                     <li>Encourager les employés à prendre en charge leurs zones de travail.</li>
                     <li>Promouvoir un environnement visuellement attrayant et sûr.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <div class="step" data-step="4" data-lang="fr">
@@ -166,7 +166,7 @@
                     <li>Planifier des audits réguliers pour assurer la conformité.</li>
                     <li>Utiliser des outils de gestion visuelle comme des panneaux et des graphiques.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 83.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-83"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <div class="step" data-step="5" data-lang="fr">
@@ -179,7 +179,7 @@
                     <li>Effectuer des révisions régulières et des mises à jour des normes.</li>
                     <li>Encourager les retours pour améliorer les processus.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <!-- English -->
@@ -193,7 +193,7 @@
                     <li>Enhances safety through organization and cleanliness.</li>
                     <li>Promotes a culture of continuous improvement.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 16.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-16"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <div class="step" data-step="1" data-lang="en">
@@ -206,7 +206,7 @@
                     <li>Reduce distractions and free up space for productive work.</li>
                     <li>Regularly audit inventory to maintain order.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <div class="step" data-step="2" data-lang="en">
@@ -219,7 +219,7 @@
                     <li>Design workflows to reduce movement and improve ergonomics.</li>
                     <li>Ensure items are returned to their designated places after use.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <div class="step" data-step="3" data-lang="en">
@@ -232,7 +232,7 @@
                     <li>Encourage employee ownership of their work areas.</li>
                     <li>Promote a visually appealing and safe environment.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <div class="step" data-step="4" data-lang="en">
@@ -245,7 +245,7 @@
                     <li>Schedule regular audits to ensure compliance.</li>
                     <li>Use visual management tools like signs and charts.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 83.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-83"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <div class="step" data-step="5" data-lang="en">
@@ -258,7 +258,7 @@
                     <li>Conduct regular reviews and updates of standards.</li>
                     <li>Encourage feedback to improve processes.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <!-- German -->
@@ -272,7 +272,7 @@
                     <li>Erhöht die Sicherheit durch Organisation und Sauberkeit.</li>
                     <li>Fördert eine Kultur der kontinuierlichen Verbesserung.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 16.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-16"></div></div>
                 <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
             </div>
             <div class="step" data-step="1" data-lang="de">
@@ -285,7 +285,7 @@
                     <li>Reduzierung von Ablenkungen und Freigabe von Platz für produktive Arbeit.</li>
                     <li>Regelmäßige Inventarprüfungen zur Aufrechterhaltung der Ordnung.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
                 <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
             </div>
             <div class="step" data-step="2" data-lang="de">
@@ -298,7 +298,7 @@
                     <li>Gestaltung von Arbeitsabläufen zur Reduzierung von Bewegungen und Verbesserung der Ergonomie.</li>
                     <li>Sicherstellung, dass Gegenstände nach Gebrauch an ihren vorgesehenen Platz zurückgelegt werden.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
                 <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
             </div>
             <div class="step" data-step="3" data-lang="de">
@@ -311,7 +311,7 @@
                     <li>Förderung der Eigenverantwortung der Mitarbeiter für ihre Arbeitsbereiche.</li>
                     <li>Schaffung eines visuell ansprechenden und sicheren Umfelds.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
                 <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
             </div>
             <div class="step" data-step="4" data-lang="de">
@@ -324,7 +324,7 @@
                     <li>Planung regelmäßiger Audits zur Sicherstellung der Einhaltung.</li>
                     <li>Verwendung visueller Management-Tools wie Schilder und Diagramme.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 83.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-83"></div></div>
                 <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
             </div>
             <div class="step" data-step="5" data-lang="de">
@@ -337,13 +337,13 @@
                     <li>Durchführung regelmäßiger Überprüfungen und Aktualisierungen der Standards.</li>
                     <li>Förderung von Rückmeldungen zur Verbesserung der Prozesse.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
                 <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
             </div>
         </div>
 
         <!-- Proposition d'Amélioration Section -->
-        <div id="proposition-amelioration" style="display: none;">
+        <div id="proposition-amelioration" class="hidden">
             <!-- Tunisian Arabic -->
             <div class="step active" data-step="0" data-lang="ar">
                 <div class="logo-animation">WKW AUTOMOTIVE</div>
@@ -359,7 +359,7 @@
                     <li>المواءمة مع استراتيجية الشركة: التأكد إنو مبادرات التحسين تساهم في الأهداف العامة للمنظمة.</li>
                     <li>بناء ثقافة تحسين مستمر: خلق بيئة يتقدر فيها التقدم والتجديد، اللي يشجع على الرشاقة والنمو على المدى الطويل.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 25%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-25"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <div class="step" data-step="1" data-lang="ar">
@@ -369,21 +369,21 @@
                     <img src="https://sesa-systems.com/cdn/shop/files/000007581_full.jpg?v=1756703050&width=600" alt="Example of a workplace improvement proposal" loading="lazy">
                 </div>
                 <p>اسكن القرود QR باش توصل للفورمولار. مليه بالتفاصيل على فكرتك واضف صور باش توضح الاقتراح. هكا نقدر نفهم أحسن. اليوم، بالهاتف الذكي، تقدر تسكن القرود، تملي الفورمولار، وتزيد صور، يا إما باش تقترح حلول، يا إما باش توضح المشاكل اللي لقيتهم. الفورمولار تقدر تمليه على الورقة كمان، حسب الطريقة اللي تحبها.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <div class="step" data-step="2" data-lang="ar">
                 <h2>عملية الاختيار</h2>
                 <img src="https://img.freepik.com/vecteurs-libre/reunion-affaires-travail-equipe_126523-1310.jpg" alt="Flowchart of the improvement proposal selection process" loading="lazy">
                 <p>بعد جمع الأفكار، الفريق الإداري (CODIR) يراجع كل الاقتراحات ويختار 3 أفكار أحسن حسب الإمكانية والتأثير والابتكار. الاقتراحات تروح للقسم المناسب باش يطبقها.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-75"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <div class="step" data-step="3" data-lang="ar">
                 <h2>شكر وجوائز</h2>
                 <img src="https://t4.ftcdn.net/jpg/01/07/12/23/360_F_107122345_uXaVQsLkGDL4rP1hpLnqp9MbEYTIdunN.jpg" alt="Gift reward for improvement proposal winners" loading="lazy">
                 <p>تهانينا للـ3 أفكار الأحسن! هدية خاصة هتتقدم لكم على مساهمتكم في التحسين المستمر. شكرا على جهودكم.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <!-- French -->
@@ -401,7 +401,7 @@
                     <li>S'aligner sur la stratégie de l'entreprise : Assurer que les initiatives d'amélioration contribuent aux objectifs généraux de l'organisation.</li>
                     <li>Mettre en place une culture d'amélioration continue : Créer un environnement où le progrès et la nouveauté sont valorisés, ce qui favorise l'agilité et la croissance à long terme.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 25%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-25"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <div class="step" data-step="1" data-lang="fr">
@@ -411,21 +411,21 @@
                     <img src="https://sesa-systems.com/cdn/shop/files/000007581_full.jpg?v=1756703050&width=600" alt="Example of a workplace improvement proposal" loading="lazy">
                 </div>
                 <p>Scannez le code QR pour accéder au formulaire. Remplissez-le avec les détails de votre idée et ajoutez des photos pour l'illustrer. Ainsi, nous pouvons mieux comprendre. Aujourd’hui, avec un smartphone, il est possible de scanner le code, de remplir le formulaire et d’ajouter des photos, soit pour proposer des solutions, soit pour illustrer les problèmes détectés. Le formulaire peut également être rempli sur papier, selon la méthode que vous préférez.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <div class="step" data-step="2" data-lang="fr">
                 <h2>Processus de Sélection</h2>
                 <img src="https://img.freepik.com/vecteurs-libre/reunion-affaires-travail-equipe_126523-1310.jpg" alt="Flowchart of the improvement proposal selection process" loading="lazy">
                 <p>Après la collecte des idées, l'équipe de direction (CODIR) révise toutes les propositions et sélectionne les 3 meilleures idées en fonction de leur faisabilité, impact et innovation. Les propositions sont envoyées au département approprié pour mise en œuvre.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-75"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <div class="step" data-step="3" data-lang="fr">
                 <h2>Remerciements et Récompenses</h2>
                 <img src="https://t4.ftcdn.net/jpg/01/07/12/23/360_F_107122345_uXaVQsLkGDL4rP1hpLnqp9MbEYTIdunN.jpg" alt="Gift reward for improvement proposal winners" loading="lazy">
                 <p>Félicitations aux 3 meilleures idées ! Un cadeau spécial vous sera offert pour votre contribution à l'amélioration continue. Merci pour vos efforts.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <!-- English -->
@@ -443,7 +443,7 @@
                     <li>Align with company strategy: Ensure improvement initiatives contribute to the organization's overall goals.</li>
                     <li>Establish a culture of continuous improvement: Create an environment where progress and innovation are valued, fostering agility and long-term growth.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill" style="width: 25%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-25"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <div class="step" data-step="1" data-lang="en">
@@ -453,34 +453,34 @@
                     <img src="https://sesa-systems.com/cdn/shop/files/000007581_full.jpg?v=1756703050&width=600" alt="Example of a workplace improvement proposal" loading="lazy">
                 </div>
                 <p>Scan the QR code to access the form. Fill it with details of your idea and add photos to illustrate it. This way, we can understand better. Today, with a smartphone, you can scan the QR code, fill out the form, and add photos to either propose solutions or illustrate detected issues. The form can also be filled out on paper, depending on your preferred method.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 50%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <div class="step" data-step="2" data-lang="en">
                 <h2>Selection Process</h2>
                 <img src="https://img.freepik.com/vecteurs-libre/reunion-affaires-travail-equipe_126523-1310.jpg" alt="Flowchart of the improvement proposal selection process" loading="lazy">
                 <p>After collecting ideas, the management team (CODIR) reviews all proposals and selects the 3 best ideas based on feasibility, impact, and innovation. Proposals are sent to the appropriate department for implementation.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-75"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <div class="step" data-step="3" data-lang="en">
                 <h2>Thanks and Rewards</h2>
                 <img src="https://t4.ftcdn.net/jpg/01/07/12/23/360_F_107122345_uXaVQsLkGDL4rP1hpLnqp9MbEYTIdunN.jpg" alt="Gift reward for improvement proposal winners" loading="lazy">
                 <p>Congratulations to the 3 best ideas! A special gift will be offered for your contribution to continuous improvement. Thank you for your efforts.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
         </div>
 
         <!-- Gemba OJT Section -->
-        <div id="gemba-ojt" style="display: none;">
+        <div id="gemba-ojt" class="hidden">
             <!-- Tunisian Arabic -->
             <div class="step active" data-step="0" data-lang="ar">
                 <div class="logo-animation">WKW AUTOMOTIVE</div>
                 <h2>ما هو Gemba OJT</h2>
                 <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
                 <p>الـ Gemba هو مصطلح ياباني يعني "المكان الحقيقي" أو "المكان اللي يصير فيه العمل" وفيه القيمة تتخلق.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <div class="step" data-step="1" data-lang="ar">
@@ -488,7 +488,7 @@
                 <h2>اختبار</h2>
                 <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
                 <p>هذه صفحة اختبار لتدريب Gemba OJT. يمكن استبدال هذا النص بمحتوى محدد لاحقًا.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <div class="step" data-step="2" data-lang="ar">
@@ -496,7 +496,7 @@
                 <h2>اختبار</h2>
                 <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
                 <p>هذه صفحة اختبار أخرى لتدريب Gemba OJT. يمكن استبدال هذا النص بمحتوى محدد لاحقًا.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
                 <div class="footer">قسم التحسين المستمر WKW تونس</div>
             </div>
             <!-- French -->
@@ -505,7 +505,7 @@
                 <h2>Qu'est-ce que Gemba OJT</h2>
                 <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
                 <p>Gemba est un terme japonais signifiant "le lieu réel" ou "l'endroit où le travail est effectué" et où la valeur est créée.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <div class="step" data-step="1" data-lang="fr">
@@ -513,7 +513,7 @@
                 <h2>Test</h2>
                 <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
                 <p>Ceci est une page de test pour la formation Gemba OJT. Ce texte peut être remplacé par un contenu spécifique ultérieurement.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <div class="step" data-step="2" data-lang="fr">
@@ -521,7 +521,7 @@
                 <h2>Test</h2>
                 <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
                 <p>Ceci est une autre page de test pour la formation Gemba OJT. Ce texte peut être remplacé par un contenu spécifique ultérieurement.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
                 <div class="footer">Département Amélioration Continue WKW Tunisie</div>
             </div>
             <!-- English -->
@@ -530,7 +530,7 @@
                 <h2>What is Gemba OJT</h2>
                 <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
                 <p>Gemba is a Japanese term meaning "the actual place" or "the real place" where value is created and work is done.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 33.33%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <div class="step" data-step="1" data-lang="en">
@@ -538,7 +538,7 @@
                 <h2>Test</h2>
                 <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
                 <p>This is a test slide for Gemba OJT training. This content can be replaced with specific details later.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 66.67%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
             <div class="step" data-step="2" data-lang="en">
@@ -546,16 +546,16 @@
                 <h2>Test</h2>
                 <img src="https://ahaslides.com/wp-content/uploads/2023/11/18953933_6066776-1024x1024.jpg" alt="Illustration of Gemba OJT training in the workplace" loading="lazy">
                 <p>This is another test slide for Gemba OJT training. This content can be replaced with specific details later.</p>
-                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
                 <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
         </div>
     </div>
 
     <div class="controls" id="controls">
-        <button onclick="goToLanding()">Retour</button>
-        <button onclick="prevStep()" id="prev-button" style="display: none;">Previous</button>
-        <button onclick="nextStep()" id="next-button" style="display: none;">Next</button>
+        <button id="return-button">Retour</button>
+        <button id="prev-button" class="hidden">Previous</button>
+        <button id="next-button" class="hidden">Next</button>
     </div>
 
     <script src="./script.js"></script>
