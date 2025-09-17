@@ -2,17 +2,20 @@
    CSS Variables
    ========================================================================== */
 :root {
-    --primary-color: #1a3c87; /* Deep blue for headers and accents */
-    --secondary-color: #007a7c; /* Vibrant teal for buttons and progress */
-    --secondary-hover: #00a3a6; /* Lighter teal for hover */
-    --background-color: #f7fafc; /* Clean off-white background */
-    --card-background: #ffffff; /* White for card backgrounds */
-    --text-color: #2d3748; /* Dark gray for text */
-    --footer-color: #718096; /* Muted gray for footer */
-    --progress-bg: #e2e8f0; /* Light gray for progress bar */
-    --shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    --shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.15); /* Deeper hover shadow */
-    --border-radius: 10px; /* Rounded corners */
+    --primary-color: #1e40af; /* Vibrant blue for headers and accents */
+    --secondary-color: #0d9488; /* Rich teal for buttons and progress */
+    --accent-color: #f59e0b; /* Warm amber for highlights */
+    --background-color: #f0f5ff; /* Soft blue-gray background */
+    --card-background: rgba(255, 255, 255, 0.95); /* Glassmorphism card */
+    --card-backdrop: blur(12px); /* Glassmorphism blur */
+    --text-color: #1f2937; /* Deep gray for text */
+    --footer-color: #6b7280; /* Muted gray for footer */
+    --progress-bg: #e5e7eb; /* Light gray for progress bar */
+    --gradient-bg: linear-gradient(135deg, var(--primary-color), #3b82f6); /* Header gradient */
+    --gradient-accent: linear-gradient(90deg, var(--secondary-color), #22d3ee); /* Buttons and progress */
+    --shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.15); /* Deeper hover shadow */
+    --border-radius: 12px; /* Smooth rounded corners */
     --spacing-xs: 8px;
     --spacing-sm: 12px;
     --spacing-md: 20px;
@@ -29,9 +32,23 @@ body {
     padding: 0;
     background-color: var(--background-color);
     color: var(--text-color);
-    line-height: 1.7;
+    line-height: 1.8;
     direction: ltr;
     overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%23e5e7eb" fill-opacity="0.3" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,128C672,128,768,160,864,160C960,160,1056,128,1152,112C1248,96,1344,96,1392,96L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"%3E%3C/path%3E%3C/svg%3E') no-repeat top center;
+    background-size: cover;
+    opacity: 0.2;
+    z-index: -1;
 }
 
 html[lang="ar"] {
@@ -42,7 +59,7 @@ html[lang="ar"] {
    Header
    ========================================================================== */
 .header {
-    background: linear-gradient(135deg, var(--primary-color), #2650a3);
+    background: var(--gradient-bg);
     color: white;
     text-align: center;
     padding: var(--spacing-lg);
@@ -56,25 +73,26 @@ html[lang="ar"] {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 200%;
     height: 100%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
-    animation: gradientShift 10s infinite linear;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 5s infinite linear;
+    z-index: 0;
 }
 
-@keyframes gradientShift {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(20px); }
-    100% { transform: translateX(0); }
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 .title {
     margin: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
-    letter-spacing: -0.025em;
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
     position: relative;
     z-index: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* ==========================================================================
@@ -97,30 +115,48 @@ html[lang="ar"] {
 }
 
 .landing-page h2 {
-    background: linear-gradient(90deg, var(--secondary-color), var(--secondary-hover));
+    background: var(--gradient-accent);
     color: white;
     padding: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--border-radius);
     cursor: pointer;
-    font-size: 1.875rem;
-    font-weight: 500;
+    font-size: 2rem;
+    font-weight: 600;
     text-align: center;
     width: 85%;
-    max-width: 800px;
+    max-width: 900px;
     box-shadow: var(--shadow);
     transition: var(--transition);
     will-change: transform, box-shadow;
+    position: relative;
+    overflow: hidden;
+}
+
+.landing-page h2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.landing-page h2:hover::after,
+.landing-page h2:focus::after {
+    opacity: 1;
 }
 
 .landing-page h2:hover,
 .landing-page h2:focus {
-    transform: translateY(-4px);
+    transform: perspective(600px) rotateX(2deg) translateY(-4px);
     box-shadow: var(--shadow-hover);
-    background: var(--secondary-hover);
 }
 
 .landing-page h2:focus {
-    outline: 3px solid var(--primary-color);
+    outline: 3px solid var(--accent-color);
     outline-offset: 2px;
 }
 
@@ -131,10 +167,11 @@ html[lang="ar"] {
     display: none;
     opacity: 0;
     background: var(--card-background);
-    padding: var(--spacing-md);
+    backdrop-filter: var(--card-backdrop);
+    padding: var(--spacing-lg);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.6s ease-in-out;
 }
 
 .step.active {
@@ -143,43 +180,58 @@ html[lang="ar"] {
 }
 
 .step.entering {
-    animation: slideIn 0.6s ease-in-out;
+    animation: slideZoom 0.7s ease-in-out;
 }
 
-@keyframes slideIn {
-    from { transform: translateX(100%) scale(0.95); opacity: 0; }
+@keyframes slideZoom {
+    from { transform: translateX(100%) scale(0.9); opacity: 0; }
     to { transform: translateX(0) scale(1); opacity: 1; }
 }
 
 html[lang="ar"] .step.entering {
-    animation: slideInRTL 0.6s ease-in-out;
+    animation: slideZoomRTL 0.7s ease-in-out;
 }
 
-@keyframes slideInRTL {
-    from { transform: translateX(-100%) scale(0.95); opacity: 0; }
+@keyframes slideZoomRTL {
+    from { transform: translateX(-100%) scale(0.9); opacity: 0; }
     to { transform: translateX(0) scale(1); opacity: 1; }
 }
 
 .step h2 {
     color: var(--primary-color);
-    font-size: 2.25rem;
-    font-weight: 600;
+    font-size: 2.5rem;
+    font-weight: 700;
     margin: 0 0 var(--spacing-md);
     animation: fadeInText 0.8s ease-in-out;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .step p {
-    font-size: 1.25rem;
+    font-size: 1.375rem;
     margin: var(--spacing-sm) 0;
     animation: fadeInText 1s ease-in-out;
 }
 
 .step ul {
-    font-size: 1.125rem;
-    list-style-type: disc;
+    font-size: 1.25rem;
+    list-style-type: none;
     margin-left: var(--spacing-lg);
     padding-left: var(--spacing-md);
     animation: fadeInText 1.2s ease-in-out;
+}
+
+.step ul li {
+    position: relative;
+    padding-left: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+}
+
+.step ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+    font-size: 1.5rem;
 }
 
 html[lang="ar"] .step ul {
@@ -189,23 +241,40 @@ html[lang="ar"] .step ul {
     padding-left: 0;
 }
 
+html[lang="ar"] .step ul li {
+    padding-right: var(--spacing-md);
+    padding-left: 0;
+}
+
+html[lang="ar"] .step ul li::before {
+    left: auto;
+    right: 0;
+}
+
 .step img {
     max-width: 100%;
     height: auto;
     border-radius: var(--border-radius);
     margin: var(--spacing-md) 0;
     box-shadow: var(--shadow);
-    animation: fadeInImage 1s ease-in-out;
+    animation: parallaxImage 1s ease-in-out;
+    transition: var(--transition);
+    will-change: transform;
+}
+
+.step img:hover {
+    transform: scale(1.03) translateY(-5px);
+    box-shadow: var(--shadow-hover);
 }
 
 @keyframes fadeInText {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeInImage {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+@keyframes parallaxImage {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ==========================================================================
@@ -224,10 +293,11 @@ html[lang="ar"] .step ul {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     transition: var(--transition);
+    will-change: transform;
 }
 
 .image-container img:hover {
-    transform: scale(1.02);
+    transform: scale(1.03) rotate(1deg);
     box-shadow: var(--shadow-hover);
 }
 
@@ -236,25 +306,37 @@ html[lang="ar"] .step ul {
    ========================================================================== */
 .progress-bar {
     width: 100%;
-    height: 14px;
+    height: 16px;
     background-color: var(--progress-bg);
     border-radius: var(--border-radius);
     overflow: hidden;
     margin: var(--spacing-md) 0;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--secondary-color), var(--secondary-hover));
-    transition: width 0.5s ease-in-out;
+    background: var(--gradient-accent);
+    transition: width 0.6s ease-in-out;
     position: relative;
-    animation: pulse 2s infinite ease-in-out;
+    animation: bouncePulse 2s infinite ease-in-out;
 }
 
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.85; }
-    100% { opacity: 1; }
+.progress-fill.progress-100 {
+    animation: glowComplete 1.5s infinite ease-in-out;
+}
+
+@keyframes bouncePulse {
+    0% { transform: scaleY(1); }
+    50% { transform: scaleY(1.2); }
+    100% { transform: scaleY(1); }
+}
+
+@keyframes glowComplete {
+    0% { box-shadow: 0 0 8px var(--accent-color); }
+    50% { box-shadow: 0 0 16px var(--accent-color); }
+    100% { box-shadow: 0 0 8px var(--accent-color); }
 }
 
 .progress-16 { width: 16.67%; }
@@ -278,26 +360,45 @@ html[lang="ar"] .step ul {
 
 .controls button {
     padding: var(--spacing-sm) var(--spacing-lg);
-    font-size: 1.125rem;
-    font-weight: 500;
+    font-size: 1.25rem;
+    font-weight: 600;
     cursor: pointer;
     border: none;
     border-radius: var(--border-radius);
-    background: linear-gradient(90deg, var(--secondary-color), var(--secondary-hover));
+    background: var(--gradient-accent);
     color: white;
     box-shadow: var(--shadow);
     transition: var(--transition);
     will-change: transform, box-shadow;
+    position: relative;
+    overflow: hidden;
+}
+
+.controls button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.controls button:hover::after,
+.controls button:focus::after {
+    opacity: 1;
 }
 
 .controls button:hover,
 .controls button:focus {
-    transform: translateY(-4px);
+    transform: perspective(600px) rotateX(2deg) translateY(-4px);
     box-shadow: var(--shadow-hover);
 }
 
 .controls button:focus {
-    outline: 3px solid var(--primary-color);
+    outline: 3px solid var(--accent-color);
     outline-offset: 2px;
 }
 
@@ -314,40 +415,44 @@ html[lang="ar"] .step ul {
     color: var(--footer-color);
     margin-top: var(--spacing-lg);
     opacity: 0.9;
+    animation: fadeInText 1s ease-in-out;
 }
 
 /* ==========================================================================
    Logo Animation
    ========================================================================== */
 .logo-animation {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.25rem;
+    font-weight: 800;
     color: var(--primary-color);
     text-align: center;
     margin-bottom: var(--spacing-md);
     position: relative;
-    overflow: hidden;
     display: inline-block;
-    animation: typewriter 2s steps(20) forwards, fadeIn 1s ease-in-out;
+    animation: staggerReveal 2s ease-in-out forwards;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.logo-animation::after {
+.logo-animation::before {
     content: '';
     position: absolute;
-    right: 0;
-    width: 2px;
-    height: 1.5em;
-    background: var(--primary-color);
-    animation: blink 0.75s step-end infinite;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent-color);
+    transform: scaleX(0);
+    animation: underlineReveal 1.5s ease-in-out 0.5s forwards;
 }
 
-@keyframes typewriter {
-    from { width: 0; }
-    to { width: 100%; }
+@keyframes staggerReveal {
+    0% { opacity: 0; clip-path: inset(0 100% 0 0); }
+    100% { opacity: 1; clip-path: inset(0 0 0 0); }
 }
 
-@keyframes blink {
-    50% { opacity: 0; }
+@keyframes underlineReveal {
+    0% { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
 }
 
 /* ==========================================================================
@@ -359,19 +464,22 @@ html[lang="ar"] .step ul {
     }
 
     .title {
-        font-size: 2rem;
+        font-size: 2.25rem;
     }
 
     .landing-page h2 {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         width: 90%;
     }
 
     .step h2 {
-        font-size: 1.75rem;
+        font-size: 2rem;
     }
 
-    .step p,
+    .step p {
+        font-size: 1.25rem;
+    }
+
     .step ul {
         font-size: 1.125rem;
     }
@@ -381,7 +489,7 @@ html[lang="ar"] .step ul {
     }
 
     .logo-animation {
-        font-size: 1.75rem;
+        font-size: 2rem;
     }
 }
 
@@ -395,15 +503,22 @@ html[lang="ar"] .step ul {
     }
 
     .landing-page h2 {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         padding: var(--spacing-sm) var(--spacing-md);
     }
 
-    .step h2 {
-        font-size: 1.5rem;
+    .step {
+        padding: var(--spacing-md);
     }
 
-    .step p,
+    .step h2 {
+        font-size: 1.75rem;
+    }
+
+    .step p {
+        font-size: 1.125rem;
+    }
+
     .step ul {
         font-size: 1rem;
     }
@@ -418,7 +533,7 @@ html[lang="ar"] .step ul {
     }
 
     .logo-animation {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
     }
 }
 
@@ -432,15 +547,18 @@ html[lang="ar"] .step ul {
     }
 
     .landing-page h2 {
-        font-size: 1.125rem;
+        font-size: 1.25rem;
         width: 95%;
     }
 
     .step h2 {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
     }
 
-    .step p,
+    .step p {
+        font-size: 1rem;
+    }
+
     .step ul {
         font-size: 0.875rem;
     }
@@ -459,7 +577,7 @@ html[lang="ar"] .step ul {
     }
 
     .logo-animation {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
     }
 }
 
@@ -467,8 +585,8 @@ html[lang="ar"] .step ul {
    Accessibility
    ========================================================================== */
 :focus {
-    outline: 3px solid var(--primary-color);
-    outline-offset: 2px;
+    outline: 3px solid var(--accent-color);
+    outline-offset: 3px;
 }
 
 /* Reduced motion for accessibility */
@@ -477,10 +595,14 @@ html[lang="ar"] .step ul {
     html[lang="ar"] .step.entering,
     .progress-fill,
     .logo-animation,
-    .logo-animation::after,
+    .logo-animation::before,
     .landing-page h2,
+    .landing-page h2::after,
     .controls button,
-    .header::before {
+    .controls button::after,
+    .header::before,
+    .step img,
+    .image-container img {
         animation: none;
         transition: none;
     }
