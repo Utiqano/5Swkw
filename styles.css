@@ -1,226 +1,427 @@
-// Metrologie 5S Variables
-let fiveSStep = 0;
-let fiveSLangIndex = 0;
-const fiveSLanguages = ['ar', 'fr', 'en', 'de'];
-let fiveSLang = fiveSLanguages[fiveSLangIndex];
-const fiveSTotalSteps = 6;
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-// Proposition d'Amélioration Variables
-let propStep = 0;
-let propLangIndex = 0;
-const propLanguages = ['ar', 'fr', 'en'];
-let propLang = propLanguages[propLangIndex];
-const propTotalSteps = 4;
+body {
+    font-family: 'Roboto Condensed', 'Roboto', sans-serif;
+    background: #DCDCDC url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect x="0" y="0" width="100" height="100" fill="none"/%3E%3Ccircle cx="10" cy="10" r="1" fill="%23C0C0C0"/%3E%3Ccircle cx="90" cy="90" r="1" fill="%23C0C0C0"/%3E%3C/svg%3E') repeat;
+    color: #2F4F4F;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
 
-// Gemba OJT Variables
-let gembaStep = 0;
-let gembaLangIndex = 0;
-const gembaLanguages = ['ar', 'fr', 'en'];
-let gembaLang = gembaLanguages[gembaLangIndex];
-const gembaTotalSteps = 3;
+/* Arabic RTL Support */
+html[lang="ar"] {
+    direction: rtl;
+    font-family: 'Noto Sans Arabic', sans-serif;
+}
 
-let currentSection = 'landing';
-let autoCycleInterval = null;
+/* Header Styles */
+.header {
+    background: linear-gradient(180deg, #2F4F4F, #1C2526);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    border-bottom: 3px solid #CC5500;
+    position: relative;
+}
 
-const translations = {
-    ar: { title: 'WKW Automotive - التحسين المستمر' },
-    fr: { title: 'WKW Automotive - Amélioration Continue' },
-    en: { title: 'WKW Automotive - Continuous Improvement' },
-    de: { title: 'WKW Automotive - Kontinuierliche Verbesserung' }
-};
+.header::before, .header::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #F0F0F0 20%, #CC5500 100%);
+    border-radius: 50%;
+    top: 10px;
+}
 
-function showSection(sectionId) {
-    console.log(`Switching to section: ${sectionId}`);
-    currentSection = sectionId;
-    document.getElementById('landing-page').classList.toggle('hidden', sectionId !== 'landing');
-    document.getElementById('metrologie-5s').classList.toggle('hidden', sectionId !== 'metrologie-5s');
-    document.getElementById('proposition-amelioration').classList.toggle('hidden', sectionId !== 'proposition-amelioration');
-    document.getElementById('gemba-ojt').classList.toggle('hidden', sectionId !== 'gemba-ojt');
+.header::before { left: 20px; }
+.header::after { right: 20px; }
 
-    const prevBtn = document.getElementById('prev-button');
-    const nextBtn = document.getElementById('next-button');
-    prevBtn.classList.toggle('hidden', sectionId === 'landing');
-    nextBtn.classList.toggle('hidden', sectionId === 'landing');
+.title {
+    color: #F0F0F0;
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 
-    if (sectionId === 'metrologie-5s') {
-        fiveSStep = 0;
-        fiveSLang = fiveSLanguages[fiveSLangIndex];
-        showFiveSStep(fiveSStep, fiveSLang);
-        startAutoCycle('fiveS');
-    } else if (sectionId === 'proposition-amelioration') {
-        propStep = 0;
-        propLang = propLanguages[propLangIndex];
-        showPropStep(propStep, propLang);
-        startAutoCycle('prop');
-    } else if (sectionId === 'gemba-ojt') {
-        gembaStep = 0;
-        gembaLang = gembaLanguages[gembaLangIndex];
-        console.log(`Initializing Gemba OJT: step ${gembaStep}, lang ${gembaLang}`);
-        showGembaStep(gembaStep, gembaLang);
-        startAutoCycle('gemba');
-    } else {
-        stopAutoCycle();
-        document.getElementById('title').textContent = translations[fiveSLang].title;
+/* Logo Animation */
+.logo-animation {
+    font-size: 1.8rem;
+    color: #CC5500;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: gearRotate 8s linear infinite;
+    margin-bottom: 1.5rem;
+}
+
+.logo-animation::before {
+    content: '⚙';
+    font-size: 2rem;
+    animation: spin 4s linear infinite;
+}
+
+@keyframes gearRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+/* Container Styles */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Landing Page Styles */
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    padding: 2rem;
+}
+
+.section-link {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #F0F0F0;
+    background: linear-gradient(45deg, #4682B4, #355C7D);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.section-link::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.section-link:hover::after {
+    left: 100%;
+}
+
+.section-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(45deg, #CC5500, #A94400);
+}
+
+/* Step Styles */
+.step {
+    display: none;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    background: #FFFFFF;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    border: 2px solid #4682B4;
+    position: relative;
+}
+
+html[lang="ar"] .step {
+    transform: translateX(-50px);
+}
+
+.step.active {
+    display: block;
+}
+
+.step.entering {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.step::before, .step::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #CC5500;
+    border-radius: 50%;
+    top: 15px;
+}
+
+.step::before { left: 15px; }
+.step::after { right: 15px; }
+html[lang="ar"] .step::before { left: unset; right: 15px; }
+html[lang="ar"] .step::after { right: unset; left: 15px; }
+
+.step h2 {
+    font-size: 2.2rem;
+    color: #2F4F4F;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.step p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.step ul {
+    list-style: none;
+    padding-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.step ul li {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    position: relative;
+}
+
+.step ul li::before {
+    content: '⚒';
+    position: absolute;
+    left: -2rem;
+    color: #CC5500;
+    font-size: 1.2rem;
+}
+
+html[lang="ar"] .step ul li::before {
+    left: unset;
+    right: -2rem;
+}
+
+.step img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.step img:hover {
+    transform: scale(1.02);
+}
+
+.image-container {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.image-container img {
+    max-width: 48%;
+    height: auto;
+}
+
+/* Progress Bar Styles */
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #C0C0C0;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4682B4, #CC5500);
+    transition: width 0.8s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+    background-size: 20px 20px;
+    animation: moveStripes 1s linear infinite;
+}
+
+@keyframes moveStripes {
+    0% { background-position: 0 0; }
+    100% { background-position: 20px 0; }
+}
+
+.progress-16 { width: 16%; }
+.progress-25 { width: 25%; }
+.progress-33 { width: 33%; }
+.progress-50 { width: 50%; }
+.progress-66 { width: 66%; }
+.progress-75 { width: 75%; }
+.progress-83 { width: 83%; }
+.progress-100 { width: 100%; }
+
+/* Footer Styles */
+.footer {
+    font-size: 1rem;
+    color: #2F4F4F;
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 2px dashed #4682B4;
+    font-weight: 500;
+}
+
+/* Controls Styles */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: linear-gradient(180deg, #2F4F4F, #1C2526);
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.controls button {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #F0F0F0;
+    background: linear-gradient(45deg, #4682B4, #355C7D);
+    border: 2px solid #CC5500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.controls button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.controls button:hover::after {
+    left: 100%;
+}
+
+.controls button:hover {
+    background: linear-gradient(45deg, #CC5500, #A94400);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.controls button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(204, 85, 0, 0.5);
+}
+
+.controls button.hidden {
+    display: none;
+}
+
+/* Hidden Class */
+.hidden {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    .section-link {
+        font-size: 1.6rem;
+        padding: 0.8rem 1.5rem;
+        width: 95%;
+    }
+
+    .step h2 {
+        font-size: 1.8rem;
+    }
+
+    .step p {
+        font-size: 1rem;
+    }
+
+    .image-container img {
+        max-width: 100%;
+    }
+
+    .controls button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .container {
+        padding: 1.5rem;
     }
 }
 
-function showFiveSStep(step, lang) {
-    console.log(`Showing 5S step ${step} in language ${lang}`);
-    const steps = document.querySelectorAll('#metrologie-5s .step');
-    steps.forEach(s => {
-        s.classList.remove('active', 'entering');
-        if (s.getAttribute('data-step') == step && s.getAttribute('data-lang') == lang) {
-            s.classList.add('active');
-            setTimeout(() => s.classList.add('entering'), 10);
-        }
-    });
-    document.getElementById('title').textContent = translations[lang].title;
-    document.documentElement.setAttribute('lang', lang);
-}
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.6rem;
+    }
 
-function showPropStep(step, lang) {
-    console.log(`Showing Prop step ${step} in language ${lang}`);
-    const steps = document.querySelectorAll('#proposition-amelioration .step');
-    steps.forEach(s => {
-        s.classList.remove('active', 'entering');
-        if (s.getAttribute('data-step') == step && s.getAttribute('data-lang') == lang) {
-            s.classList.add('active');
-            setTimeout(() => s.classList.add('entering'), 10);
-        }
-    });
-    document.getElementById('title').textContent = translations[lang].title;
-    document.documentElement.setAttribute('lang', lang);
-}
+    .section-link {
+        font-size: 1.3rem;
+        padding: 0.6rem 1rem;
+    }
 
-function showGembaStep(step, lang) {
-    console.log(`Showing Gemba step ${step} in language ${lang}`);
-    const steps = document.querySelectorAll('#gemba-ojt .step');
-    steps.forEach(s => {
-        s.classList.remove('active', 'entering');
-        if (s.getAttribute('data-step') == step && s.getAttribute('data-lang') == lang) {
-            console.log(`Activating Gemba step ${step} for lang ${lang}`);
-            s.classList.add('active');
-            setTimeout(() => s.classList.add('entering'), 10);
-        }
-    });
-    document.getElementById('title').textContent = translations[lang].title;
-    document.documentElement.setAttribute('lang', lang);
-}
+    .step {
+        padding: 1.5rem;
+    }
 
-function prevStep() {
-    stopAutoCycle();
-    if (currentSection === 'metrologie-5s') {
-        if (fiveSStep > 0) {
-            fiveSStep--;
-        } else {
-            fiveSLangIndex = (fiveSLangIndex - 1 + fiveSLanguages.length) % fiveSLanguages.length;
-            fiveSLang = fiveSLanguages[fiveSLangIndex];
-            fiveSStep = fiveSTotalSteps - 1;
-        }
-        showFiveSStep(fiveSStep, fiveSLang);
-        startAutoCycle('fiveS');
-    } else if (currentSection === 'proposition-amelioration') {
-        if (propStep > 0) {
-            propStep--;
-        } else {
-            propLangIndex = (propLangIndex - 1 + propLanguages.length) % propLanguages.length;
-            propLang = propLanguages[propLangIndex];
-            propStep = propTotalSteps - 1;
-        }
-        showPropStep(propStep, propLang);
-        startAutoCycle('prop');
-    } else if (currentSection === 'gemba-ojt') {
-        console.log(`Previous Gemba step: current step ${gembaStep}, lang ${gembaLang}`);
-        if (gembaStep > 0) {
-            gembaStep--;
-        } else {
-            gembaLangIndex = (gembaLangIndex - 1 + gembaLanguages.length) % gembaLanguages.length;
-            gembaLang = gembaLanguages[gembaLangIndex];
-            gembaStep = gembaTotalSteps - 1;
-        }
-        showGembaStep(gembaStep, gembaLang);
-        startAutoCycle('gemba');
+    .step h2 {
+        font-size: 1.4rem;
+    }
+
+    .controls {
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .controls button {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
     }
 }
-
-function nextStep() {
-    stopAutoCycle();
-    if (currentSection === 'metrologie-5s') {
-        if (fiveSStep < fiveSTotalSteps - 1) {
-            fiveSStep++;
-        } else {
-            fiveSLangIndex = (fiveSLangIndex + 1) % fiveSLanguages.length;
-            fiveSLang = fiveSLanguages[fiveSLangIndex];
-            fiveSStep = 0;
-        }
-        showFiveSStep(fiveSStep, fiveSLang);
-        startAutoCycle('fiveS');
-    } else if (currentSection === 'proposition-amelioration') {
-        if (propStep < propTotalSteps - 1) {
-            propStep++;
-        } else {
-            propLangIndex = (propLangIndex + 1) % propLanguages.length;
-            propLang = propLanguages[propLangIndex];
-            propStep = 0;
-        }
-        showPropStep(propStep, propLang);
-        startAutoCycle('prop');
-    } else if (currentSection === 'gemba-ojt') {
-        console.log(`Next Gemba step: current step ${gembaStep}, lang ${gembaLang}`);
-        if (gembaStep < gembaTotalSteps - 1) {
-            gembaStep++;
-        } else {
-            gembaLangIndex = (gembaLangIndex + 1) % gembaLanguages.length;
-            gembaLang = gembaLanguages[gembaLangIndex];
-            gembaStep = 0;
-        }
-        showGembaStep(gembaStep, gembaLang);
-        startAutoCycle('gemba');
-    }
-}
-
-function startAutoCycle(section) {
-    stopAutoCycle();
-    console.log(`Starting auto-cycle for ${section}`);
-    autoCycleInterval = setInterval(() => {
-        if (section === 'fiveS' && currentSection === 'metrologie-5s') {
-            nextStep();
-        } else if (section === 'prop' && currentSection === 'proposition-amelioration') {
-            nextStep();
-        } else if (section === 'gemba' && currentSection === 'gemba-ojt') {
-            nextStep();
-        }
-    }, 5000);
-}
-
-function stopAutoCycle() {
-    if (autoCycleInterval) {
-        console.log('Stopping auto-cycle');
-        clearInterval(autoCycleInterval);
-        autoCycleInterval = null;
-    }
-}
-
-function goToLanding() {
-    stopAutoCycle();
-    showSection('landing');
-}
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Page loaded, initializing landing page');
-    showSection('landing');
-
-    // Add event listeners for section links
-    document.querySelectorAll('.section-link').forEach(link => {
-        link.addEventListener('click', () => {
-            const section = link.getAttribute('data-section');
-            showSection(section);
-        });
-    });
-
-    // Add event listeners for control buttons
-    document.getElementById('return-button').addEventListener('click', goToLanding);
-    document.getElementById('prev-button').addEventListener('click', prevStep);
-    document.getElementById('next-button').addEventListener('click', nextStep);
-});
