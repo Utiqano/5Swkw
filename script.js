@@ -8,14 +8,14 @@ const fiveSTotalSteps = 6;
 // Proposition d'Amélioration Variables
 let propStep = 0;
 let propLangIndex = 0;
-const propLanguages = ['ar', 'fr', 'en'];
+const propLanguages = ['ar', 'fr', 'en']; // Removed 'de' as no German content exists
 let propLang = propLanguages[propLangIndex];
 const propTotalSteps = 4;
 
 // Gemba OJT Variables
 let gembaStep = 0;
 let gembaLangIndex = 0;
-const gembaLanguages = ['ar', 'fr', 'en'];
+const gembaLanguages = ['ar', 'fr', 'en']; // Removed 'de' as no German content exists
 let gembaLang = gembaLanguages[gembaLangIndex];
 const gembaTotalSteps = 3;
 
@@ -30,18 +30,22 @@ const translations = {
 };
 
 function showSection(sectionId) {
-    console.log(`Switching to section: ${sectionId}`);
+    console.log(`[Navigation] Switching to section: ${sectionId}`);
     currentSection = sectionId;
+
+    // Toggle visibility of sections
     document.getElementById('landing-page').classList.toggle('hidden', sectionId !== 'landing');
     document.getElementById('metrologie-5s').classList.toggle('hidden', sectionId !== 'metrologie-5s');
     document.getElementById('proposition-amelioration').classList.toggle('hidden', sectionId !== 'proposition-amelioration');
     document.getElementById('gemba-ojt').classList.toggle('hidden', sectionId !== 'gemba-ojt');
 
+    // Toggle control buttons visibility
     const prevBtn = document.getElementById('prev-button');
     const nextBtn = document.getElementById('next-button');
     prevBtn.classList.toggle('hidden', sectionId === 'landing');
     nextBtn.classList.toggle('hidden', sectionId === 'landing');
 
+    // Initialize section-specific content
     if (sectionId === 'metrologie-5s') {
         fiveSStep = 0;
         fiveSLang = fiveSLanguages[fiveSLangIndex];
@@ -55,17 +59,19 @@ function showSection(sectionId) {
     } else if (sectionId === 'gemba-ojt') {
         gembaStep = 0;
         gembaLang = gembaLanguages[gembaLangIndex];
-        console.log(`Initializing Gemba OJT: step ${gembaStep}, lang ${gembaLang}`);
+        console.log(`[Gemba] Initializing: step ${gembaStep}, lang ${gembaLang}`);
         showGembaStep(gembaStep, gembaLang);
         startAutoCycle('gemba');
     } else {
         stopAutoCycle();
         document.getElementById('title').textContent = translations[fiveSLang].title;
+        document.documentElement.setAttribute('lang', fiveSLang);
+        document.documentElement.removeAttribute('dir'); // Reset text direction for landing page
     }
 }
 
 function showFiveSStep(step, lang) {
-    console.log(`Showing 5S step ${step} in language ${lang}`);
+    console.log(`[5S] Showing step ${step} in language ${lang}`);
     const steps = document.querySelectorAll('#metrologie-5s .step');
     steps.forEach(s => {
         s.classList.remove('active', 'entering');
@@ -76,10 +82,11 @@ function showFiveSStep(step, lang) {
     });
     document.getElementById('title').textContent = translations[lang].title;
     document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
 }
 
 function showPropStep(step, lang) {
-    console.log(`Showing Prop step ${step} in language ${lang}`);
+    console.log(`[Proposition] Showing step ${step} in language ${lang}`);
     const steps = document.querySelectorAll('#proposition-amelioration .step');
     steps.forEach(s => {
         s.classList.remove('active', 'entering');
@@ -90,21 +97,23 @@ function showPropStep(step, lang) {
     });
     document.getElementById('title').textContent = translations[lang].title;
     document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
 }
 
 function showGembaStep(step, lang) {
-    console.log(`Showing Gemba step ${step} in language ${lang}`);
+    console.log(`[Gemba] Showing step ${step} in language ${lang}`);
     const steps = document.querySelectorAll('#gemba-ojt .step');
     steps.forEach(s => {
         s.classList.remove('active', 'entering');
         if (s.getAttribute('data-step') == step && s.getAttribute('data-lang') == lang) {
-            console.log(`Activating Gemba step ${step} for lang ${lang}`);
+            console.log(`[Gemba] Activating step ${step} for lang ${lang}`);
             s.classList.add('active');
             setTimeout(() => s.classList.add('entering'), 10);
         }
     });
     document.getElementById('title').textContent = translations[lang].title;
     document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
 }
 
 function prevStep() {
@@ -117,6 +126,7 @@ function prevStep() {
             fiveSLang = fiveSLanguages[fiveSLangIndex];
             fiveSStep = fiveSTotalSteps - 1;
         }
+        console.log(`[5S] Previous step: ${fiveSStep}, lang: ${fiveSLang}`);
         showFiveSStep(fiveSStep, fiveSLang);
         startAutoCycle('fiveS');
     } else if (currentSection === 'proposition-amelioration') {
@@ -127,10 +137,10 @@ function prevStep() {
             propLang = propLanguages[propLangIndex];
             propStep = propTotalSteps - 1;
         }
+        console.log(`[Proposition] Previous step: ${propStep}, lang: ${propLang}`);
         showPropStep(propStep, propLang);
         startAutoCycle('prop');
     } else if (currentSection === 'gemba-ojt') {
-        console.log(`Previous Gemba step: current step ${gembaStep}, lang ${gembaLang}`);
         if (gembaStep > 0) {
             gembaStep--;
         } else {
@@ -138,6 +148,7 @@ function prevStep() {
             gembaLang = gembaLanguages[gembaLangIndex];
             gembaStep = gembaTotalSteps - 1;
         }
+        console.log(`[Gemba] Previous step: ${gembaStep}, lang: ${gembaLang}`);
         showGembaStep(gembaStep, gembaLang);
         startAutoCycle('gemba');
     }
@@ -153,6 +164,7 @@ function nextStep() {
             fiveSLang = fiveSLanguages[fiveSLangIndex];
             fiveSStep = 0;
         }
+        console.log(`[5S] Next step: ${fiveSStep}, lang: ${fiveSLang}`);
         showFiveSStep(fiveSStep, fiveSLang);
         startAutoCycle('fiveS');
     } else if (currentSection === 'proposition-amelioration') {
@@ -163,10 +175,10 @@ function nextStep() {
             propLang = propLanguages[propLangIndex];
             propStep = 0;
         }
+        console.log(`[Proposition] Next step: ${propStep}, lang: ${propLang}`);
         showPropStep(propStep, propLang);
         startAutoCycle('prop');
     } else if (currentSection === 'gemba-ojt') {
-        console.log(`Next Gemba step: current step ${gembaStep}, lang ${gembaLang}`);
         if (gembaStep < gembaTotalSteps - 1) {
             gembaStep++;
         } else {
@@ -174,6 +186,7 @@ function nextStep() {
             gembaLang = gembaLanguages[gembaLangIndex];
             gembaStep = 0;
         }
+        console.log(`[Gemba] Next step: ${gembaStep}, lang: ${gembaLang}`);
         showGembaStep(gembaStep, gembaLang);
         startAutoCycle('gemba');
     }
@@ -181,7 +194,7 @@ function nextStep() {
 
 function startAutoCycle(section) {
     stopAutoCycle();
-    console.log(`Starting auto-cycle for ${section}`);
+    console.log(`[AutoCycle] Starting for ${section}`);
     autoCycleInterval = setInterval(() => {
         if (section === 'fiveS' && currentSection === 'metrologie-5s') {
             nextStep();
@@ -189,32 +202,37 @@ function startAutoCycle(section) {
             nextStep();
         } else if (section === 'gemba' && currentSection === 'gemba-ojt') {
             nextStep();
+        } else {
+            console.log(`[AutoCycle] Stopping: section ${section} does not match currentSection ${currentSection}`);
+            stopAutoCycle();
         }
     }, 5000);
 }
 
 function stopAutoCycle() {
     if (autoCycleInterval) {
-        console.log('Stopping auto-cycle');
+        console.log('[AutoCycle] Stopping');
         clearInterval(autoCycleInterval);
         autoCycleInterval = null;
     }
 }
 
 function goToLanding() {
+    console.log('[Navigation] Returning to landing page');
     stopAutoCycle();
     showSection('landing');
 }
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Page loaded, initializing landing page');
+    console.log('[Init] Page loaded, initializing landing page');
     showSection('landing');
 
     // Add event listeners for section links
     document.querySelectorAll('.section-link').forEach(link => {
         link.addEventListener('click', () => {
             const section = link.getAttribute('data-section');
+            console.log(`[Navigation] Section link clicked: ${section}`);
             showSection(section);
         });
     });
