@@ -22,6 +22,10 @@ body {
     100% { background-position: 200px 200px; }
 }
 
+html[lang="ar"] body {
+    animation-direction: reverse;
+}
+
 /* Parallax Gradient Layer */
 .background-layer {
     position: fixed;
@@ -34,6 +38,11 @@ body {
     pointer-events: none;
     z-index: -3;
     animation: gradientRipple 25s ease-in-out infinite;
+}
+
+html[lang="ar"] .background-layer {
+    background: linear-gradient(-135deg, #1F2937 0%, #4B5563 50%, #7F1D1D 75%, #1F2937 100%);
+    animation-direction: reverse;
 }
 
 @keyframes gradientRipple {
@@ -69,6 +78,21 @@ body {
 .starfield-layer div::before { font-size: 0.9rem; top: 35%; left: 65%; animation-duration: 10s, 1.3s; }
 .starfield-layer div::after { font-size: 0.4rem; top: 55%; left: 35%; animation-duration: 13s, 1.8s; }
 
+html[lang="ar"] .starfield-layer::before { left: unset; right: 10%; }
+html[lang="ar"] .starfield-layer::after { left: unset; right: 85%; }
+html[lang="ar"] .starfield-layer span::before { left: unset; right: 45%; }
+html[lang="ar"] .starfield-layer span::after { left: unset; right: 25%; }
+html[lang="ar"] .starfield-layer div::before { left: unset; right: 65%; }
+html[lang="ar"] .starfield-layer div::after { left: unset; right: 35%; }
+html[lang="ar"] .starfield-layer::before,
+html[lang="ar"] .starfield-layer::after,
+html[lang="ar"] .starfield-layer span::before,
+html[lang="ar"] .starfield-layer span::after,
+html[lang="ar"] .starfield-layer div::before,
+html[lang="ar"] .starfield-layer div::after {
+    animation-direction: reverse;
+}
+
 @keyframes starFloat {
     0% { transform: translate(0, 0) rotate(0deg); opacity: 0.7; }
     50% { transform: translate(-50px, 50px) rotate(180deg); }
@@ -95,6 +119,10 @@ body::before {
     animation: pulseLight 6s ease-in-out infinite;
 }
 
+html[lang="ar"] body::before {
+    background: radial-gradient(circle at 75% 25%, rgba(185, 28, 28, 0.5) 0%, transparent 70%);
+}
+
 body::after {
     content: '';
     position: fixed;
@@ -110,6 +138,10 @@ body::after {
     z-index: -1;
 }
 
+html[lang="ar"] body::after {
+    animation-direction: reverse;
+}
+
 body > div.pulse-wave {
     position: fixed;
     top: 0;
@@ -121,6 +153,10 @@ body > div.pulse-wave {
     pointer-events: none;
     z-index: -1;
     animation: pulseWave 8s ease-in-out infinite;
+}
+
+html[lang="ar"] .pulse-wave {
+    background: radial-gradient(circle at 25% 75%, rgba(127, 29, 29, 0.4) 0%, transparent 70%);
 }
 
 @keyframes pulseLight {
@@ -170,6 +206,21 @@ body > div.pulse-wave {
 .spark-overlay div::before { font-size: 1.1rem; top: 35%; left: 70%; animation-duration: 4.8s, 1.2s; transform-origin: center; }
 .spark-overlay div::after { font-size: 0.7rem; top: 50%; left: 30%; animation-duration: 5.2s, 1.5s; transform-origin: center; }
 
+html[lang="ar"] .spark-overlay::before { left: unset; right: 10%; }
+html[lang="ar"] .spark-overlay::after { left: unset; right: 80%; }
+html[lang="ar"] .spark-overlay span::before { left: unset; right: 50%; }
+html[lang="ar"] .spark-overlay span::after { left: unset; right: 20%; }
+html[lang="ar"] .spark-overlay div::before { left: unset; right: 70%; }
+html[lang="ar"] .spark-overlay div::after { left: unset; right: 30%; }
+html[lang="ar"] .spark-overlay::before,
+html[lang="ar"] .spark-overlay::after,
+html[lang="ar"] .spark-overlay span::before,
+html[lang="ar"] .spark-overlay span::after,
+html[lang="ar"] .spark-overlay div::before,
+html[lang="ar"] .spark-overlay div::after {
+    animation-direction: reverse;
+}
+
 @keyframes sparkFloat {
     0% { transform: translate(0, 0) rotate(0deg); opacity: 0.9; }
     50% { transform: translate(80px, -80px) rotate(180deg); opacity: 0.5; }
@@ -185,15 +236,6 @@ body > div.pulse-wave {
 html[lang="ar"] {
     direction: rtl;
     font-family: 'Noto Sans Arabic', sans-serif;
-}
-
-html[lang="ar"] .spark-overlay::before, html[lang="ar"] .spark-overlay::after,
-html[lang="ar"] .spark-overlay span::before, html[lang="ar"] .spark-overlay span::after,
-html[lang="ar"] .spark-overlay div::before, html[lang="ar"] .spark-overlay div::after,
-html[lang="ar"] .starfield-layer::before, html[lang="ar"] .starfield-layer::after,
-html[lang="ar"] .starfield-layer span::before, html[lang="ar"] .starfield-layer span::after,
-html[lang="ar"] .starfield-layer div::before, html[lang="ar"] .starfield-layer div::after {
-    animation-direction: reverse;
 }
 
 /* Accessibility: Reduced Motion */
@@ -324,6 +366,10 @@ html[lang="ar"] .header::after { right: unset; left: 60px; }
     opacity: 0.3;
     pointer-events: none;
     animation: pulseLight 5s ease-in-out infinite;
+}
+
+html[lang="ar"] .container::before {
+    background: radial-gradient(circle at 80% 20%, rgba(185, 28, 28, 0.35) 0%, transparent 70%);
 }
 
 /* Landing Page Styles */
@@ -460,6 +506,11 @@ html[lang="ar"] .step::before {
     pointer-events: none;
 }
 
+html[lang="ar"] .step::after {
+    left: unset;
+    right: 70%;
+}
+
 .step:hover::after {
     animation: sparkBurst 0.6s ease-out forwards;
 }
@@ -489,6 +540,7 @@ html[lang="ar"] .step::before {
 html[lang="ar"] .step h2::after {
     left: unset;
     right: 0;
+    background: linear-gradient(-90deg, #B91C1C, #7F1D1D);
 }
 
 .step h2:hover::after {
@@ -507,6 +559,11 @@ html[lang="ar"] .step h2::after {
     list-style: none;
     padding-left: clamp(1.8rem, 2.5vw, 2.2rem);
     margin-bottom: 1.5rem;
+}
+
+html[lang="ar"] .step ul {
+    padding-left: 0;
+    padding-right: clamp(1.8rem, 2.5vw, 2.2rem);
 }
 
 .step ul li {
@@ -534,6 +591,14 @@ html[lang="ar"] .step ul li::before {
 @keyframes wrenchVibrate {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateX(2px) rotate(3deg); }
+}
+
+html[lang="ar"] .step ul li::before {
+    transform: translateX(0);
+}
+
+html[lang="ar"] .step ul li:hover::before {
+    transform: translateX(-2px) rotate(-3deg);
 }
 
 .step img {
@@ -586,12 +651,20 @@ html[lang="ar"] .step ul li::before {
     opacity: 0.2;
 }
 
+html[lang="ar"] .progress-bar::before {
+    background: repeating-linear-gradient(-90deg, #B91C1C 0, #B91C1C 2px, transparent 2px, transparent 8px);
+}
+
 .progress-fill {
     height: 100%;
     background: linear-gradient(90deg, #4B5563, #B91C1C);
     transition: width 0.7s ease;
     position: relative;
     overflow: hidden;
+}
+
+html[lang="ar"] .progress-fill {
+    background: linear-gradient(-90deg, #4B5563, #B91C1C);
 }
 
 .progress-fill::after {
@@ -606,9 +679,17 @@ html[lang="ar"] .step ul li::before {
     animation: conveyorBelt 0.8s linear infinite;
 }
 
+html[lang="ar"] .progress-fill::after {
+    background: linear-gradient(-45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, transparent 75%, transparent);
+}
+
 @keyframes conveyorBelt {
     0% { background-position: 0 0; }
     100% { background-position: 25px 0; }
+}
+
+html[lang="ar"] .progress-fill::after {
+    animation-direction: reverse;
 }
 
 .progress-16 { width: 16.67%; } /* 5S: 6 steps */
@@ -629,6 +710,10 @@ html[lang="ar"] .step ul li::before {
     padding-top: 1.5rem;
     border-top: 4px dashed #B91C1C;
     position: relative;
+}
+
+html[lang="ar"] .footer {
+    text-align: center;
 }
 
 .footer::before {
@@ -686,10 +771,20 @@ html[lang="ar"] .step ul li::before {
     animation: sparkMove 1.8s linear infinite;
 }
 
+html[lang="ar"] .controls button::before {
+    left: unset;
+    right: -20px;
+    animation: sparkMoveRTL 1.8s linear infinite;
+}
+
 .controls button:hover {
     background: linear-gradient(45deg, #B91C1C, #7F1D1D);
     transform: translateY(-3px) scale(1.03);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+}
+
+html[lang="ar"] .controls button:hover {
+    background: linear-gradient(-45deg, #B91C1C, #7F1D1D);
 }
 
 .controls button:active {
@@ -716,6 +811,12 @@ html[lang="ar"] .step ul li::before {
     100% { left: 120%; opacity: 0; }
 }
 
+@keyframes sparkMoveRTL {
+    0% { right: -20px; opacity: 0; }
+    50% { opacity: 1; }
+    100% { right: 120%; opacity: 0; }
+}
+
 /* Language Switcher */
 .language-switcher {
     margin: 1.8rem 0;
@@ -734,6 +835,10 @@ html[lang="ar"] .step ul li::before {
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+html[lang="ar"] .language-switcher select {
+    background: linear-gradient(-45deg, #4B5563, #374151);
 }
 
 .language-switcher select:focus {
