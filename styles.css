@@ -7,18 +7,77 @@
 
 body {
     font-family: 'Roboto Condensed', 'Roboto', 'Noto Sans Arabic', sans-serif;
-    background: linear-gradient(135deg, #1F2937 0%, #4B5563 100%) url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"%3E%3Crect width="200" height="200" fill="none"/%3E%3Ccircle cx="50" cy="50" r="5" fill="%23B91C1C" opacity="0.7"/%3E%3Ccircle cx="150" cy="150" r="5" fill="%23B91C1C" opacity="0.7"/%3E%3Cpath d="M0 0h200v200H0z" fill="url(%23spark)" fill-opacity="0.15"/%3E%3Cdefs%3E%3Cfilter id="spark"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/%3E%3CfeColorMatrix type="saturate" values="0"/%3E%3C/filter%3E%3C/defs%3E%3C/svg%3E') repeat;
+    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"%3E%3Crect width="200" height="200" fill="none"/%3E%3Ccircle cx="50" cy="50" r="8" fill="%23B91C1C" opacity="0.85"/%3E%3Ccircle cx="150" cy="150" r="8" fill="%23B91C1C" opacity="0.85"/%3E%3Cpath d="M0 0h200v200H0z" fill="url(%23spark)" fill-opacity="0.25"/%3E%3Cdefs%3E%3Cfilter id="spark"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="5" stitchTiles="stitch"/%3E%3CfeColorMatrix type="saturate" values="0"/%3E%3C/filter%3E%3C/defs%3E%3C/svg%3E') repeat;
     background-size: 200px 200px;
     color: #D1D5DB;
     line-height: 1.7;
     overflow-x: hidden;
-    animation: sparkShift 10s linear infinite;
+    animation: sparkShift 7s linear infinite;
     position: relative;
+    z-index: 0;
 }
 
 @keyframes sparkShift {
     0% { background-position: 0 0; }
     100% { background-position: 200px 200px; }
+}
+
+/* Parallax Gradient Layer */
+.background-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1F2937 0%, #4B5563 50%, #7F1D1D 75%, #1F2937 100%);
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: -3;
+    animation: gradientRipple 25s ease-in-out infinite;
+}
+
+@keyframes gradientRipple {
+    0% { background-position: 0% 0%; opacity: 0.6; }
+    50% { background-position: 100% 100%; opacity: 0.8; }
+    100% { background-position: 0% 0%; opacity: 0.6; }
+}
+
+/* Starfield Layer */
+.starfield-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2;
+}
+
+.starfield-layer::before, .starfield-layer::after,
+.starfield-layer span::before, .starfield-layer span::after,
+.starfield-layer div::before, .starfield-layer div::after {
+    content: '✨';
+    position: absolute;
+    color: #D1D5DB;
+    animation: starFloat 10s linear infinite, starTwinkle 1.5s ease-in-out infinite;
+}
+
+.starfield-layer::before { font-size: 0.6rem; top: 15%; left: 10%; animation-duration: 8s, 1.2s; }
+.starfield-layer::after { font-size: 0.8rem; top: 65%; left: 85%; animation-duration: 12s, 1.7s; }
+.starfield-layer span::before { font-size: 0.5rem; top: 25%; left: 45%; animation-duration: 9s, 1.4s; }
+.starfield-layer span::after { font-size: 0.7rem; top: 75%; left: 25%; animation-duration: 11s, 1.6s; }
+.starfield-layer div::before { font-size: 0.9rem; top: 35%; left: 65%; animation-duration: 10s, 1.3s; }
+.starfield-layer div::after { font-size: 0.4rem; top: 55%; left: 35%; animation-duration: 13s, 1.8s; }
+
+@keyframes starFloat {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 0.7; }
+    50% { transform: translate(-50px, 50px) rotate(180deg); }
+    100% { transform: translate(-100px, 100px) rotate(360deg); opacity: 0.3; }
+}
+
+@keyframes starTwinkle {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 0.3; }
 }
 
 /* Animated Background Layers */
@@ -29,9 +88,10 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 40% 40%, rgba(185, 28, 28, 0.3) 0%, transparent 80%);
-    opacity: 0.3;
+    background: radial-gradient(circle at 25% 25%, rgba(185, 28, 28, 0.5) 0%, transparent 70%);
+    opacity: 0.4;
     pointer-events: none;
+    z-index: -1;
     animation: pulseLight 6s ease-in-out infinite;
 }
 
@@ -42,25 +102,49 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cpath d="M50 20a30 30 0 0 1 0 60 30 30 0 0 1 0-60" fill="none" stroke="%23B91C1C" stroke-width="2" opacity="0.2"/%3E%3C/svg%3E') repeat;
-    background-size: 100px 100px;
-    animation: gearDrift 15s linear infinite;
-    opacity: 0.2;
+    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"%3E%3Cpath d="M75 20a55 55 0 0 1 0 110 55 55 0 0 1 0-110" fill="none" stroke="%23B91C1C" stroke-width="4" opacity="0.3"/%3E%3Cpath d="M75 30a45 45 0 0 1 0 90 45 45 0 0 1 0-90" fill="none" stroke="%23B91C1C" stroke-width="3" opacity="0.4"/%3E%3Cpath d="M75 40a35 35 0 0 1 0 70 35 35 0 0 1 0-70" fill="none" stroke="%23B91C1C" stroke-width="2" opacity="0.5"/%3E%3C/svg%3E') repeat;
+    background-size: 150px 150px;
+    animation: gearDrift 10s linear infinite, gearRotate 8s linear infinite;
+    opacity: 0.3;
     pointer-events: none;
+    z-index: -1;
+}
+
+body > div.pulse-wave {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 75% 75%, rgba(127, 29, 29, 0.4) 0%, transparent 70%);
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: -1;
+    animation: pulseWave 8s ease-in-out infinite;
 }
 
 @keyframes pulseLight {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.5; }
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.15); }
+}
+
+@keyframes pulseWave {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.1); }
 }
 
 @keyframes gearDrift {
     0% { background-position: 0 0; }
-    100% { background-position: 100px 100px; }
+    100% { background-position: 150px 150px; }
+}
+
+@keyframes gearRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Global Spark Particles */
-body > div.spark-overlay {
+.spark-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -70,36 +154,46 @@ body > div.spark-overlay {
     z-index: 0;
 }
 
-.spark-overlay::before {
+.spark-overlay::before, .spark-overlay::after,
+.spark-overlay span::before, .spark-overlay span::after,
+.spark-overlay div::before, .spark-overlay div::after {
     content: '✨';
     position: absolute;
-    font-size: 1rem;
     color: #B91C1C;
-    animation: sparkFloat 3s linear infinite;
-    top: 10%;
-    left: 20%;
+    animation: sparkFloat 5s ease-in-out infinite, sparkFlicker 1.2s ease-in-out infinite;
 }
 
-.spark-overlay::after {
-    content: '✨';
-    position: absolute;
-    font-size: 0.8rem;
-    color: #B91C1C;
-    animation: sparkFloat 2.5s linear infinite;
-    top: 70%;
-    left: 80%;
-}
+.spark-overlay::before { font-size: 1.3rem; top: 5%; left: 10%; animation-duration: 4s, 1s; transform-origin: center; }
+.spark-overlay::after { font-size: 1rem; top: 60%; left: 80%; animation-duration: 5.5s, 1.3s; transform-origin: center; }
+.spark-overlay span::before { font-size: 0.9rem; top: 25%; left: 50%; animation-duration: 4.5s, 1.1s; transform-origin: center; }
+.spark-overlay span::after { font-size: 0.8rem; top: 75%; left: 20%; animation-duration: 5s, 1.4s; transform-origin: center; }
+.spark-overlay div::before { font-size: 1.1rem; top: 35%; left: 70%; animation-duration: 4.8s, 1.2s; transform-origin: center; }
+.spark-overlay div::after { font-size: 0.7rem; top: 50%; left: 30%; animation-duration: 5.2s, 1.5s; transform-origin: center; }
 
 @keyframes sparkFloat {
-    0% { transform: translate(0, 0); opacity: 0.8; }
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 0.9; }
+    50% { transform: translate(80px, -80px) rotate(180deg); opacity: 0.5; }
+    100% { transform: translate(160px, -160px) rotate(360deg); opacity: 0.2; }
+}
+
+@keyframes sparkFlicker {
+    0%, 100% { opacity: 0.9; }
     50% { opacity: 0.4; }
-    100% { transform: translate(50px, -50px); opacity: 0; }
 }
 
 /* Arabic RTL Support */
 html[lang="ar"] {
     direction: rtl;
     font-family: 'Noto Sans Arabic', sans-serif;
+}
+
+html[lang="ar"] .spark-overlay::before, html[lang="ar"] .spark-overlay::after,
+html[lang="ar"] .spark-overlay span::before, html[lang="ar"] .spark-overlay span::after,
+html[lang="ar"] .spark-overlay div::before, html[lang="ar"] .spark-overlay div::after,
+html[lang="ar"] .starfield-layer::before, html[lang="ar"] .starfield-layer::after,
+html[lang="ar"] .starfield-layer span::before, html[lang="ar"] .starfield-layer span::after,
+html[lang="ar"] .starfield-layer div::before, html[lang="ar"] .starfield-layer div::after {
+    animation-direction: reverse;
 }
 
 /* Accessibility: Reduced Motion */
@@ -695,6 +789,12 @@ html[lang="ar"] .step ul li::before {
     .controls {
         gap: clamp(1rem, 2vw, 1.5rem);
         padding: clamp(1rem, 2vw, 1.5rem);
+    }
+
+    .starfield-layer::before, .starfield-layer::after,
+    .starfield-layer span::before, .starfield-layer span::after,
+    .starfield-layer div::before, .starfield-layer div::after {
+        font-size: clamp(0.4rem, 0.8vw, 0.6rem);
     }
 }
 
