@@ -6,18 +6,39 @@
     <title>Login - WKW Automotive Tunisie</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --accent-color: #60a5fa;
+            --error-color: #dc2626;
+            --text-color: #1e293b;
+            --bg-light: rgba(255, 255, 255, 0.97);
+            --bg-dark: rgba(30, 41, 59, 0.97);
+            --shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            --transition: all 0.4s ease;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-light: var(--bg-dark);
+                --text-color: #e5e7eb;
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-color: #1e293b;
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            color: #1e293b;
+            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -26,6 +47,7 @@
             position: relative;
             overflow-x: hidden;
         }
+
         body::before {
             content: '';
             position: fixed;
@@ -36,21 +58,48 @@
             background: linear-gradient(135deg, rgba(30, 58, 138, 0.8), rgba(59, 130, 246, 0.6));
             z-index: 1;
         }
+
+        /* Particle Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .login-container {
-            background: rgba(255, 255, 255, 0.97);
+            background: var(--bg-light);
             padding: clamp(20px, 5vw, 40px);
             border-radius: clamp(12px, 3vw, 24px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            box-shadow: var(--shadow);
             max-width: clamp(320px, 90vw, 500px);
             width: 100%;
             text-align: center;
             position: relative;
             z-index: 2;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid transparent;
             backdrop-filter: blur(12px);
             animation: scaleIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             margin: 10px;
+            position: relative;
+            overflow: hidden;
         }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color), var(--primary-color));
+            z-index: -1;
+            animation: gradientBorder 5s linear infinite;
+        }
+
         .logo-container {
             display: flex;
             justify-content: center;
@@ -58,83 +107,103 @@
             gap: clamp(10px, 2vw, 15px);
             margin-bottom: clamp(10px, 3vw, 20px);
         }
+
         .logo {
             width: clamp(60px, 15vw, 100px);
             height: auto;
-            animation: logoPop 1s ease-in-out;
+            animation: logoPop 1s ease-in-out forwards;
+            animation-delay: 0.2s;
+            opacity: 0;
         }
+
         .profile-photo {
             width: clamp(40px, 10vw, 60px);
             height: clamp(40px, 10vw, 60px);
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #3b82f6;
-            animation: photoPop 1.2s ease-in-out;
+            border: 2px solid var(--secondary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: photoPop 1.2s ease-in-out forwards;
+            animation-delay: 0.4s;
+            opacity: 0;
         }
+
+        .profile-photo:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
         h1 {
             font-size: clamp(1.6rem, 5vw, 2.5rem);
             font-weight: 700;
-            color: #1e3a8a;
+            color: var(--primary-color);
             margin-bottom: clamp(8px, 2vw, 12px);
             text-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
             animation: slideInTitle 1s ease-out;
         }
+
         .subtitle {
             color: #6b7280;
             font-size: clamp(0.9rem, 2.5vw, 1.1rem);
             margin-bottom: clamp(20px, 5vw, 35px);
             font-weight: 300;
-            animation: fadeIn 1.2s ease-in-out;
+            animation: typing 2s steps(30) forwards, fadeIn 1.2s ease-in-out;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--secondary-color);
         }
+
         .input-group {
             margin-bottom: clamp(15px, 4vw, 30px);
             text-align: left;
             position: relative;
-            overflow: hidden;
         }
+
         label {
             font-size: clamp(0.9rem, 2.5vw, 1.2rem);
             font-weight: 600;
-            color: #1e293b;
-            display: block;
-            margin-bottom: clamp(8px, 2vw, 12px);
-            transition: color 0.3s ease;
+            color: var(--text-color);
+            position: absolute;
+            top: 50%;
+            left: clamp(10px, 3vw, 16px);
+            transform: translateY(-50%);
+            transition: var(--transition);
+            pointer-events: none;
         }
+
         input[type="text"] {
             width: 100%;
             padding: clamp(10px, 3vw, 16px);
             font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-            border: 2px solid #e5e7eb;
-            border-radius: clamp(8px, 2vw, 14px);
+            border: none;
+            border-bottom: 2px solid #e5e7eb;
+            border-radius: 0;
             outline: none;
-            transition: all 0.4s ease;
-            background: rgba(255, 255, 255, 0.9);
+            transition: var(--transition);
+            background: transparent;
             position: relative;
         }
-        input[type="text"]:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
-            transform: translateY(-3px);
-            background: #ffffff;
+
+        input[type="text"]:focus,
+        input[type="text"]:not(:placeholder-shown) {
+            border-bottom-color: var(--secondary-color);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         }
-        .input-group::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, #3b82f6, #60a5fa);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.4s ease;
+
+        input[type="text"]:focus + label,
+        input[type="text"]:not(:placeholder-shown) + label {
+            top: -10px;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            color: var(--secondary-color);
         }
-        .input-group:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
+
+        .input-group.invalid input[type="text"] {
+            animation: shake 0.5s ease-in-out;
+            border-bottom-color: var(--error-color);
         }
+
         button {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             font-size: clamp(0.9rem, 2.5vw, 1.2rem);
             font-weight: 600;
@@ -143,31 +212,57 @@
             border: none;
             border-radius: clamp(8px, 2vw, 14px);
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
             animation: buttonPop 1s ease-in-out;
         }
+
+        button:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4), 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
         button::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s ease;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
         }
+
         button:hover::before {
-            left: 100%;
+            width: 300px;
+            height: 300px;
         }
-        button:hover {
-            background: linear-gradient(135deg, #2563eb, #60a5fa);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
+
+        button.loading {
+            pointer-events: none;
+            opacity: 0.8;
         }
+
+        button.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
         .error-message {
-            color: #dc2626;
+            color: var(--error-color);
             font-size: clamp(0.8rem, 2vw, 0.95rem);
             margin-top: clamp(10px, 3vw, 20px);
             display: none;
@@ -175,8 +270,9 @@
             background: rgba(220, 38, 38, 0.15);
             padding: clamp(8px, 2vw, 12px);
             border-radius: clamp(6px, 1.5vw, 10px);
-            border-left: 5px solid #dc2626;
+            border-left: 5px solid var(--error-color);
         }
+
         .lean-info {
             margin-top: clamp(15px, 4vw, 25px);
             font-size: clamp(0.8rem, 2vw, 0.9rem);
@@ -185,26 +281,38 @@
             background: rgba(107, 114, 128, 0.15);
             padding: clamp(10px, 3vw, 20px);
             border-radius: clamp(6px, 1.5vw, 10px);
-            animation: fadeIn 1.4s ease-in-out;
+            cursor: pointer;
         }
+
         .lean-info h3 {
-            color: #1e3a8a;
+            color: var(--primary-color);
             margin-bottom: clamp(8px, 2vw, 12px);
             font-size: clamp(0.9rem, 2.5vw, 1.1rem);
         }
+
         .lean-info ul {
             list-style: none;
             padding-left: 0;
         }
+
         .lean-info li {
             margin-bottom: clamp(6px, 1.5vw, 8px);
             padding-left: clamp(15px, 4vw, 25px);
             position: relative;
             transition: transform 0.3s ease;
+            animation: slideInLi 0.5s ease-in-out forwards;
+            opacity: 0;
         }
+
+        .lean-info li:nth-child(1) { animation-delay: 0.1s; }
+        .lean-info li:nth-child(2) { animation-delay: 0.2s; }
+        .lean-info li:nth-child(3) { animation-delay: 0.3s; }
+        .lean-info li:nth-child(4) { animation-delay: 0.4s; }
+
         .lean-info li:hover {
             transform: translateX(10px);
         }
+
         .lean-info li::before {
             content: '✓';
             position: absolute;
@@ -213,37 +321,72 @@
             font-weight: bold;
             font-size: clamp(0.9rem, 2.5vw, 1.2rem);
         }
+
+        /* Animations */
         @keyframes scaleIn {
             from { opacity: 0; transform: scale(0.8); }
             to { opacity: 1; transform: scale(1); }
         }
+
         @keyframes logoPop {
             0% { transform: scale(0); opacity: 0; }
             60% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); }
+            100% { transform: scale(1); opacity: 1; }
         }
+
         @keyframes photoPop {
             0% { transform: scale(0); opacity: 0; }
             60% { transform: scale(1.15); opacity: 1; }
-            100% { transform: scale(1); }
+            100% { transform: scale(1); opacity: 1; }
         }
+
         @keyframes slideInTitle {
             from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
         @keyframes slideInError {
             from { opacity: 0; transform: translateX(-30px); }
             to { opacity: 1; transform: translateX(0); }
         }
+
+        @keyframes slideInLi {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         @keyframes buttonPop {
             0% { transform: scale(0.9); opacity: 0; }
             60% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); }
+            100% { transform: scale(1); opacity: 1; }
         }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+
+        /* Responsive Design */
         @media (max-width: 1024px) {
             .login-container {
                 max-width: 90vw;
@@ -263,6 +406,7 @@
                 font-size: clamp(1.5rem, 4.5vw, 2rem);
             }
         }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -297,6 +441,7 @@
                 font-size: clamp(0.7rem, 1.8vw, 0.85rem);
             }
         }
+
         @media (max-width: 480px) {
             .login-container {
                 padding: clamp(10px, 3vw, 20px);
@@ -339,13 +484,8 @@
                 padding: clamp(8px, 2vw, 15px);
                 font-size: clamp(0.65rem, 1.7vw, 0.8rem);
             }
-            .lean-info h3 {
-                font-size: clamp(0.8rem, 2vw, 1rem);
-            }
-            .lean-info li {
-                padding-left: clamp(10px, 3vw, 20px);
-            }
         }
+
         @media (orientation: landscape) and (max-height: 500px) {
             body {
                 align-items: center;
@@ -357,20 +497,21 @@
     </style>
 </head>
 <body>
+    <canvas class="particles"></canvas>
     <div class="login-container">
         <div class="logo-container">
             <img src="https://media.licdn.com/dms/image/v2/C510BAQFv4NwvhYRq8Q/company-logo_200_200/company-logo_200_200/0/1631351838133?e=2147483647&v=beta&t=pE5-TQRX2fd9oIfzQypoBLterLoj-X4wOnC3C8MMI4Q" alt="WKW Automotive Tunisie Logo" class="logo">
-            <img src="https://media.licdn.com/dms/image/v2/C5603AQEfBF9yDTcbOA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1559514318991?e=2147483647&v=beta&t=y_lqak3jC1JUOEd-NEfWWJmaMekMwV5RVvE0pBo6f-8" alt="Profile Photo 1" class="profile-photo">
-            <img src="https://media.licdn.com/dms/image/v2/D4D03AQELpDu1FKLBSA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1690397383175?e=2147483647&v=beta&t=BowtDxF9pTsrdANoNS-W0zNh5_KBx428-rYHdQfdHdo" alt="Profile Photo 2" class="profile-photo">
+            <img src="https://media.licdn.com/dms/image/v2/C5603AQEfBF9yDTcbOA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1559514318991?e=2147483647&v=beta&t=y_lqak3jC1JUOEd-NEfWWJmaMekMwV5RVvE0pBo6f-8" alt="Employee Profile Photo 1" class="profile-photo">
+            <img src="https://media.licdn.com/dms/image/v2/D4D03AQELpDu1FKLBSA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1690397383175?e=2147483647&v=beta&t=BowtDxF9pTsrdANoNS-W0zNh5_KBx428-rYHdQfdHdo" alt="Employee Profile Photo 2" class="profile-photo">
         </div>
         <h1>WKW Automotive Tunisie</h1>
         <p class="subtitle">Lean Manufacturing Portal</p>
         <div class="input-group">
+            <input type="text" id="matricule" placeholder=" " aria-label="Matricule Input">
             <label for="matricule">Enter Matricule</label>
-            <input type="text" id="matricule" placeholder="e.g., D000002" aria-label="Matricule Input">
         </div>
-        <button onclick="validateLogin()">Login</button>
-        <p class="error-message" id="error-message">Invalid matricule. Please try again.</p>
+        <button id="login-button" onclick="validateLogin()">Login</button>
+        <p class="error-message" id="error-message" aria-live="polite">Invalid matricule. Please try again.</p>
         <div class="lean-info">
             <h3>Key Lean Methods in Automotive</h3>
             <ul>
@@ -383,7 +524,7 @@
     </div>
 
     <script>
-        const validMatricules = [
+        const validMatricules = new Set([
             "D000002", "D000004", "D000006", "D000010", "D000100", "D000103", "D000104", "D000108",
             "D000109", "D000111", "D000112", "D000113", "D000114", "D000118", "D000120", "D000121",
             "D000122", "D000127", "D000128", "D000131", "D000135", "D000136", "D000142", "D000147",
@@ -427,26 +568,110 @@
             "D005854", "D005855", "D005867", "D005880", "D005881", "D005892", "D005894", "D005895",
             "D005896", "D005900", "D005904", "D006702", "D006706", "D006707", "D006708", "D007300",
             "D007303", "D007601", "D007602", "D007605", "D007608", "D007618", "D007623"
-        ];
+        ]);
 
         function validateLogin() {
             const matriculeInput = document.getElementById('matricule').value.trim();
             const errorMessage = document.getElementById('error-message');
+            const loginButton = document.getElementById('login-button');
+            const inputGroup = document.getElementById('matricule').parentElement;
 
-            if (validMatricules.includes(matriculeInput)) {
-                errorMessage.style.display = 'none';
-                sessionStorage.setItem('isAuthenticated', 'true');
-                window.location.href = 'lean-methods.html';
-            } else {
-                errorMessage.style.display = 'block';
-                document.getElementById('matricule').value = '';
-            }
+            loginButton.classList.add('loading');
+
+            setTimeout(() => {
+                const matriculePattern = /^D\d{6}$/;
+                if (!matriculePattern.test(matriculeInput)) {
+                    errorMessage.textContent = "Matricule must start with 'D' followed by six digits.";
+                    errorMessage.style.display = 'block';
+                    inputGroup.classList.add('invalid');
+                    document.getElementById('matricule').value = '';
+                } else if (validMatricules.has(matriculeInput)) {
+                    errorMessage.style.display = 'none';
+                    inputGroup.classList.remove('invalid');
+                    sessionStorage.setItem('isAuthenticated', 'true');
+                    window.location.href = 'lean-methods.html';
+                } else {
+                    errorMessage.textContent = "Matricule not found. Please try again.";
+                    errorMessage.style.display = 'block';
+                    inputGroup.classList.add('invalid');
+                    document.getElementById('matricule').value = '';
+                }
+                loginButton.classList.remove('loading');
+            }, 1000);
         }
 
         document.getElementById('matricule').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 validateLogin();
             }
+        });
+
+        document.getElementById('matricule').addEventListener('input', function() {
+            const inputGroup = this.parentElement;
+            const matriculePattern = /^D\d{6}$/;
+            if (this.value.trim() && !matriculePattern.test(this.value.trim())) {
+                inputGroup.classList.add('invalid');
+            } else {
+                inputGroup.classList.remove('invalid');
+            }
+        });
+
+        // Particle Animation
+        const canvas = document.querySelector('.particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particlesArray = [];
+        const numberOfParticles = 50;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.01;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                if (particlesArray[i].size <= 0.2) {
+                    particlesArray.splice(i, 1);
+                    i--;
+                    particlesArray.push(new Particle());
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
     </script>
 </body>
