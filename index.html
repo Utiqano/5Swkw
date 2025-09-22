@@ -24,37 +24,6 @@
             min-height: 100vh;
             line-height: 1.6;
             position: relative;
-            overflow: hidden Stuart
-
-System: It appears that the provided artifact content was cut off. I'll complete the responsive design enhancements based on the previous version, ensuring the login page is fully responsive across all devices. Below is the updated HTML with a focus on responsiveness, maintaining the professional design, animations, and logo integration.
-
-<xaiArtifact artifact_id="f38951e4-767e-4355-a0b0-89df01fd11c3" artifact_version_id="0d9d0671-004e-453e-b565-31e6a825f353" title="index.html" contentType="text/html">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - WKW Automotive Tunisie</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #1e293b;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            line-height: 1.6;
-            position: relative;
             overflow-x: hidden;
         }
         body::before {
@@ -82,11 +51,25 @@ System: It appears that the provided artifact content was cut off. I'll complete
             animation: scaleIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             margin: 10px;
         }
-        .logo {
-            width: clamp(80px, 20vw, 120px);
-            height: auto;
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(10px, 2vw, 15px);
             margin-bottom: clamp(10px, 3vw, 20px);
+        }
+        .logo {
+            width: clamp(60px, 15vw, 100px);
+            height: auto;
             animation: logoPop 1s ease-in-out;
+        }
+        .profile-photo {
+            width: clamp(40px, 10vw, 60px);
+            height: clamp(40px, 10vw, 60px);
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3b82f6;
+            animation: photoPop 1.2s ease-in-out;
         }
         h1 {
             font-size: clamp(1.6rem, 5vw, 2.5rem);
@@ -239,6 +222,11 @@ System: It appears that the provided artifact content was cut off. I'll complete
             60% { transform: scale(1.2); opacity: 1; }
             100% { transform: scale(1); }
         }
+        @keyframes photoPop {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(1); }
+        }
         @keyframes slideInTitle {
             from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -261,8 +249,15 @@ System: It appears that the provided artifact content was cut off. I'll complete
                 max-width: 90vw;
                 padding: clamp(15px, 4vw, 30px);
             }
+            .logo-container {
+                gap: clamp(8px, 1.5vw, 12px);
+            }
             .logo {
-                width: clamp(70px, 18vw, 100px);
+                width: clamp(50px, 12vw, 80px);
+            }
+            .profile-photo {
+                width: clamp(35px, 8vw, 50px);
+                height: clamp(35px, 8vw, 50px);
             }
             h1 {
                 font-size: clamp(1.5rem, 4.5vw, 2rem);
@@ -278,8 +273,15 @@ System: It appears that the provided artifact content was cut off. I'll complete
                 margin: clamp(10px, 3vw, 20px) auto;
                 padding: clamp(15px, 4vw, 25px);
             }
+            .logo-container {
+                gap: clamp(6px, 1.2vw, 10px);
+            }
             .logo {
-                width: clamp(60px, 15vw, 90px);
+                width: clamp(45px, 10vw, 70px);
+            }
+            .profile-photo {
+                width: clamp(30px, 7vw, 45px);
+                height: clamp(30px, 7vw, 45px);
             }
             h1 {
                 font-size: clamp(1.4rem, 4vw, 1.8rem);
@@ -300,8 +302,17 @@ System: It appears that the provided artifact content was cut off. I'll complete
                 padding: clamp(10px, 3vw, 20px);
                 border-radius: clamp(8px, 2vw, 16px);
             }
+            .logo-container {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: clamp(5px, 1vw, 8px);
+            }
             .logo {
-                width: clamp(50px, 12vw, 80px);
+                width: clamp(40px, 10vw, 60px);
+            }
+            .profile-photo {
+                width: clamp(25px, 6vw, 40px);
+                height: clamp(25px, 6vw, 40px);
             }
             h1 {
                 font-size: clamp(1.2rem, 3.5vw, 1.6rem);
@@ -347,7 +358,11 @@ System: It appears that the provided artifact content was cut off. I'll complete
 </head>
 <body>
     <div class="login-container">
-        <img src="https://media.licdn.com/dms/image/v2/C510BAQFv4NwvhYRq8Q/company-logo_200_200/company-logo_200_200/0/1631351838133?e=2147483647&v=beta&t=pE5-TQRX2fd9oIfzQypoBLterLoj-X4wOnC3C8MMI4Q" alt="WKW Automotive Tunisie Logo" class="logo">
+        <div class="logo-container">
+            <img src="https://media.licdn.com/dms/image/v2/C510BAQFv4NwvhYRq8Q/company-logo_200_200/company-logo_200_200/0/1631351838133?e=2147483647&v=beta&t=pE5-TQRX2fd9oIfzQypoBLterLoj-X4wOnC3C8MMI4Q" alt="WKW Automotive Tunisie Logo" class="logo">
+            <img src="https://media.licdn.com/dms/image/v2/C5603AQEfBF9yDTcbOA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1559514318991?e=2147483647&v=beta&t=y_lqak3jC1JUOEd-NEfWWJmaMekMwV5RVvE0pBo6f-8" alt="Profile Photo 1" class="profile-photo">
+            <img src="https://media.licdn.com/dms/image/v2/D4D03AQELpDu1FKLBSA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1690397383175?e=2147483647&v=beta&t=BowtDxF9pTsrdANoNS-W0zNh5_KBx428-rYHdQfdHdo" alt="Profile Photo 2" class="profile-photo">
+        </div>
         <h1>WKW Automotive Tunisie</h1>
         <p class="subtitle">Lean Manufacturing Portal</p>
         <div class="input-group">
