@@ -13,109 +13,358 @@
         }
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #6b7280, #1e3a8a);
+            background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: #1e293b;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             line-height: 1.6;
+            position: relative;
+            overflow: hidden Stuart
+
+System: It appears that the provided artifact content was cut off. I'll complete the responsive design enhancements based on the previous version, ensuring the login page is fully responsive across all devices. Below is the updated HTML with a focus on responsiveness, maintaining the professional design, animations, and logo integration.
+
+<xaiArtifact artifact_id="f38951e4-767e-4355-a0b0-89df01fd11c3" artifact_version_id="0d9d0671-004e-453e-b565-31e6a825f353" title="index.html" contentType="text/html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - WKW Automotive Tunisie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #1e293b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8), rgba(59, 130, 246, 0.6));
+            z-index: 1;
         }
         .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            max-width: 400px;
+            background: rgba(255, 255, 255, 0.97);
+            padding: clamp(20px, 5vw, 40px);
+            border-radius: clamp(12px, 3vw, 24px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            max-width: clamp(320px, 90vw, 500px);
             width: 100%;
             text-align: center;
-            animation: fadeIn 0.6s ease-in-out;
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            animation: scaleIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            margin: 10px;
+        }
+        .logo {
+            width: clamp(80px, 20vw, 120px);
+            height: auto;
+            margin-bottom: clamp(10px, 3vw, 20px);
+            animation: logoPop 1s ease-in-out;
         }
         h1 {
-            font-size: 2em;
-            font-weight: 600;
+            font-size: clamp(1.6rem, 5vw, 2.5rem);
+            font-weight: 700;
             color: #1e3a8a;
-            margin-bottom: 20px;
+            margin-bottom: clamp(8px, 2vw, 12px);
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            animation: slideInTitle 1s ease-out;
+        }
+        .subtitle {
+            color: #6b7280;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            margin-bottom: clamp(20px, 5vw, 35px);
+            font-weight: 300;
+            animation: fadeIn 1.2s ease-in-out;
         }
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: clamp(15px, 4vw, 30px);
             text-align: left;
+            position: relative;
+            overflow: hidden;
         }
         label {
-            font-size: 1.1em;
-            font-weight: 500;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            font-weight: 600;
             color: #1e293b;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: clamp(8px, 2vw, 12px);
+            transition: color 0.3s ease;
         }
         input[type="text"] {
             width: 100%;
-            padding: 12px;
-            font-size: 1em;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
+            padding: clamp(10px, 3vw, 16px);
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            border: 2px solid #e5e7eb;
+            border-radius: clamp(8px, 2vw, 14px);
             outline: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.4s ease;
+            background: rgba(255, 255, 255, 0.9);
+            position: relative;
         }
         input[type="text"]:focus {
             border-color: #3b82f6;
-            box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            transform: translateY(-3px);
+            background: #ffffff;
+        }
+        .input-group::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease;
+        }
+        .input-group:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
         }
         button {
-            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
-            font-size: 1.1em;
-            font-weight: 500;
-            padding: 12px;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            font-weight: 600;
+            padding: clamp(10px, 3vw, 16px);
             width: 100%;
             border: none;
-            border-radius: 8px;
+            border-radius: clamp(8px, 2vw, 14px);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: buttonPop 1s ease-in-out;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+        button:hover::before {
+            left: 100%;
         }
         button:hover {
-            background: linear-gradient(90deg, #2563eb, #60a5fa);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #2563eb, #60a5fa);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
         }
         .error-message {
             color: #dc2626;
-            font-size: 0.9em;
-            margin-top: 10px;
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            margin-top: clamp(10px, 3vw, 20px);
             display: none;
-            animation: slideIn 0.3s ease-in-out;
+            animation: slideInError 0.5s ease-in-out;
+            background: rgba(220, 38, 38, 0.15);
+            padding: clamp(8px, 2vw, 12px);
+            border-radius: clamp(6px, 1.5vw, 10px);
+            border-left: 5px solid #dc2626;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        .lean-info {
+            margin-top: clamp(15px, 4vw, 25px);
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            color: #6b7280;
+            text-align: left;
+            background: rgba(107, 114, 128, 0.15);
+            padding: clamp(10px, 3vw, 20px);
+            border-radius: clamp(6px, 1.5vw, 10px);
+            animation: fadeIn 1.4s ease-in-out;
+        }
+        .lean-info h3 {
+            color: #1e3a8a;
+            margin-bottom: clamp(8px, 2vw, 12px);
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        }
+        .lean-info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .lean-info li {
+            margin-bottom: clamp(6px, 1.5vw, 8px);
+            padding-left: clamp(15px, 4vw, 25px);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        .lean-info li:hover {
+            transform: translateX(10px);
+        }
+        .lean-info li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes logoPop {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes slideInTitle {
+            from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-10px); }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInError {
+            from { opacity: 0; transform: translateX(-30px); }
             to { opacity: 1; transform: translateX(0); }
         }
-        @media (max-width: 768px) {
+        @keyframes buttonPop {
+            0% { transform: scale(0.9); opacity: 0; }
+            60% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @media (max-width: 1024px) {
             .login-container {
-                padding: 20px;
-                max-width: 90%;
+                max-width: 90vw;
+                padding: clamp(15px, 4vw, 30px);
+            }
+            .logo {
+                width: clamp(70px, 18vw, 100px);
             }
             h1 {
-                font-size: 1.8em;
+                font-size: clamp(1.5rem, 4.5vw, 2rem);
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+                min-height: 100vh;
+            }
+            .login-container {
+                margin: clamp(10px, 3vw, 20px) auto;
+                padding: clamp(15px, 4vw, 25px);
+            }
+            .logo {
+                width: clamp(60px, 15vw, 90px);
+            }
+            h1 {
+                font-size: clamp(1.4rem, 4vw, 1.8rem);
+            }
+            .subtitle {
+                font-size: clamp(0.8rem, 2.2vw, 1rem);
             }
             input[type="text"], button {
-                font-size: 0.95em;
+                font-size: clamp(0.8rem, 2.2vw, 1rem);
+                padding: clamp(8px, 2.5vw, 12px);
+            }
+            .lean-info {
+                font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+            }
+        }
+        @media (max-width: 480px) {
+            .login-container {
+                padding: clamp(10px, 3vw, 20px);
+                border-radius: clamp(8px, 2vw, 16px);
+            }
+            .logo {
+                width: clamp(50px, 12vw, 80px);
+            }
+            h1 {
+                font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+            }
+            .subtitle {
+                font-size: clamp(0.7rem, 2vw, 0.9rem);
+                margin-bottom: clamp(15px, 4vw, 25px);
+            }
+            .input-group {
+                margin-bottom: clamp(12px, 3vw, 20px);
+            }
+            label {
+                font-size: clamp(0.8rem, 2vw, 1rem);
+            }
+            input[type="text"], button {
+                font-size: clamp(0.7rem, 2vw, 0.9rem);
+                padding: clamp(6px, 2vw, 10px);
+            }
+            .error-message {
+                font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+                padding: clamp(6px, 1.5vw, 10px);
+            }
+            .lean-info {
+                padding: clamp(8px, 2vw, 15px);
+                font-size: clamp(0.65rem, 1.7vw, 0.8rem);
+            }
+            .lean-info h3 {
+                font-size: clamp(0.8rem, 2vw, 1rem);
+            }
+            .lean-info li {
+                padding-left: clamp(10px, 3vw, 20px);
+            }
+        }
+        @media (orientation: landscape) and (max-height: 500px) {
+            body {
+                align-items: center;
+            }
+            .login-container {
+                margin: clamp(5px, 2vw, 10px) auto;
             }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
+        <img src="https://media.licdn.com/dms/image/v2/C510BAQFv4NwvhYRq8Q/company-logo_200_200/company-logo_200_200/0/1631351838133?e=2147483647&v=beta&t=pE5-TQRX2fd9oIfzQypoBLterLoj-X4wOnC3C8MMI4Q" alt="WKW Automotive Tunisie Logo" class="logo">
         <h1>WKW Automotive Tunisie</h1>
+        <p class="subtitle">Lean Manufacturing Portal</p>
         <div class="input-group">
             <label for="matricule">Enter Matricule</label>
             <input type="text" id="matricule" placeholder="e.g., D000002" aria-label="Matricule Input">
         </div>
         <button onclick="validateLogin()">Login</button>
         <p class="error-message" id="error-message">Invalid matricule. Please try again.</p>
+        <div class="lean-info">
+            <h3>Key Lean Methods in Automotive</h3>
+            <ul>
+                <li>Kaizen: Continuous improvement to eliminate waste.</li>
+                <li>Just-in-Time (JIT): Produce only what is needed, when needed.</li>
+                <li>5S: Sort, Set in order, Shine, Standardize, Sustain for organized workspace.</li>
+                <li>Value Stream Mapping: Identify and optimize process flow.</li>
+            </ul>
+        </div>
     </div>
 
     <script>
@@ -171,7 +420,6 @@
 
             if (validMatricules.includes(matriculeInput)) {
                 errorMessage.style.display = 'none';
-                // Store matricule in sessionStorage to indicate successful login
                 sessionStorage.setItem('isAuthenticated', 'true');
                 window.location.href = 'lean-methods.html';
             } else {
@@ -180,7 +428,6 @@
             }
         }
 
-        // Allow Enter key to trigger login
         document.getElementById('matricule').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 validateLogin();
