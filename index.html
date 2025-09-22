@@ -1,605 +1,794 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.learnleansigma.com https://bukitvista-wordpress-storage.s3.us-east-2.amazonaws.com https://sesa-systems.com https://t4.ftcdn.net https://img.freepik.com https://cartlyapp.com https://static.wixstatic.com https://media.licdn.com https://shizen.io;">
-    <title>WKW Automotive - Amélioration Continue</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css" type="text/css">
+    <title>Presentation of Lean Methods</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6b7280, #1e3a8a);
+            color: #1e293b;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        header {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+        }
+        h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        .navbar {
+            display: flex;
+            gap: 15px;
+        }
+        .navbar button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 500;
+            padding: 12px 20px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .navbar button::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #facc15;
+            transition: width 0.3s ease;
+        }
+        .navbar button:hover::after, .navbar button.active::after {
+            width: 100%;
+        }
+        .navbar button:hover, .navbar button.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transform: translateY(-2px);
+        }
+        .language-selector select {
+            padding: 10px;
+            font-size: 1em;
+            font-weight: 500;
+            border-radius: 8px;
+            border: none;
+            background: #3b82f6;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .language-selector select:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+        .language-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .language-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .method-section {
+            display: none;
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.5s ease;
+        }
+        .method-section.active {
+            display: block;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        .arabic {
+            direction: rtl;
+            text-align: right;
+        }
+        h2 {
+            font-size: 2.2em;
+            color: #1e293b;
+            border-bottom: 4px solid #3b82f6;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        h3 {
+            font-size: 1.8em;
+            color: #1e3a8a;
+            margin: 20px 0 15px;
+            font-weight: 600;
+        }
+        h4 {
+            font-size: 1.5em;
+            color: #1e3a8a;
+            margin: 15px 0 10px;
+            font-weight: 500;
+        }
+        p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #334155;
+        }
+        ul {
+            list-style-type: disc;
+            margin-right: 25px;
+            margin-bottom: 20px;
+        }
+        .arabic ul {
+            list-style-type: arabic-indic;
+            margin-right: 0;
+            margin-left: 25px;
+        }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        .benefit {
+            background: #eff6ff;
+            padding: 20px;
+            border-left: 6px solid #3b82f6;
+            margin: 20px 0;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .benefit:hover {
+            transform: translateY(-5px);
+        }
+        footer {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+            font-weight: 500;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .method-section img, .method-section p, .method-section ul {
+            animation: slideIn 0.6s ease-in-out;
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.8em; }
+            h3 { font-size: 1.5em; }
+            h4 { font-size: 1.3em; }
+            .navbar { flex-direction: column; gap: 10px; }
+            .navbar button { font-size: 1.1em; padding: 10px; }
+            .header-container { flex-direction: column; gap: 15px; }
+            .language-selector select { font-size: 0.95em; }
+            .image-gallery { grid-template-columns: 1fr; }
+            .container { padding: 0 15px; }
+        }
+    </style>
 </head>
 <body>
-  <div class="spark-overlay"></div>
-    <div class="header">
-        <h1 class="title" id="title" data-text="WKW Automotive - Amélioration Continue">WKW Automotive - Amélioration Continue</h1>
-    </div>
+    <header>
+        <div class="header-container">
+            <h1>Presentation of Lean Methods</h1>
+            <div class="navbar">
+                <button onclick="switchMethod('5s')" class="active">Lean 5S</button>
+                <button onclick="switchMethod('gemba')">Gemba</button>
+                <button onclick="switchMethod('kaizen')">Kaizen</button>
+            </div>
+            <div class="language-selector">
+                <select id="language-switcher" onchange="switchLanguage()">
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="ar">العربية</option>
+                </select>
+            </div>
+        </div>
+    </header>
 
     <div class="container">
-        <!-- Landing Page -->
-        <div class="landing-page" id="landing-page">
-            <h2 class="section-link" data-section="metrologie-5s">Metrologie 5S</h2>
-            <h2 class="section-link" data-section="proposition-amelioration">Proposition d'Amélioration</h2>
-            <h2 class="section-link" data-section="gemba-ojt">Gemba OJT</h2>
-        </div>
-
-        <!-- Metrologie 5S Section -->
-        <div id="metrologie-5s" class="hidden">
-            <!-- Tunisian Arabic -->
-            <div class="step" data-step="0" data-lang="ar" dir="rtl">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2 id="h2-0-ar">تقديم منهجية 5S</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies" loading="lazy">
-                <p id="p-0-ar">منهجية 5S هي طريقة من التصنيع النظيف باش تحسن تنظيم مكان الخدمة وتزيد في الكفاءة. جاية من اليابان، وفيها خمس خطوات: الفرز، الترتيب، التنظيف، التوحيد، والالتزام. كل خطوة تعمل أساس باش تبني بيئة خدمة منظمة وآمنة ومنتجة.</p>
+        <!-- English Section -->
+        <div id="en" class="language-section active">
+            <h2>English</h2>
+            <div id="5s-en" class="method-section active">
+                <h3>Lean 5S Method</h3>
+                <p>The 5S methodology, originating from Japan, is a cornerstone of lean manufacturing aimed at optimizing workplace organization. It creates a disciplined, efficient, and safe environment by eliminating waste and standardizing processes.</p>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="Perfect 5S in Storage Area">
+                </div>
                 <ul>
-                    <li>تزيد الكفاءة بإزالة الهدر.</li>
-                    <li>تحسن الأمان بالتنظيم والنظافة.</li>
-                    <li>تشجع على ثقافة تحسين مستمر.</li>
+                    <li><strong>Sort (Seiri):</strong> Remove unnecessary items, keeping only essentials for daily tasks to reduce clutter.</li>
+                    <li><strong>Set in Order (Seiton):</strong> Arrange tools and materials logically for quick access, minimizing search time.</li>
+                    <li><strong>Shine (Seiso):</strong> Maintain a clean workspace through regular cleaning to ensure safety and efficiency.</li>
+                    <li><strong>Standardize (Seiketsu):</strong> Develop procedures to sustain the first three S’s consistently across the organization.</li>
+                    <li><strong>Sustain (Shitsuke):</strong> Embed a culture of discipline to maintain 5S standards through training and audits.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill progress-16"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After">
+                </div>
+                <div class="benefit">
+                    <p><strong>Benefits:</strong> Reduced waste, improved productivity, enhanced safety, and higher employee satisfaction.</p>
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="5S Safety and ESG">
+                </div>
+                <p>Implementing 5S in a pilot area can demonstrate its effectiveness before full-scale adoption.</p>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="5S Pilot Area">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies">
+                </div>
+                <h3>5S Audit Process at WKW Automotive Tunisie</h3>
+                <p>At WKW Automotive Tunisie, the 5S audit process is streamlined using a digital approach to ensure compliance and continuous improvement.</p>
+                <ul>
+                    <li><strong>QR Code Scanning:</strong> The auditor scans a QR code located in the work area to access the audit form instantly.</li>
+                    <li><strong>Audit Form:</strong> The form contains 26 questions covering the 5S principles (Sort, Set in Order, Shine, Standardize, Sustain).</li>
+                    <li><strong>Response Options:</strong> For each question, the auditor can select from options: Yes, No, Partially, or add a Comment for additional details.</li>
+                    <li><strong>Photo Upload:</strong> If needed, the auditor can attach a photo to document specific observations or issues.</li>
+                    <li><strong>Automatic Scoring:</strong> Upon completion, the system automatically calculates and displays an audit score based on the responses.</li>
+                    <li><strong>Report Generation:</strong> A detailed audit report is generated, summarizing the findings, score, and any attached photos. The report can be sent via email for further review or action.</li>
+                </ul>
+                <div class="benefit">
+                    <p><strong>Benefits:</strong> This digital audit process enhances efficiency, ensures accurate data collection, and supports real-time decision-making for workplace improvements.</p>
+                </div>
             </div>
-            <div class="step" data-step="1" data-lang="ar" dir="rtl">
-                <h2 id="h2-1-ar">1. الفرز (Seiri)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After" loading="lazy">
-                <p id="p-1-ar">الخطوة الأولى هي إزالة الأغراض اللي ما تحتاجهاش في مكان الخدمة باش نقلل الفوضى ونركز أكثر. الطريقة هذي تخلي غير الأدوات والمواد والمعدات الضرورية، وهكا العمليات تصير أسهل.</p>
+            <div id="gemba-en" class="method-section">
+                <h3>Gemba Method</h3>
+                <p>Gemba, meaning "the real place," refers to the location where value is created, such as the factory floor. The Gemba Walk is a lean practice where managers observe processes, engage with employees, and identify inefficiencies firsthand, fostering a culture of continuous improvement.</p>
+                <div class="image-gallery">
+                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="Gemba Walk Illustration">
+                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="Lean Management Principles">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="Gemba in Action">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="Gemba Process Observation">
+                </div>
+                <div class="benefit">
+                    <p><strong>Benefits:</strong> Real-time issue detection, stronger employee collaboration, and informed decision-making.</p>
+                </div>
+                <h3>Gemba Audit Process at WKW Automotive Tunisie</h3>
+                <p>At WKW Automotive Tunisie, the Gemba audit process is structured to ensure thorough observation and improvement of workplace processes.</p>
+                <h4>Step 1: Prepare the Audit Team</h4>
+                <p>Define the auditors and their specific areas of responsibility to cover all aspects of the Gemba Walk.</p>
                 <ul>
-                    <li>تعرف على الأغراض اللي قديمة أو ما تستعملش وشيلهم.</li>
-                    <li>استعمل علامات حمراء باش تميز الأغراض اللي لازم تراجعها أو ترميها.</li>
-                    <li>قلل التشتت وحرر مكان للخدمة المنتجة.</li>
-                    <li>دقق في المخزون باستمرار باش تحتفظ بالنظام.</li>
+                    <li><strong>Auditor 1 → HSE:</strong> Focuses on health, safety, and environment (pictograms, PPE, workplace safety).</li>
+                    <li><strong>Auditor 2 → 5S:</strong> Evaluates order, cleanliness, and tool organization.</li>
+                    <li><strong>Auditor 3 → Process:</strong> Reviews work standards and visual displays.</li>
+                    <li><strong>Auditor 4 → Visual Management:</strong> Assesses KPIs and performance tracking.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
+                <h4>Step 2: Create the Audit Forms</h4>
+                <p>Two options are available for audit forms:</p>
+                <ul>
+                    <li><strong>Single Form:</strong> A unified form with 10 Gemba questions plus photo uploads, used by all auditors (simpler approach).</li>
+                    <li><strong>Dedicated Forms:</strong> Separate forms tailored to each auditor’s focus area (more structured).</li>
+                </ul>
+                <p>Each form includes:</p>
+                <ul>
+                    <li><strong>Closed Questions:</strong> Response options of Yes, No, or Partially.</li>
+                    <li><strong>Comment Section:</strong> Space to explain non-conformities or observations.</li>
+                    <li><strong>Scoring:</strong> Assign scores to responses (Yes = 1, No = 0).</li>
+                </ul>
+                <p>Upon completion, an automatic audit score is displayed. A detailed report is generated, summarizing findings, scores, and any attached photos, which can be sent via email for further review or action.</p>
+                <div class="benefit">
+                    <p><strong>Benefits:</strong> This structured Gemba audit process ensures comprehensive workplace evaluation, promotes accountability, and supports data-driven improvements.</p>
+                </div>
             </div>
-            <div class="step" data-step="2" data-lang="ar" dir="rtl">
-                <h2 id="h2-2-ar">2. الترتيب (Seiton)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After" loading="lazy">
-                <p id="p-2-ar">نظم الأغراض الضرورية باش تكون سهلة تتلقاها وتستعملها. الخطوة هذي تركز على عمل تخطيطات وأنظمة تخزين فعالة باش تقلل الوقت اللي تضيعو في البحث على الأدوات أو المواد.</p>
+            <div id="kaizen-en" class="method-section">
+                <h3>Method for Proposing Improvements (Kaizen)</h3>
+                <p>Kaizen, or "continuous improvement," is a philosophy that encourages all employees to suggest small, incremental changes to processes. Implemented through suggestion systems, team workshops, or improvement events, Kaizen drives efficiency and innovation.</p>
+                <div class="image-gallery">
+                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="Continuous Improvement">
+                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="Kaizen Process">
+                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="PDCA Cycle">
+                </div>
+                <div class="benefit">
+                    <p><strong>Benefits:</strong> Enhanced efficiency, employee empowerment, and sustainable process improvements.</p>
+                </div>
+                <h3>Kaizen Audit Process at WKW Automotive Tunisie</h3>
+                <p>At WKW Automotive Tunisie, the Kaizen audit process enables all employees (operators, directors, security agents, HR, etc.) to propose improvement ideas to enhance safety, productivity, quality, and the work environment.</p>
+                <h4>Step 1: Idea Submission</h4>
+                <p>Employees scan a QR code displayed in the workplace to access a digital form (e.g., Microsoft Forms).</p>
                 <ul>
-                    <li>عين بلاصة محددة لكل غرض.</li>
-                    <li>استعمل ملصقات أو ألوان أو لوحات ظل باش تكون الأمور واضحة.</li>
-                    <li>صمم تدفقات الخدمة باش تقلل الحركة وتحسن الراحة في العمل.</li>
-                    <li>تأكد إنو الأغراض ترجع لبلاصتها بعد الاستعمال.</li>
+                    <li><strong>Location/Service:</strong> Specify the department or area concerned.</li>
+                    <li><strong>Problem Identified:</strong> Describe the issue observed.</li>
+                    <li><strong>Proposed Solution:</strong> Suggest a solution to address the problem.</li>
+                    <li><strong>Photo (Optional):</strong> Attach a photo if necessary to support the idea.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
-            </div>
-            <div class="step" data-step="3" data-lang="ar" dir="rtl">
-                <h2 id="h2-3-ar">3. التنظيف (Seiso)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After" loading="lazy">
-                <p id="p-3-ar">حافظ على مكان خدمة نظيف ومنظم باش تضمن الأمان والكفاءة. التنظيف والفحص المنتظم يساعدك تلقى المشاكل قبل ما تكبر.</p>
+                <p>Upon submission, the form is automatically saved in a centralized database (Google Sheets, Excel, or internal platform).</p>
+                <h4>Step 2: Idea Analysis</h4>
+                <p>The Continuous Improvement team collects and analyzes all submitted ideas monthly to evaluate their feasibility and impact.</p>
+                <h4>Step 3: Selection and Reward</h4>
+                <p>The CODIR (executive committee) reviews the ideas and selects the three most creative and impactful ones. Authors of these ideas are rewarded with gifts or recognition.</p>
+                <h4>Expected Results</h4>
                 <ul>
-                    <li>حط برامج تنظيف يومية.</li>
-                    <li>فحص المعدات والأدوات أثناء التنظيف باش تلقى التلف أو الخراب.</li>
-                    <li>شجع العمال باش يهتمو بمناطقهم.</li>
-                    <li>خلي مكان الخدمة جذاب بصريًا وآمن.</li>
+                    <li>Foster a participative culture.</li>
+                    <li>Stimulate creativity and innovation.</li>
+                    <li>Continuously improve safety, quality, and productivity.</li>
+                    <li>Recognize and value engaged employees.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
-            </div>
-            <div class="step" data-step="4" data-lang="ar" dir="rtl">
-                <h2 id="h2-4-ar">4. التوحيد (Seiketsu)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After" loading="lazy">
-                <p id="p-4-ar">حط إجراءات ثابتة باش تحافظ على الخطوات الثلاثة الأولى. التوحيد يضمن إنو التنظيم والنظافة يستمرو في كل مكان الخدمة.</p>
-                <ul>
-                    <li>اعمل قوائم تدقيق وأدلة بصرية للمهام.</li>
-                    <li>درب العمال على الإجراءات القياسية.</li>
-                    <li>خطط لتدقيقات منتظمة باش تتأكد من الالتزام.</li>
-                    <li>استعمل أدوات إدارة بصرية زي اللافتات والرسوم البيانية.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-83"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
-            </div>
-            <div class="step" data-step="5" data-lang="ar" dir="rtl">
-                <h2 id="h2-5-ar">5. الالتزام (Shitsuke)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After" loading="lazy">
-                <p id="p-5-ar">شجع ثقافة الانضباط باش تحافظ على ممارسات 5S على المدى الطويل. الخطوة هذي تركز على التحسين المستمر ومشاركة العمال لنجاح دايم.</p>
-                <ul>
-                    <li>وفر تدريب وورش عمل مستمرة.</li>
-                    <li>كرم وكافئ اللي يتبعو مبادئ 5S.</li>
-                    <li>اعمل مراجعات وتحديثات منتظمة للمعايير.</li>
-                    <li>شجع على الاقتراحات باش تحسن العمليات.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
-            </div>
-            <!-- French -->
-            <div class="step active" data-step="0" data-lang="fr">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2 id="h2-0-fr">Introduction à la méthodologie 5S</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies" loading="lazy">
-                <p id="p-0-fr">La méthodologie 5S est un outil de lean manufacturing conçu pour améliorer l'organisation et l'efficacité du lieu de travail. Originaire du Japon, elle comprend cinq étapes : Séparer, Ranger, Nettoyer, Standardiser et Suivre. Chaque étape pose les bases pour créer un environnement de travail productif, sûr et organisé.</p>
-                <ul>
-                    <li>Améliore l'efficacité en éliminant les gaspillages.</li>
-                    <li>Renforce la sécurité grâce à l'organisation et la propreté.</li>
-                    <li>Favorise une culture d'amélioration continue.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-16"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <div class="step" data-step="1" data-lang="fr">
-                <h2 id="h2-1-fr">1. Séparer (Seiri)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After" loading="lazy">
-                <p id="p-1-fr">La première étape consiste à éliminer les éléments inutiles du lieu de travail pour réduire l'encombrement et améliorer la concentration. Ce processus garantit que seuls les outils, matériaux et équipements essentiels restent, simplifiant les opérations.</p>
-                <ul>
-                    <li>Identifier et retirer les objets obsolètes ou inutilisés.</li>
-                    <li>Utiliser des étiquettes rouges pour marquer les éléments à examiner ou à éliminer.</li>
-                    <li>Réduire les distractions et libérer de l'espace pour un travail productif.</li>
-                    <li>Auditer régulièrement l'inventaire pour maintenir l'ordre.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <div class="step" data-step="2" data-lang="fr">
-                <h2 id="h2-2-fr">2. Ranger (Seiton)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After" loading="lazy">
-                <p id="p-2-fr">Organiser les éléments nécessaires pour qu'ils soient faciles à trouver et à accéder. Cette étape se concentre sur la création de dispositions et de systèmes de rangement efficaces pour minimiser le temps passé à chercher des outils ou des matériaux.</p>
-                <ul>
-                    <li>Attribuer des emplacements spécifiques pour chaque élément.</li>
-                    <li>Utiliser des étiquettes, des codes couleur ou des tableaux d'ombre pour plus de clarté.</li>
-                    <li>Concevoir des flux de travail pour réduire les mouvements et améliorer l'ergonomie.</li>
-                    <li>S'assurer que les éléments sont remis à leur place après utilisation.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <div class="step" data-step="3" data-lang="fr">
-                <h2 id="h2-3-fr">3. Nettoyer (Seiso)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After" loading="lazy">
-                <p id="p-3-fr">Maintenir un lieu de travail propre et organisé pour garantir la sécurité et l'efficacité. Le nettoyage et les inspections régulières permettent d'identifier les problèmes potentiels avant qu'ils ne s'aggravent.</p>
-                <ul>
-                    <li>Mettre en place des programmes de nettoyage quotidiens.</li>
-                    <li>Inspecter les équipements et outils pendant le nettoyage pour détecter l'usure ou les dommages.</li>
-                    <li>Encourager les employés à prendre en charge leurs zones de travail.</li>
-                    <li>Promouvoir un environnement visuellement attrayant et sûr.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <div class="step" data-step="4" data-lang="fr">
-                <h2 id="h2-4-fr">4. Standardiser (Seiketsu)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After" loading="lazy">
-                <p id="p-4-fr">Établir des procédures cohérentes pour maintenir les trois premières étapes. La standardisation garantit que l'organisation et la propreté sont maintenues dans tout le lieu de travail.</p>
-                <ul>
-                    <li>Créer des listes de contrôle et des guides visuels pour les tâches.</li>
-                    <li>Former les employés aux procédures standard.</li>
-                    <li>Planifier des audits réguliers pour assurer la conformité.</li>
-                    <li>Utiliser des outils de gestion visuelle comme des panneaux et des graphiques.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-83"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <div class="step" data-step="5" data-lang="fr">
-                <h2 id="h2-5-fr">5. Suivre (Shitsuke)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After" loading="lazy">
-                <p id="p-5-fr">Favoriser une culture de discipline pour maintenir les pratiques 5S dans le temps. Cette étape met l'accent sur l'amélioration continue et l'engagement des employés pour assurer un succès à long terme.</p>
-                <ul>
-                    <li>Fournir des formations et des ateliers continus.</li>
-                    <li>Reconnaître et récompenser le respect des principes 5S.</li>
-                    <li>Effectuer des révisions régulières et des mises à jour des normes.</li>
-                    <li>Encourager les retours pour améliorer les processus.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <!-- English -->
-            <div class="step" data-step="0" data-lang="en">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2 id="h2-0-en">Introduction to 5S Methodology</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies" loading="lazy">
-                <p id="p-0-en">The 5S methodology is a lean manufacturing tool designed to improve workplace organization and efficiency. Originating from Japan, it consists of five steps: Sort, Set in Order, Shine, Standardize, and Sustain. Each step builds a foundation for creating a productive, safe, and organized work environment.</p>
-                <ul>
-                    <li>Improves efficiency by eliminating waste.</li>
-                    <li>Enhances safety through organization and cleanliness.</li>
-                    <li>Promotes a culture of continuous improvement.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-16"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
-            </div>
-            <div class="step" data-step="1" data-lang="en">
-                <h2 id="h2-1-en">1. Sort (Seiri)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After" loading="lazy">
-                <p id="p-1-en">The first step involves removing unnecessary items from the workplace to reduce clutter and improve focus. This process ensures that only essential tools, materials, and equipment remain, streamlining operations.</p>
-                <ul>
-                    <li>Identify and remove obsolete or unused items.</li>
-                    <li>Use red tags to mark items for review or disposal.</li>
-                    <li>Reduce distractions and free up space for productive work.</li>
-                    <li>Regularly audit inventory to maintain order.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
-            </div>
-            <div class="step" data-step="2" data-lang="en">
-                <h2 id="h2-2-en">2. Set in Order (Seiton)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After" loading="lazy">
-                <p id="p-2-en">Organize necessary items so they are easy to find and access. This step focuses on creating efficient layouts and storage systems to minimize time spent searching for tools or materials.</p>
-                <ul>
-                    <li>Assign specific locations for each item.</li>
-                    <li>Use labels, color-coding, or shadow boards for clarity.</li>
-                    <li>Design workflows to reduce movement and improve ergonomics.</li>
-                    <li>Ensure items are returned to their designated places after use.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
-            </div>
-            <div class="step" data-step="3" data-lang="en">
-                <h2 id="h2-3-en">3. Shine (Seiso)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After" loading="lazy">
-                <p id="p-3-en">Maintain a clean and organized workplace to ensure safety and efficiency. Regular cleaning and inspections help identify potential issues before they escalate.</p>
-                <ul>
-                    <li>Implement daily cleaning schedules.</li>
-                    <li>Inspect equipment and tools during cleaning to detect wear or damage.</li>
-                    <li>Encourage employee ownership of their work areas.</li>
-                    <li>Promote a visually appealing and safe environment.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
-            </div>
-            <div class="step" data-step="4" data-lang="en">
-                <h2 id="h2-4-en">4. Standardize (Seiketsu)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After" loading="lazy">
-                <p id="p-4-en">Establish consistent procedures to maintain the first three steps. Standardization ensures that organization and cleanliness are sustained across the workplace.</p>
-                <ul>
-                    <li>Create checklists and visual guides for tasks.</li>
-                    <li>Train employees on standard procedures.</li>
-                    <li>Schedule regular audits to ensure compliance.</li>
-                    <li>Use visual management tools like signs and charts.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-83"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
-            </div>
-            <div class="step" data-step="5" data-lang="en">
-                <h2 id="h2-5-en">5. Sustain (Shitsuke)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After" loading="lazy">
-                <p id="p-5-en">Foster a culture of discipline to maintain 5S practices over time. This step emphasizes continuous improvement and employee engagement to ensure long-term success.</p>
-                <ul>
-                    <li>Provide ongoing training and workshops.</li>
-                    <li>Recognize and reward adherence to 5S principles.</li>
-                    <li>Conduct regular reviews and updates of standards.</li>
-                    <li>Encourage feedback to improve processes.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
-            </div>
-            <!-- German -->
-            <div class="step" data-step="0" data-lang="de">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2 id="h2-0-de">Einführung in die 5S-Methodik</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies" loading="lazy">
-                <p id="p-0-de">Die 5S-Methodik ist ein Lean-Management-Tool, das darauf abzielt, the Organisation und Effizienz am Arbeitsplatz zu verbessern. Ursprünglich aus Japan stammend, besteht sie aus fünf Schritten: Sortieren, Systematisieren, Säubern, Standardisieren und Selbstdisziplin. Jeder Schritt legt die Grundlage für ein produktives, sicheres und organisiertes Arbeitsumfeld.</p>
-                <ul>
-                    <li>Verbessert die Effizienz durch Beseitigung von Verschwendung.</li>
-                    <li>Erhöht die Sicherheit durch Organisation und Sauberkeit.</li>
-                    <li>Fördert eine Kultur der kontinuierlichen Verbesserung.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-16"></div></div>
-                <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
-            </div>
-            <div class="step" data-step="1" data-lang="de">
-                <h2 id="h2-1-de">1. Sortieren (Seiri)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After" loading="lazy">
-                <p id="p-1-de">Der erste Schritt besteht darin, unnötige Gegenstände vom Arbeitsplatz zu entfernen, um Unordnung zu reduzieren und die Konzentration zu verbessern. Dieser Prozess stellt sicher, dass nur wesentliche Werkzeuge, Materialien und Geräte verbleiben, was die Abläufe optimiert.</p>
-                <ul>
-                    <li>Erkennung und Entfernung veralteter oder ungenutzter Gegenstände.</li>
-                    <li>Verwendung von roten Etiketten zur Markierung von Gegenständen zur Überprüfung oder Entsorgung.</li>
-                    <li>Reduzierung von Ablenkungen und Freigabe von Platz für produktive Arbeit.</li>
-                    <li>Regelmäßige Inventarprüfungen zur Aufrechterhaltung der Ordnung.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
-                <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
-            </div>
-            <div class="step" data-step="2" data-lang="de">
-                <h2 id="h2-2-de">2. Systematisieren (Seiton)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After" loading="lazy">
-                <p id="p-2-de">Notwendige Gegenstände so organisieren, dass sie leicht zu finden und zugänglich sind. Dieser Schritt konzentriert sich auf die Erstellung effizienter Layouts und Lagersysteme, um die Zeit für die Suche nach Werkzeugen oder Materialien zu minimieren.</p>
-                <ul>
-                    <li>Festlegung spezifischer Standorte für jeden Gegenstand.</li>
-                    <li>Verwendung von Etiketten, Farbcodierung oder Schattenbrettern für Klarheit.</li>
-                    <li>Gestaltung von Arbeitsabläufen zur Reduzierung von Bewegungen und Verbesserung der Ergonomie.</li>
-                    <li>Sicherstellung, dass Gegenstände nach Gebrauch an ihren vorgesehenen Platz zurückgelegt werden.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
-                <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
-            </div>
-            <div class="step" data-step="3" data-lang="de">
-                <h2 id="h2-3-de">3. Säubern (Seiso)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After" loading="lazy">
-                <p id="p-3-de">Ein sauberes und organisiertes Arbeitsumfeld aufrechterhalten, um Sicherheit und Effizienz zu gewährleisten. Regelmäßige Reinigung und Inspektionen helfen, potenzielle Probleme frühzeitig zu erkennen.</p>
-                <ul>
-                    <li>Einführung täglicher Reinigungspläne.</li>
-                    <li>Inspektion von Geräten und Werkzeugen während der Reinigung auf Verschleiß oder Schäden.</li>
-                    <li>Förderung der Eigenverantwortung der Mitarbeiter für ihre Arbeitsbereiche.</li>
-                    <li>Schaffung eines visuell ansprechenden und sicheren Umfelds.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
-                <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
-            </div>
-            <div class="step" data-step="4" data-lang="de">
-                <h2 id="h2-4-de">4. Standardisieren (Seiketsu)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After" loading="lazy">
-                <p id="p-4-de">Einheitliche Verfahren etablieren, um die ersten drei Schritte aufrechtzuerhalten. Die Standardisierung stellt sicher, dass Organisation und Sauberkeit im gesamten Arbeitsplatz erhalten bleiben.</p>
-                <ul>
-                    <li>Erstellung von Checklisten und visuellen Leitfäden für Aufgaben.</li>
-                    <li>Schulung der Mitarbeiter zu Standardverfahren.</li>
-                    <li>Planung regelmäßiger Audits zur Sicherstellung der Einhaltung.</li>
-                    <li>Verwendung visueller Management-Tools wie Schilder und Diagramme.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-83"></div></div>
-                <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
-            </div>
-            <div class="step" data-step="5" data-lang="de">
-                <h2 id="h2-5-de">5. Selbstdisziplin (Shitsuke)</h2>
-                <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After" loading="lazy">
-                <p id="p-5-de">Eine Kultur der Disziplin fördern, um die 5S-Praktiken langfristig aufrechtzuerhalten. Dieser Schritt betont kontinuierliche Verbesserung und das Engagement der Mitarbeiter für langfristigen Erfolg.</p>
-                <ul>
-                    <li>Bereitstellung fortlaufender Schulungen und Workshops.</li>
-                    <li>Anerkennung und Belohnung der Einhaltung von 5S-Prinzipien.</li>
-                    <li>Durchführung regelmäßiger Überprüfungen und Aktualisierungen der Standards.</li>
-                    <li>Förderung von Rückmeldungen zur Verbesserung der Prozesse.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
-                <div class="footer">Abteilung für Kontinuierliche Verbesserung WKW Tunesien</div>
+                <div class="benefit">
+                    <p><strong>Benefits:</strong> This process empowers employees, drives innovation, and aligns improvements with organizational goals.</p>
+                </div>
             </div>
         </div>
 
-        <!-- Proposition d'Amélioration Section -->
-        <div id="proposition-amelioration" class="hidden">
-            <!-- Tunisian Arabic -->
-            <div class="step" data-step="0" data-lang="ar" dir="rtl">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>الهدف من الاقتراح للتحسين</h2>
-                <img src="https://bukitvista-wordpress-storage.s3.us-east-2.amazonaws.com/wp-content/uploads/2023/12/14122042/technology-innovation-graphic-768x796.webp" alt="Illustration of innovation and process improvement" loading="lazy">
-                <p>الهدف من عمل اقتراح تحسين هو جمع أفكار جديدة باش نحسن العمليات وزيد الكفاءة في WKW Automotive. هكا نقدر نطور الخدمة ونحقق نتائج أحسن.</p>
-                <ul>
-                    <li>تحسين الأداء والكفاءة: زيادة الإنتاجية، تحسين استعمال الموارد، وتقليل التكاليف التشغيلية.</li>
-                    <li>زيادة الجودة: تقليل الأخطاء والعيوب وضمان مستوى جودة ثابت.</li>
-                    <li>تعزيز رضا الزبون: تقديم منتجات أو خدمات تلبي توقعات الزبائن أحسن.</li>
-                    <li>توحيد أحسن الممارسات: توثيق ونشر الطرق المحسنة باش نضمن تطبيق متسق ومستدام للعمليات.</li>
-                    <li>تشجيع التزام العمال: إشراك العمال، تقدير مساهمتهم، وتحسين إنتاجيتهم ورضاهم في الخدمة.</li>
-                    <li>المواءمة مع استراتيجية الشركة: التأكد إنو مبادرات التحسين تساهم في الأهداف العامة للمنظمة.</li>
-                    <li>بناء ثقافة تحسين مستمر: خلق بيئة يتقدر فيها التقدم والتجديد، اللي يشجع على الرشاقة والنمو على المدى الطويل.</li>
-                </ul>
-                <div class="progress-bar"><div class="progress-fill progress-25"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
-            </div>
-            <div class="step" data-step="1" data-lang="ar" dir="rtl">
-                <h2>قدم اقتراحك</h2>
-                <div class="image-container">
-                    <img src="https://cartlyapp.com/wp-content/uploads/2024/09/how-to-scan-a-qr-code-1080x675.png" alt="QR code scanning process" loading="lazy">
-                    <img src="https://sesa-systems.com/cdn/shop/files/000007581_full.jpg?v=1756703050&width=600" alt="Example of a workplace improvement proposal" loading="lazy">
+        <!-- French Section -->
+        <div id="fr" class="language-section">
+            <h2>Français</h2>
+            <div id="5s-fr" class="method-section">
+                <h3>Méthode Lean 5S</h3>
+                <p>La méthodologie 5S, originaire du Japon, est un pilier de la fabrication lean visant à optimiser l'organisation du lieu de travail. Elle crée un environnement discipliné, efficace et sûr en éliminant les déchets et en standardisant les processus.</p>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="Espace de stockage parfait 5S">
                 </div>
-                <p>اسكن القرود QR باش توصل للفورمولار. مليه بالتفاصيل على فكرتك واضf صور باش توضح الاقتراح. هكا نقدر نفهم أحسن. اليوم، بالهاتف الذكي، تقدر تسكن القرود، تملي الفورمولار، وتزيد صور، يا إما باش تقترح حلول، يا إما باش توضح المشاكل اللي لقيتهم. الفورمولار تقدر تمليه على الورقة كمان، حسب الطريقة اللي تحبها.</p>
-                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
-            </div>
-            <div class="step" data-step="2" data-lang="ar" dir="rtl">
-                <h2>عملية الاختيار</h2>
-                <img src="https://img.freepik.com/vecteurs-libre/reunion-affaires-travail-equipe_126523-1310.jpg" alt="Flowchart of the improvement proposal selection process" loading="lazy">
-                <p>بعد جمع الأفكار، الفريق الإداري (CODIR) يراجع كل الاقتراحات ويختار 3 أفكار أحسن حسب الإمكانية والتأثير والابتكار. الاقتراحات تروح للقسم المناسب باش يطبقها.</p>
-                <div class="progress-bar"><div class="progress-fill progress-75"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
-            </div>
-            <div class="step" data-step="3" data-lang="ar" dir="rtl">
-                <h2>شكر وجوائز</h2>
-                <img src="https://t4.ftcdn.net/jpg/01/07/12/23/360_F_107122345_uXaVQsLkGDL4rP1hpLnqp9MbEYTIdunN.jpg" alt="Gift reward for improvement proposal winners" loading="lazy">
-                <p>تهانينا لل--3 أفكار الأحسن! هدية خاصة هتتقدم لكم على مساهمتكم في التحسين المستمر. شكرا على جهودكم.</p>
-                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
-            </div>
-            <!-- French -->
-            <div class="step active" data-step="0" data-lang="fr">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>Objectif de la Proposition d'Amélioration</h2>
-                <img src="https://bukitvista-wordpress-storage.s3.us-east-2.amazonaws.com/wp-content/uploads/2023/12/14122042/technology-innovation-graphic-768x796.webp" alt="Illustration of innovation and process improvement" loading="lazy">
-                <p>L'objectif de faire une proposition d'amélioration est de recueillir des idées innovantes pour optimiser les processus et améliorer l'efficacité au sein de WKW Automotive. Ainsi, nous pouvons développer les opérations et obtenir de meilleurs résultats.</p>
                 <ul>
-                    <li>Améliorer la performance et l'efficacité : Augmenter la productivité, optimiser l'utilisation des ressources et réduire les coûts opérationnels.</li>
-                    <li>Accroître la qualité : Diminuer les erreurs, les défauts et garantir un niveau de qualité constant.</li>
-                    <li>Renforcer la satisfaction client : Proposer des produits ou services qui répondent mieux aux attentes des clients.</li>
-                    <li>Standardiser les meilleures pratiques : Documenter et diffuser les méthodes optimisées pour assurer une application cohérente et durable des processus.</li>
-                    <li>Favoriser l'engagement des collaborateurs : Impliquer le personnel, reconnaître leur contribution et améliorer leur productivité et leur satisfaction au travail.</li>
-                    <li>S'aligner sur la stratégie de l'entreprise : Assurer que les initiatives d'amélioration contribuent aux objectifs généraux de l'organisation.</li>
-                    <li>Mettre en place une culture d'amélioration continue : Créer un environnement où le progrès et la nouveauté sont valorisés, ce qui favorise l'agilité et la croissance à long terme.</li>
+                    <li><strong>Trier (Seiri):</strong> Supprimer les éléments inutiles, ne conservant que l'essentiel pour les tâches quotidiennes.</li>
+                    <li><strong>Ranger (Seiton):</strong> Organiser les outils et matériaux de manière logique pour un accès rapide.</li>
+                    <li><strong>Nettoyer (Seiso):</strong> Maintenir un espace de travail propre par un nettoyage régulier.</li>
+                    <li><strong>Standardiser (Seiketsu):</strong> Développer des procédures pour maintenir les trois premiers S de manière cohérente.</li>
+                    <li><strong>Maintenir (Shitsuke):</strong> Intégrer une culture de discipline pour respecter les normes 5S via des formations et audits.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill progress-25"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <div class="step" data-step="1" data-lang="fr">
-                <h2>Soumettez votre Proposition</h2>
-                <div class="image-container">
-                    <img src="https://cartlyapp.com/wp-content/uploads/2024/09/how-to-scan-a-qr-code-1080x675.png" alt="QR code scanning process" loading="lazy">
-                    <img src="https://sesa-systems.com/cdn/shop/files/000007581_full.jpg?v=1756703050&width=600" alt="Example of a workplace improvement proposal" loading="lazy">
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Trier avant et après">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Ranger avant et après">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Nettoyer avant et après">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardiser avant et après">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Maintenir avant et après">
                 </div>
-                <p>Scannez le code QR pour accéder au formulaire. Remplissez-le avec les détails de votre idée et ajoutez des photos pour l'illustrer. Ainsi, nous pouvons mieux comprendre. Aujourd’hui, avec un smartphone, il est possible de scanner le code, de remplir le formulaire et d’ajouter des photos, soit pour proposer des solutions, soit pour illustrer les problèmes détectés. Le formulaire peut également être rempli sur papier, selon la méthode que vous préférez.</p>
-                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <div class="step" data-step="2" data-lang="fr">
-                <h2>Processus de Sélection</h2>
-                <img src="https://img.freepik.com/vecteurs-libre/reunion-affaires-travail-equipe_126523-1310.jpg" alt="Flowchart of the improvement proposal selection process" loading="lazy">
-                <p>Après la collecte des idées, l'équipe de direction (CODIR) révise toutes les propositions et sélectionne les 3 meilleures idées en fonction de leur faisabilité, impact et innovation. Les propositions sont envoyées au département approprié pour mise en œuvre.</p>
-                <div class="progress-bar"><div class="progress-fill progress-75"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <div class="step" data-step="3" data-lang="fr">
-                <h2>Remerciements et Récompenses</h2>
-                <img src="https://t4.ftcdn.net/jpg/01/07/12/23/360_F_107122345_uXaVQsLkGDL4rP1hpLnqp9MbEYTIdunN.jpg" alt="Gift reward for improvement proposal winners" loading="lazy">
-                <p>Félicitations aux 3 meilleures idées ! Un cadeau spécial vous sera offert pour votre contribution à l'amélioration continue. Merci pour vos efforts.</p>
-                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <!-- English -->
-            <div class="step" data-step="0" data-lang="en">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>Objective of Improvement Proposal</h2>
-                <img src="https://bukitvista-wordpress-storage.s3.us-east-2.amazonaws.com/wp-content/uploads/2023/12/14122042/technology-innovation-graphic-768x796.webp" alt="Illustration of innovation and process improvement" loading="lazy">
-                <p>The objective of making an improvement proposal is to gather innovative ideas to optimize processes and improve efficiency within WKW Automotive. This way, we can develop operations and achieve better results.</p>
+                <div class="benefit">
+                    <p><strong>Avantages :</strong> Réduction des déchets, amélioration de la productivité, sécurité renforcée et satisfaction accrue des employés.</p>
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="Sécurité et ESG 5S">
+                </div>
+                <p>Mettre en œuvre 5S dans une zone pilote peut démontrer son efficacité avant une adoption à grande échelle.</p>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="Zone pilote 5S">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="Fournitures 5S">
+                </div>
+                <h3>Processus d'audit 5S chez WKW Automotive Tunisie</h3>
+                <p>Chez WKW Automotive Tunisie, le processus d'audit 5S est optimisé grâce à une approche numérique pour garantir la conformité et l'amélioration continue.</p>
                 <ul>
-                    <li>Improve performance and efficiency: Increase productivity, optimize resource use, and reduce operational costs.</li>
-                    <li>Enhance quality: Reduce errors and defects while ensuring a consistent quality level.</li>
-                    <li>Boost customer satisfaction: Offer products or services that better meet customer expectations.</li>
-                    <li>Standardize best practices: Document and share optimized methods to ensure consistent and sustainable process application.</li>
-                    <li>Promote employee engagement: Involve staff, recognize their contributions, and enhance their productivity and job satisfaction.</li>
-                    <li>Align with company strategy: Ensure improvement initiatives contribute to the organization's overall goals.</li>
-                    <li>Establish a culture of continuous improvement: Create an environment where progress and innovation are valued, fostering agility and long-term growth.</li>
+                    <li><strong>Scan du QR Code :</strong> L'auditeur scanne un QR code situé dans la zone de travail pour accéder instantanément au formulaire d'audit.</li>
+                    <li><strong>Formulaire d'audit :</strong> Le formulaire contient 26 questions couvrant les principes 5S (Trier, Ranger, Nettoyer, Standardiser, Maintenir).</li>
+                    <li><strong>Options de réponse :</strong> Pour chaque question, l'auditeur peut choisir entre Oui, Non, Partiellement, ou ajouter un commentaire pour plus de détails.</li>
+                    <li><strong>Ajout de photos :</strong> Si nécessaire, l'auditeur peut joindre une photo pour documenter des observations ou problèmes spécifiques.</li>
+                    <li><strong>Score automatique :</strong> À la fin, le système calcule et affiche automatiquement un score d'audit basé sur les réponses.</li>
+                    <li><strong>Génération de rapport :</strong> Un rapport d'audit détaillé est généré, résumant les constatations, le score et les photos jointes. Le rapport peut être envoyé par email pour un examen ou une action ultérieure.</li>
                 </ul>
-                <div class="progress-bar"><div class="progress-fill progress-25"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
-            </div>
-            <div class="step" data-step="1" data-lang="en">
-                <h2>Submit Your Proposal</h2>
-                <div class="image-container">
-                    <img src="https://cartlyapp.com/wp-content/uploads/2024/09/how-to-scan-a-qr-code-1080x675.png" alt="QR code scanning process" loading="lazy">
-                    <img src="https://sesa-systems.com/cdn/shop/files/000007581_full.jpg?v=1756703050&width=600" alt="Example of a workplace improvement proposal" loading="lazy">
+                <div class="benefit">
+                    <p><strong>Avantages :</strong> Ce processus d'audit numérique améliore l'efficacité, garantit une collecte de données précise et soutient la prise de décision en temps réel pour les améliorations du lieu de travail.</p>
                 </div>
-                <p>Scan the QR code to access the form. Fill it with details of your idea and add photos to illustrate it. This way, we can understand better. Today, with a smartphone, you can scan the QR code, fill out the form, and add photos to either propose solutions or illustrate detected issues. The form can also be filled out on paper, depending on your preferred method.</p>
-                <div class="progress-bar"><div class="progress-fill progress-50"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
             </div>
-            <div class="step" data-step="2" data-lang="en">
-                <h2>Selection Process</h2>
-                <img src="https://img.freepik.com/vecteurs-libre/reunion-affaires-travail-equipe_126523-1310.jpg" alt="Flowchart of the improvement proposal selection process" loading="lazy">
-                <p>After collecting ideas, the management team (CODIR) reviews all proposals and selects the 3 best ideas based on feasibility, impact, and innovation. Proposals are sent to the appropriate department for implementation.</p>
-                <div class="progress-bar"><div class="progress-fill progress-75"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+            <div id="gemba-fr" class="method-section">
+                <h3>Méthode Gemba</h3>
+                <p>Gemba, signifiant « le lieu réel », désigne l'endroit où la valeur est créée, comme l'atelier de production. La marche Gemba est une pratique lean où les managers observent les processus, interagissent avec les employés et identifient les inefficacités de première main.</p>
+                <div class="image-gallery">
+                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="Illustration de la marche Gemba">
+                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="Principes de gestion lean">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="Gemba en action">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="Observation des processus Gemba">
+                </div>
+                <div class="benefit">
+                    <p><strong>Avantages :</strong> Détection des problèmes en temps réel, meilleure collaboration avec les employés et prise de décision éclairée.</p>
+                </div>
+                <h3>Processus d'audit Gemba chez WKW Automotive Tunisie</h3>
+                <p>Chez WKW Automotive Tunisie, le processus d'audit Gemba est structuré pour garantir une observation approfondie et une amélioration des processus sur le lieu de travail.</p>
+                <h4>Étape 1 : Préparer l’équipe d’audit</h4>
+                <p>Définir les auditeurs et leurs zones de responsabilité pour couvrir tous les aspects de la marche Gemba.</p>
+                <ul>
+                    <li><strong>Auditeur 1 → HSE :</strong> Se concentre sur la santé, la sécurité et l'environnement (pictogrammes, EPI, sécurité au poste).</li>
+                    <li><strong>Auditeur 2 → 5S :</strong> Évalue l'ordre, la propreté et le rangement des outils.</li>
+                    <li><strong>Auditeur 3 → Processus :</strong> Examine les standards de travail et les affichages visuels.</li>
+                    <li><strong>Auditeur 4 → Management visuel :</strong> Évalue les KPI et le suivi des performances.</li>
+                </ul>
+                <h4>Étape 2 : Créer les formulaires</h4>
+                <p>Deux options sont disponibles pour les formulaires d'audit :</p>
+                <ul>
+                    <li><strong>Formulaire unique :</strong> Un formulaire commun avec 10 questions Gemba plus l'ajout de photos, utilisé par tous les auditeurs (approche plus simple).</li>
+                    <li><strong>Formulaires dédiés :</strong> Des formulaires spécifiques pour chaque auditeur, adaptés à leur domaine de responsabilité (approche plus structurée).</li>
+                </ul>
+                <p>Chaque formulaire inclut :</p>
+                <ul>
+                    <li><strong>Questions fermées :</strong> Options de réponse Oui, Non, ou Partiellement.</li>
+                    <li><strong>Zone de commentaire :</strong> Espace pour expliquer les non-conformités ou observations.</li>
+                    <li><strong>Notation :</strong> Attribuer un score à chaque réponse (Oui = 1, Non = 0).</li>
+                </ul>
+                <p>À la fin, un score d'audit est affiché automatiquement. Un rapport détaillé est généré, résumant les constatations, les scores et les photos jointes, pouvant être envoyé par email pour un examen ou une action ultérieure.</p>
+                <div class="benefit">
+                    <p><strong>Avantages :</strong> Ce processus d'audit Gemba structuré garantit une évaluation complète du lieu de travail, favorise la responsabilité et soutient les améliorations basées sur les données.</p>
+                </div>
             </div>
-            <div class="step" data-step="3" data-lang="en">
-                <h2>Thanks and Rewards</h2>
-                <img src="https://t4.ftcdn.net/jpg/01/07/12/23/360_F_107122345_uXaVQsLkGDL4rP1hpLnqp9MbEYTIdunN.jpg" alt="Gift reward for improvement proposal winners" loading="lazy">
-                <p>Congratulations to the 3 best ideas! A special gift will be offered for your contribution to continuous improvement. Thank you for your efforts.</p>
-                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+            <div id="kaizen-fr" class="method-section">
+                <h3>Méthode de proposition d'amélioration (Kaizen)</h3>
+                <p>Kaizen, ou « amélioration continue », est une philosophie qui encourage tous les employés à proposer des changements progressifs aux processus. Mise en œuvre via des systèmes de suggestions, ateliers d'équipe ou événements d'amélioration, Kaizen stimule l'efficacité et l'innovation.</p>
+                <div class="image-gallery">
+                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="Amélioration continue">
+                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="Processus Kaizen">
+                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="Cycle PDCA">
+                </div>
+                <div class="benefit">
+                    <p><strong>Avantages :</strong> Efficacité accrue, autonomisation des employés et améliorations durables des processus.</p>
+                </div>
+                <h3>Processus d'audit Kaizen chez WKW Automotive Tunisie</h3>
+                <p>Chez WKW Automotive Tunisie, le processus d'audit Kaizen permet à tous les collaborateurs (opérateurs, directeurs, agents de sécurité, RH, etc.) de proposer facilement des idées d’amélioration pour renforcer la sécurité, la productivité, la qualité et l’environnement de travail.</p>
+                <h4>Étape 1 : Soumission de l’idée</h4>
+                <p>Le collaborateur scanne un QR code affiché dans l’entreprise pour accéder à un formulaire digital (par exemple, Microsoft Forms).</p>
+                <ul>
+                    <li><strong>Lieu/Service :</strong> Préciser le département ou la zone concernée.</li>
+                    <li><strong>Problème identifié :</strong> Décrire le problème observé.</li>
+                    <li><strong>Solution proposée :</strong> Suggérer une solution pour résoudre le problème.</li>
+                    <li><strong>Photo (facultative) :</strong> Joindre une photo si nécessaire pour illustrer l’idée.</li>
+                </ul>
+                <p>Une fois validé, le formulaire est automatiquement enregistré dans une base centralisée (Google Sheets, Excel ou plateforme interne).</p>
+                <h4>Étape 2 : Analyse des idées</h4>
+                <p>Chaque mois, le service Amélioration Continue regroupe et analyse les propositions pour évaluer leur faisabilité et leur impact.</p>
+                <h4>Étape 3 : Sélection et récompense</h4>
+                <p>Le CODIR (comité de direction) se réunit pour étudier les idées reçues et sélectionne les trois idées les plus créatives et impactantes. Les auteurs de ces idées sont récompensés par des cadeaux ou des reconnaissances.</p>
+                <h4>Résultats attendus</h4>
+                <ul>
+                    <li>Encourager une culture participative.</li>
+                    <li>Stimuler la créativité et l’innovation.</li>
+                    <li>Améliorer en continu la sécurité, la qualité et la productivité.</li>
+                    <li>Valoriser les collaborateurs qui s’impliquent.</li>
+                </ul>
+                <div class="benefit">
+                    <p><strong>Avantages :</strong> Ce processus responsabilise les employés, stimule l’innovation et aligne les améliorations sur les objectifs de l’organisation.</p>
+                </div>
             </div>
         </div>
 
-        <!-- Gemba OJT Section -->
-        <div id="gemba-ojt" class="hidden">
-            <!-- Tunisian Arabic -->
-            <div class="step" data-step="0" data-lang="ar" dir="rtl">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>ما هو التدريب الميداني (Gemba OJT)</h2>
-                <img src="https://static.wixstatic.com/media/a877ae_fafbb2c8782e4b54bfeb43c4c5cefee1~mv2.png/v1/fill/w_980,h_551,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/a877ae_fafbb2c8782e4b54bfeb43c4c5cefee1~mv2.png" alt="Illustration of Gemba on-the-job training in the workplace" loading="lazy">
-                <p>التدريب الميداني (Gemba OJT)، أو التدريب في مكان العمل، هو نهج في إدارة النحافة حيث يزور المديرون والقادة المكان الحقيقي للعمل («جمبا» باليابانية) لمراقبة العمليات أثناء التنفيذ، والتفاعل مع العمال، وتحديد المشاكل وفرص التحسين، بدلاً من الاعتماد على التقارير أو التصورات المكتبية. هذا النهج يعزز فهمًا مباشرًا للواقع التشغيلي، وتطوير مهارات العمال، وزيادة التزامهم، ويتماشى مع مبادئ التحسين المستمر واحترام الأفراد.</p>
-                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
+        <!-- German Section -->
+        <div id="de" class="language-section">
+            <h2>Deutsch</h2>
+            <div id="5s-de" class="method-section">
+                <h3>Lean 5S Methode</h3>
+                <p>Die 5S-Methodik, die aus Japan stammt, ist ein zentrales Element des Lean-Managements, das die Organisation am Arbeitsplatz optimiert. Sie schafft eine disziplinierte, effiziente und sichere Umgebung durch die Beseitigung von Verschwendung und die Standardisierung von Prozessen.</p>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="Perfekter 5S-Lagerbereich">
+                </div>
+                <ul>
+                    <li><strong>Sortieren (Seiri):</strong> Unnötige Gegenstände entfernen, nur das Nötige für tägliche Aufgaben behalten.</li>
+                    <li><strong>Ordnen (Seiton):</strong> Werkzeuge und Materialien logisch anordnen für schnellen Zugriff.</li>
+                    <li><strong>Reinigen (Seiso):</strong> Arbeitsplatz regelmäßig reinigen, um Sicherheit und Effizienz zu gewährleisten.</li>
+                    <li><strong>Standardisieren (Seiketsu):</strong> Verfahren entwickeln, um die ersten drei S konsequent umzusetzen.</li>
+                    <li><strong>Erhalten (Shitsuke):</strong> Eine Kultur der Disziplin etablieren, um 5S-Standards durch Schulungen und Audits zu wahren.</li>
+                </ul>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sortieren vor und nach">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Ordnen vor und nach">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Reinigen vor und nach">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardisieren vor und nach">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Erhalten vor und nach">
+                </div>
+                <div class="benefit">
+                    <p><strong>Vorteile:</strong> Reduzierte Verschwendung, verbesserte Produktivität, erhöhte Sicherheit und höhere Mitarbeiterzufriedenheit.</p>
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="5S Sicherheit und ESG">
+                </div>
+                <p>Die Implementierung von 5S in einem Pilotbereich kann seine Wirksamkeit vor einer flächendeckenden Einführung demonstrieren.</p>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="5S Pilotbereich">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Vorräte">
+                </div>
+                <h3>5S Audit-Prozess bei WKW Automotive Tunisie</h3>
+                <p>Bei WKW Automotive Tunisie wird der 5S-Audit-Prozess durch einen digitalen Ansatz optimiert, um Konformität und kontinuierliche Verbesserung zu gewährleisten.</p>
+                <ul>
+                    <li><strong>QR-Code-Scannen:</strong> Der Auditor scannt einen QR-Code im Arbeitsbereich, um sofort auf das Audit-Formular zuzugreifen.</li>
+                    <li><strong>Audit-Formular:</strong> Das Formular enthält 26 Fragen, die die 5S-Prinzipien (Sortieren, Ordnen, Reinigen, Standardisieren, Erhalten) abdecken.</li>
+                    <li><strong>Antwortoptionen:</strong> Für jede Frage kann der Auditor zwischen Ja, Nein, Teilweise oder einem Kommentar wählen.</li>
+                    <li><strong>Foto-Upload:</strong> Bei Bedarf kann der Auditor ein Foto hinzufügen, um spezifische Beobachtungen oder Probleme zu dokumentieren.</li>
+                    <li><strong>Automatische Bewertung:</strong> Nach Abschluss berechnet das System automatisch eine Audit-Punktzahl basierend auf den Antworten.</li>
+                    <li><strong>Berichtserstellung:</strong> Ein detaillierter Audit-Bericht wird generiert, der die Ergebnisse, die Punktzahl und angehängte Fotos zusammenfasst. Der Bericht kann per E-Mail zur weiteren Überprüfung oder Maßnahmen gesendet werden.</li>
+                </ul>
+                <div class="benefit">
+                    <p><strong>Vorteile:</strong> Dieser digitale Audit-Prozess steigert die Effizienz, gewährleistet eine genaue Datenerfassung und unterstützt Echtzeit-Entscheidungen für Arbeitsplatzverbesserungen.</p>
+                </div>
             </div>
-            <div class="step" data-step="1" data-lang="ar" dir="rtl">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>مكونات وأهداف التدريب الميداني (جمبا)</h2>
-                <img src="https://media.licdn.com/dms/image/v2/D4D12AQHg9idH14IwgA/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715842903348?e=2147483647&v=beta&t=yahOYfopgsz4GA1rSIySYWDY95re1xCOroOhsZCBySc" alt="Illustration of Gemba training components in the workplace" loading="lazy">
-                <p>
-                    <strong>المكان (جمبا):</strong> هو المكان اللي يصير فيه العمل فعليًا ويضاف فيه القيمة، زي مركز إنتاج، ورشة، أو حتى مكتب.<br>
-                    <strong>المراقبة:</strong> القادة يراقبو العمليات، الأدوات، وطريقة عمل العمال مباشرة باش يكتشفو الهدر أو عدم الكفاءة.<br>
-                    <strong>التفاعل:</strong> يتكلمو مع العمال باش يفهمو تحدياتهم، معارفهم، ويجمعو اقتراحاتهم للتحسين.<br>
-                    <strong>التحليل والتحسين:</strong> الهدف الأساسي هو الحصول على رؤية واضحة لواقع الميدان باش ياخذو قرارات مبنية على الحقائق، يحلو المشاكل، ويعززو التحسين المستمر.
-                </p>
-                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
+            <div id="gemba-de" class="method-section">
+                <h3>Gemba Methode</h3>
+                <p>Gemba, was „der tatsächliche Ort“ bedeutet, bezieht sich auf den Ort, an dem Wert geschaffen wird, wie die Produktionshalle. Der Gemba Walk ist eine Lean-Praxis, bei der Führungskräfte Prozesse beobachten, mit Mitarbeitern interagieren und Ineffizienzen direkt erkennen.</p>
+                <div class="image-gallery">
+                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="Gemba Walk Illustration">
+                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="Lean-Management-Prinzipien">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="Gemba in Aktion">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="Gemba-Prozessbeobachtung">
+                </div>
+                <div class="benefit">
+                    <p><strong>Vorteile:</strong> Echtzeit-Problemidentifikation, stärkere Mitarbeiterzusammenarbeit und fundierte Entscheidungsfindung.</p>
+                </div>
+                <h3>Gemba Audit-Prozess bei WKW Automotive Tunisie</h3>
+                <p>Bei WKW Automotive Tunisie ist der Gemba-Audit-Prozess so strukturiert, dass eine gründliche Beobachtung und Verbesserung der Arbeitsplatzprozesse gewährleistet wird.</p>
+                <h4>Schritt 1: Vorbereitung des Audit-Teams</h4>
+                <p>Definieren der Auditoren und ihrer Verantwortungsbereiche, um alle Aspekte des Gemba Walks abzudecken.</p>
+                <ul>
+                    <li><strong>Auditor 1 → HSE:</strong> Konzentriert sich auf Gesundheit, Sicherheit und Umwelt (Piktogramme, PSA, Arbeitssicherheit).</li>
+                    <li><strong>Auditor 2 → 5S:</strong> Bewertet Ordnung, Sauberkeit und Werkzeugorganisation.</li>
+                    <li><strong>Auditor 3 → Prozess:</strong> Überprüft Arbeitsstandards und visuelle Anzeigen.</li>
+                    <li><strong>Auditor 4 → Visuelles Management:</strong> Bewertet KPIs und Leistungsverfolgung.</li>
+                </ul>
+                <h4>Schritt 2: Erstellung der Audit-Formulare</h4>
+                <p>Es gibt zwei Optionen für Audit-Formulare:</p>
+                <ul>
+                    <li><strong>Einheitliches Formular:</strong> Ein gemeinsames Formular mit 10 Gemba-Fragen plus Foto-Uploads, das von allen Auditoren verwendet wird (einfacherer Ansatz).</li>
+                    <li><strong>Spezifische Formulare:</strong> Separate Formulare, die auf den Verantwortungsbereich jedes Auditors zugeschnitten sind (strukturierter Ansatz).</li>
+                </ul>
+                <p>Jedes Formular enthält:</p>
+                <ul>
+                    <li><strong>Geschlossene Fragen:</strong> Antwortoptionen Ja, Nein oder Teilweise.</li>
+                    <li><strong>Kommentarbereich:</strong> Platz zur Erklärung von Nichtkonformitäten oder Beobachtungen.</li>
+                    <li><strong>Bewertung:</strong> Zuweisung von Punkten für jede Antwort (Ja = 1, Nein = 0).</li>
+                </ul>
+                <p>Nach Abschluss wird eine automatische Audit-Punktzahl angezeigt. Ein detaillierter Bericht wird generiert, der die Ergebnisse, Punkte und angehängte Fotos zusammenfasst und per E-Mail zur weiteren Überprüfung oder Maßnahmen gesendet werden kann.</p>
+                <div class="benefit">
+                    <p><strong>Vorteile:</strong> Dieser strukturierte Gemba-Audit-Prozess gewährleistet eine umfassende Bewertung des Arbeitsplatzes, fördert Verantwortlichkeit und unterstützt datenbasierte Verbesserungen.</p>
+                </div>
             </div>
-            <div class="step" data-step="2" data-lang="ar" dir="rtl">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>فوائد نهج التدريب الميداني (جمبا)</h2>
-                <img src="https://shizen.io/wp-content/uploads/2023/09/0_2cropped.png" alt="Illustration of benefits of Gemba approach in the workplace" loading="lazy">
-                <p>
-                    <strong>فهم أفضل:</strong> يعطي للقادة نظرة مباشرة على الواقع التشغيلي والعمليات الحقيقية.<br>
-                    <strong>تحديد المشاكل:</strong> يسمح بالكشف السريع عن المشاكل أو العوائق اللي ممكن ما تتشافش من التحليلات المكتبية.<br>
-                    <strong>تحفيز وتفاعل العمال:</strong> زيارة الإدارة للميدان تبين احترام لعمل العمال، وهذا يشجعهم على المشاركة والالتزام.<br>
-                    <strong>اتخاذ قرارات مبنية على الحقائق:</strong> القرارات تكون مبنية على ملاحظات مباشرة وحقائق، مش على افتراضات.<br>
-                    <strong>ثقافة التحسين المستمر:</strong> تعزز ثقافة يكون فيها تحسين العمليات نشاط يومي وجماعي.
-                </p>
-                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
-                <div class="footer">قسم التحسين المستمر WKW تونس</div>
+            <div id="kaizen-de" class="method-section">
+                <h3>Methode zur Vorschlag von Verbesserungen (Kaizen)</h3>
+                <p>Kaizen, oder „kontinuierliche Verbesserung“, ist eine Philosophie, die alle Mitarbeiter ermutigt, kleine, schrittweise Prozessverbesserungen vorzuschlagen. Umgesetzt durch Vorschlagssysteme, Teamworkshops oder Verbesserungsveranstaltungen, fördert Kaizen Effizienz und Innovation.</p>
+                <div class="image-gallery">
+                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="Kontinuierliche Verbesserung">
+                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="Kaizen-Prozess">
+                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="PDCA-Zyklus">
+                </div>
+                <div class="benefit">
+                    <p><strong>Vorteile:</strong> Höhere Effizienz, Mitarbeiterbefähigung und nachhaltige Prozessverbesserungen.</p>
+                </div>
+                <h3>Kaizen-Audit-Prozess bei WKW Automotive Tunisie</h3>
+                <p>Bei WKW Automotive Tunisie ermöglicht der Kaizen-Audit-Prozess allen Mitarbeitern (Operatoren, Direktoren, Sicherheitskräften, Personalabteilung usw.), Verbesserungsvorschläge einzureichen, um Sicherheit, Produktivität, Qualität und das Arbeitsumfeld zu verbessern.</p>
+                <h4>Schritt 1: Einreichung von Ideen</h4>
+                <p>Mitarbeiter scannen einen im Unternehmen angezeigten QR-Code, um ein digitales Formular (z. B. Microsoft Forms) zu öffnen.</p>
+                <ul>
+                    <li><strong>Ort/Abteilung:</strong> Angabe der betroffenen Abteilung oder des Bereichs.</li>
+                    <li><strong>Erkanntes Problem:</strong> Beschreibung des festgestellten Problems.</li>
+                    <li><strong>Vorgeschlagene Lösung:</strong> Vorschlag einer Lösung zur Behebung des Problems.</li>
+                    <li><strong>Foto (optional):</strong> Anfügen eines Fotos, falls erforderlich, um die Idee zu untermauern.</li>
+                </ul>
+                <p>Nach der Einreichung wird das Formular automatisch in einer zentralen Datenbank (Google Sheets, Excel oder interne Plattform) gespeichert.</p>
+                <h4>Schritt 2: Analyse der Ideen</h4>
+                <p>Das Team für kontinuierliche Verbesserung sammelt und analysiert monatlich alle eingereichten Vorschläge, um deren Machbarkeit und Wirkung zu bewerten.</p>
+                <h4>Schritt 3: Auswahl und Belohnung</h4>
+                <p>Das CODIR (Geschäftsführungskomitee) prüft die eingegangenen Ideen und wählt die drei kreativsten und wirkungsvollsten aus. Die Autoren dieser Ideen werden mit Geschenken oder Anerkennung belohnt.</p>
+                <h4>Erwartete Ergebnisse</h4>
+                <ul>
+                    <li>Förderung einer partizipativen Kultur.</li>
+                    <li>Anregung von Kreativität und Innovation.</li>
+                    <li>Kontinuierliche Verbesserung von Sicherheit, Qualität und Produktivität.</li>
+                    <li>Wertschätzung engagierter Mitarbeiter.</li>
+                </ul>
+                <div class="benefit">
+                    <p><strong>Vorteile:</strong> Dieser Prozess befähigt Mitarbeiter, fördert Innovation und richtet Verbesserungen an den Unternehmenszielen aus.</p>
+                </div>
             </div>
-            <!-- French -->
-            <div class="step active" data-step="0" data-lang="fr">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>Qu'est-ce que le Gemba OJT</h2>
-                <img src="https://static.wixstatic.com/media/a877ae_fafbb2c8782e4b54bfeb43c4c5cefee1~mv2.png/v1/fill/w_980,h_551,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/a877ae_fafbb2c8782e4b54bfeb43c4c5cefee1~mv2.png" alt="Illustration of Gemba on-the-job training in the workplace" loading="lazy">
-                <p>Le "Gemba on job training", ou formation sur le terrain, est une approche du Lean management où les managers et leaders se rendent sur le lieu de travail réel (« Gemba » en japonais) pour observer les processus en action, interagir avec les employés, identifier les problèmes et les opportunités d'amélioration, plutôt que de se fier à des rapports ou des perceptions de bureau. Cette démarche favorise une compréhension directe de la réalité opérationnelle, le développement des compétences des employés et un engagement accru, s'alignant sur les principes d'amélioration continue et de respect des personnes.</p>
-                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+        </div>
+
+        <!-- Arabic Section -->
+        <div id="ar" class="language-section arabic">
+            <h2>العربية</h2>
+            <div id="5s-ar" class="method-section">
+                <h3>طريقة لين 5S</h3>
+                <p>طريقة 5S، التي نشأت في اليابان، هي ركيزة أساسية للتصنيع اللين تهدف إلى تحسين تنظيم مكان العمل. إنها تخلق بيئة منضبطة وفعالة وآمنة من خلال القضاء على الهدر وتوحيد العمليات.</p>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="منطقة تخزين مثالية 5S">
+                </div>
+                <ul>
+                    <li><strong>الفرز (Seiri):</strong> إزالة العناصر غير الضرورية، والاحتفاظ فقط بما هو أساسي للمهام اليومية.</li>
+                    <li><strong>الترتيب (Seiton):</strong> ترتيب الأدوات والمواد بشكل منطقي للوصول السريع.</li>
+                    <li><strong>التنظيف (Seiso):</strong> الحفاظ على نظافة مكان العمل من خلال التنظيف المنتظم.</li>
+                    <li><strong>التوحيد (Seiketsu):</strong> تطوير إجراءات للحفاظ على الثلاثة S الأولى باستمرار.</li>
+                    <li><strong>الحفاظ (Shitsuke):</strong> إنشاء ثقافة الانضباط للحفاظ على معايير 5S من خلال التدريب والتدقيق.</li>
+                </ul>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="الفرز قبل وبعد">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="الترتيب قبل وبعد">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="التنظيف قبل وبعد">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="التوحيد قبل وبعد">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="الحفاظ قبل وبعد">
+                </div>
+                <div class="benefit">
+                    <p><strong>الفوائد:</strong> تقليل الهدر، تحسين الإنتاجية، تعزيز السلامة، وزيادة رضا الموظفين.</p>
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="السلامة وESG 5S">
+                </div>
+                <p>تنفيذ 5S في منطقة تجريبية يمكن أن يظهر فعاليتها قبل التطبيق على نطاق واسع.</p>
+                <div class="image-gallery">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="منطقة تجريبية 5S">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="إمدادات 5S">
+                </div>
+                <h3>عملية تدقيق 5S في WKW Automotive Tunisie</h3>
+                <p>في WKW Automotive Tunisie، يتم تبسيط عملية تدقيق 5S باستخدام نهج رقمي لضمان الامتثال والتحسين المستمر.</p>
+                <ul>
+                    <li><strong>مسح رمز QR:</strong> يقوم المدقق بمسح رمز QR موجود في منطقة العمل للوصول الفوري إلى نموذج التدقيق.</li>
+                    <li><strong>نموذج التدقيق:</strong> يحتوي النموذج على 26 سؤالاً تغطي مبادئ 5S (الفرز، الترتيب، التنظيف، التوحيد، الحفاظ).</li>
+                    <li><strong>خيارات الإجابة:</strong> لكل سؤال، يمكن للمدقق اختيار نعم، لا، جزئيًا، أو إضافة تعليق لمزيد من التفاصيل.</li>
+                    <li><strong>إضافة الصور:</strong> إذا لزم الأمر، يمكن للمدقق إرفاق صورة لتوثيق ملاحظات أو مشكلات محددة.</li>
+                    <li><strong>التقييم التلقائي:</strong> عند الانتهاء، يحسب النظام تلقائيًا ويعرض درجة التدقيق بناءً على الإجابات.</li>
+                    <li><strong>إنشاء التقرير:</strong> يتم إنشاء تقرير تدقيق مفصل يلخص النتائج، الدرجة، وأي صور مرفقة. يمكن إرسال التقرير عبر البريد الإلكتروني لمراجعة أو اتخاذ إجراءات لاحقة.</li>
+                </ul>
+                <div class="benefit">
+                    <p><strong>الفوائد:</strong> تعزز عملية التدقيق الرقمية هذه الكفاءة، وتضمن جمع بيانات دقيقة، وتدعم اتخاذ القرار في الوقت الفعلي لتحسين مكان العمل.</p>
+                </div>
             </div>
-            <div class="step" data-step="1" data-lang="fr">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>Composantes et objectifs de la formation Gemba</h2>
-                <img src="https://media.licdn.com/dms/image/v2/D4D12AQHg9idH14IwgA/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715842903348?e=2147483647&v=beta&t=yahOYfopgsz4GA1rSIySYWDY95re1xCOroOhsZCBySc" alt="Illustration of Gemba training components in the workplace" loading="lazy">
-                <p>
-                    <strong>Le lieu (Gemba) :</strong> C'est l'endroit où le travail est réellement effectué et où la valeur est ajoutée, comme un centre de production, un atelier, ou même un bureau.<br>
-                    <strong>L'observation :</strong> Les leaders observent directement les processus, les outils et la manière dont les employés travaillent pour identifier les gaspillages ou les inefficacités.<br>
-                    <strong>L'interaction :</strong> Ils engagent la conversation avec les employés pour comprendre leurs défis, leurs connaissances et recueillir leurs suggestions d'amélioration.<br>
-                    <strong>L'analyse et l'amélioration :</strong> L'objectif principal est d'obtenir une vision claire de la réalité du terrain afin de prendre des décisions éclairées, de résoudre les problèmes et de stimuler l'amélioration continuous.
-                </p>
-                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
+            <div id="gemba-ar" class="method-section">
+                <h3>طريقة غيمبا</h3>
+                <p>غيمبا، وتعني "المكان الحقيقي"، تشير إلى الموقع الذي يتم فيه خلق القيمة، مثل أرضية المصنع. جولة غيمبا هي ممارسة لين حيث يراقب المديرون العمليات، ويتفاعلون مع الموظفين، ويكتشفون النواقص مباشرة.</p>
+                <div class="image-gallery">
+                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="رسم توضيحي لجولة غيمبا">
+                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="مبادئ الإدارة اللينة">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="غيمبا أثناء العمل">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="مراقبة عملية غيمبا">
+                </div>
+                <div class="benefit">
+                    <p><strong>الفوائد:</strong> اكتشاف المشكلات في الوقت الفعلي، تعاون أقوى مع الموظفين، واتخاذ قرارات مستنيرة.</p>
+                </div>
+                <h3>عملية تدقيق غيمبا في WKW Automotive Tunisie</h3>
+                <p>في WKW Automotive Tunisie، تم تصميم عملية تدقيق غيمبا لضمان مراقبة دقيقة وتحسين العمليات في مكان العمل.</p>
+                <h4>الخطوة 1: تحضير فريق التدقيق</h4>
+                <p>تحديد المدققين ومسؤولياتهم لتغطية جميع جوانب جولة غيمبا.</p>
+                <ul>
+                    <li><strong>المدقق 1 → الصحة والسلامة والبيئة:</strong> يركز على الصحة والسلامة والبيئة (الرموز التوضيحية، معدات الحماية الشخصية، السلامة في مكان العمل).</li>
+                    <li><strong>المدقق 2 → 5S:</strong> يقيّم النظام، النظافة، وترتيب الأدوات.</li>
+                    <li><strong>المدقق 3 → العمليات:</strong> يراجع معايير العمل والعروض المرئية.</li>
+                    <li><strong>المدقق 4 → الإدارة المرئية:</strong> يقيّم مؤشرات الأداء الرئيسية وتتبع الأداء.</li>
+                </ul>
+                <h4>الخطوة 2: إنشاء نماذج التدقيق</h4>
+                <p>هناك خياران لنماذج التدقيق:</p>
+                <ul>
+                    <li><strong>نموذج موحد:</strong> نموذج مشترك يحتوي على 10 أسئلة غيمبا بالإضافة إلى رفع الصور، يستخدمه جميع المدققين (نهج أبسط).</li>
+                    <li><strong>نماذج مخصصة:</strong> نماذج منفصلة مصممة خصيصًا لمجال مسؤولية كل مدقق (نهج أكثر تنظيمًا).</li>
+                </ul>
+                <p>كل نموذج يتضمن:</p>
+                <ul>
+                    <li><strong>أسئلة مغلقة:</strong> خيارات الإجابة نعم، لا، أو جزئيًا.</li>
+                    <li><strong>قسم التعليقات:</strong> مساحة لشرح عدم الامتثال أو الملاحظات.</li>
+                    <li><strong>التقييم:</strong> تخصيص درجات لكل إجابة (نعم = 1، لا = 0).</li>
+                </ul>
+                <p>عند الانتهاء، يتم عرض درجة التدقيق تلقائيًا. يتم إنشاء تقرير مفصل يلخص النتائج، الدرجات، وأي صور مرفقة، ويمكن إرساله عبر البريد الإلكتروني لمراجعة أو اتخاذ إجراءات لاحقة.</p>
+                <div class="benefit">
+                    <p><strong>الفوائد:</strong> تضمن عملية التدقيق المنظمة هذه تقييمًا شاملاً لمكان العمل، وتعزز المسؤولية، وتدعم التحسينات القائمة على البيانات.</p>
+                </div>
             </div>
-            <div class="step" data-step="2" data-lang="fr">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>Bénéfices de l'approche Gemba</h2>
-                <img src="https://shizen.io/wp-content/uploads/2023/09/0_2cropped.png" alt="Illustration of benefits of Gemba approach in the workplace" loading="lazy">
-                <p>
-                    <strong>Meilleure compréhension :</strong> Donne aux dirigeants un aperçu direct de la réalité opérationnelle et des processus réels.<br>
-                    <strong>Identification des problèmes :</strong> Permet de détecter rapidement les problèmes ou les goulots d'étranglement qui peuvent échapper aux analyses de bureau.<br>
-                    <strong>Motivation et engagement des employés :</strong> Le fait que la direction vienne sur le terrain montre du respect pour le travail des employés, ce qui encourage leur participation et leur engagement.<br>
-                    <strong>Prise de décision éclairée :</strong> Les décisions sont basées sur des observations directes et des faits, plutôt que sur des hypothèses.<br>
-                    <strong>Culture d'amélioration continue :</strong> Favorise une culture où l'amélioration des processus est une activité quotidienne et collective.
-                </p>
-                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
-                <div class="footer">Département Amélioration Continue WKW Tunisie</div>
-            </div>
-            <!-- English -->
-            <div class="step" data-step="0" data-lang="en">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>What is Gemba OJT</h2>
-                <img src="https://static.wixstatic.com/media/a877ae_fafbb2c8782e4b54bfeb43c4c5cefee1~mv2.png/v1/fill/w_980,h_551,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/a877ae_fafbb2c8782e4b54bfeb43c4c5cefee1~mv2.png" alt="Illustration of Gemba on-the-job training in the workplace" loading="lazy">
-                <p>Gemba On-the-Job Training (OJT) is a Lean management approach where managers and leaders visit the actual workplace ("Gemba" in Japanese) to observe processes in action, interact with employees, and identify problems and opportunities for improvement, rather than relying on reports or office-based perceptions. This approach promotes a direct understanding of operational reality, enhances employee skills development, and increases engagement, aligning with the principles of continuous improvement and respect for people.</p>
-                <div class="progress-bar"><div class="progress-fill progress-33"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
-            </div>
-            <div class="step" data-step="1" data-lang="en">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>Components and Objectives of Gemba Training</h2>
-                <img src="https://media.licdn.com/dms/image/v2/D4D12AQHg9idH14IwgA/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715842903348?e=2147483647&v=beta&t=yahOYfopgsz4GA1rSIySYWDY95re1xCOroOhsZCBySc" alt="Illustration of Gemba training components in the workplace" loading="lazy">
-                <p>
-                    <strong>The Place (Gemba):</strong> This is where the work is actually performed and value is added, such as a production floor, workshop, or even an office.<br>
-                    <strong>Observation:</strong> Leaders directly observe processes, tools, and how employees work to identify waste or inefficiencies.<br>
-                    <strong>Interaction:</strong> They engage in conversations with employees to understand their challenges, knowledge, and gather their suggestions for improvement.<br>
-                    <strong>Analysis and Improvement:</strong> The primary goal is to gain a clear view of the operational reality to make informed decisions, solve problems, and drive continuous improvement.
-                </p>
-                <div class="progress-bar"><div class="progress-fill progress-66"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
-            </div>
-            <div class="step" data-step="2" data-lang="en">
-                <div class="logo-animation">WKW AUTOMOTIVE</div>
-                <h2>Benefits of the Gemba Approach</h2>
-                <img src="https://shizen.io/wp-content/uploads/2023/09/0_2cropped.png" alt="Illustration of benefits of Gemba approach in the workplace" loading="lazy">
-                <p>
-                    <strong>Better Understanding:</strong> Provides leaders with a direct insight into operational reality and actual processes.<br>
-                    <strong>Problem Identification:</strong> Enables rapid detection of issues or bottlenecks that may be missed in desk-based analyses.<br>
-                    <strong>Employee Motivation and Engagement:</strong> Management’s presence on the floor shows respect for employees’ work, encouraging their participation and commitment.<br>
-                    <strong>Informed Decision-Making:</strong> Decisions are based on direct observations and facts, not assumptions.<br>
-                    <strong>Culture of Continuous Improvement:</strong> Promotes a culture where process improvement is a daily, collective activity.
-                </p>
-                <div class="progress-bar"><div class="progress-fill progress-100"></div></div>
-                <div class="footer">Continuous Improvement Department WKW Tunisia</div>
+            <div id="kaizen-ar" class="method-section">
+                <h3>طريقة اقتراح التحسينات (كايزن)</h3>
+                <p>كايزن، أو "التحسين المستمر"، هي فلسفة تشجع جميع الموظفين على اقتراح تغييرات صغيرة وتدريجية للعمليات. يتم تنفيذها من خلال أنظمة الاقتراحات، ورش العمل الجماعية، أو فعاليات التحسين، مما يعزز الكفاءة والابتكار.</p>
+                <div class="image-gallery">
+                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="التحسين المستمر">
+                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="عملية كايزن">
+                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="دورة PDCA">
+                </div>
+                <div class="benefit">
+                    <p><strong>الفوائد:</strong> كفاءة محسنة، تمكين الموظفين، وتحسينات مستدامة للعمليات.</p>
+                </div>
+                <h3>عملية تدقيق كايزن في WKW Automotive Tunisie</h3>
+                <p>في WKW Automotive Tunisie، تمكن عملية تدقيق كايزن جميع الموظفين (المشغلين، المديرين، وكلاء الأمن، الموارد البشرية، إلخ) من اقتراح أفكار تحسين بسهولة لتعزيز السلامة، الإنتاجية، الجودة، وبيئة العمل.</p>
+                <h4>الخطوة 1: تقديم الفكرة</h4>
+                <p>يقوم الموظف بمسح رمز QR معروض في مكان العمل للوصول إلى نموذج رقمي (مثل Microsoft Forms).</p>
+                <ul>
+                    <li><strong>الموقع/القسم:</strong> تحديد القسم أو المنطقة المعنية.</li>
+                    <li><strong>المشكلة المحددة:</strong> وصف المشكلة المُلاحظة.</li>
+                    <li><strong>الحل المقترح:</strong> اقتراح حل لمعالجة المشكلة.</li>
+                    <li><strong>صورة (اختيارية):</strong> إرفاق صورة إذا لزم الأمر لدعم الفكرة.</li>
+                </ul>
+                <p>عند التقديم، يتم حفظ النموذج تلقائيًا في قاعدة بيانات مركزية (Google Sheets، Excel، أو منصة داخلية).</p>
+                <h4>الخطوة 2: تحليل الأفكار</h4>
+                <p>يجمع فريق التحسين المستمر ويحلل جميع الأفكار المقدمة شهريًا لتقييم جدواها وتأثيرها.</p>
+                <h4>الخطوة 3: الاختيار والمكافأة</h4>
+                <p>يجتمع CODIR (لجنة الإدارة التنفيذية) لمراجعة الأفكار المقدمة ويختار الثلاثة الأكثر إبداعًا وتأثيرًا. يتم مكافأة أصحاب هذه الأفكار بهدايا أو تقدير.</p>
+                <h4>النتائج المتوقعة</h4>
+                <ul>
+                    <li>تشجيع ثقافة المشاركة.</li>
+                    <li>تحفيز الإبداع والابتكار.</li>
+                    <li>تحسين مستمر للسلامة، الجودة، والإنتاجية.</li>
+                    <li>تقدير وتثمين الموظفين الملتزمين.</li>
+                </ul>
+                <div class="benefit">
+                    <p><strong>الفوائد:</strong> يمكّن هذا النهج الموظفين، ويعزز الابتكار، ويوائم التحسينات مع أهداف المنظمة.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="controls" id="controls">
-        <div class="language-switcher">
-            <select id="language-select">
-                <option value="fr">Français</option>
-                <option value="ar">العربية</option>
-                <option value="en">English</option>
-                <option value="de">Deutsch</option>
-            </select>
-        </div>
-        <button id="return-button" aria-label="Retour à la page d'accueil">Retour</button>
-        <button id="prev-button" class="hidden" aria-label="Étape précédente">Précédent</button>
-        <button id="next-button" class="hidden" aria-label="Étape suivante">Suivant</button>
-    </div>
+    <footer>
+        <p>Explore Lean methodologies to transform your workplace with efficiency and innovation.WKW TUNISIE</p>
+    </footer>
 
-    <script src="./script.js" type="text/javascript"></script>
+    <script>
+        function switchLanguage() {
+            const select = document.getElementById('language-switcher');
+            const currentLang = select.value;
+            const sections = document.querySelectorAll('.language-section');
+            const currentMethod = document.querySelector('.navbar button.active')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || '5s';
+
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === currentLang) {
+                    section.classList.add('active');
+                    const methodSection = document.getElementById(`${currentMethod}-${currentLang}`);
+                    if (methodSection) {
+                        document.querySelectorAll(`#${currentLang} .method-section`).forEach(sec => sec.classList.remove('active'));
+                        methodSection.classList.add('active');
+                    } else {
+                        const defaultSection = document.getElementById(`5s-${currentLang}`);
+                        document.querySelectorAll(`#${currentLang} .method-section`).forEach(sec => sec.classList.remove('active'));
+                        defaultSection.classList.add('active');
+                        console.error(`Method section #${currentMethod}-${currentLang} not found, defaulting to 5S`);
+                    }
+                }
+            });
+        }
+
+        function switchMethod(method) {
+            const currentLang = document.getElementById('language-switcher').value;
+            const methodSections = document.querySelectorAll(`#${currentLang} .method-section`);
+            const navbarButtons = document.querySelectorAll('.navbar button');
+
+            methodSections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === `${method}-${currentLang}`) {
+                    section.classList.add('active');
+                }
+            });
+
+            navbarButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.getAttribute('onclick').includes(method)) {
+                    button.classList.add('active');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchLanguage();
+        });
+    </script>
 </body>
 </html>
