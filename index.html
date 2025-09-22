@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - WKW Automotive Tunisie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6b7280, #1e3a8a);
+            color: #1e293b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        h1 {
+            font-size: 2em;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #1e293b;
+            display: block;
+            margin-bottom: 8px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="text"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+        }
+        button {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+            color: white;
+            font-size: 1.1em;
+            font-weight: 500;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #2563eb, #60a5fa);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .error-message {
+            color: #dc2626;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: none;
+            animation: slideIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 20px;
+                max-width: 90%;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            input[type="text"], button {
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>WKW Automotive Tunisie</h1>
+        <div class="input-group">
+            <label for="matricule">Enter Matricule</label>
+            <input type="text" id="matricule" placeholder="e.g., D000002" aria-label="Matricule Input">
+        </div>
+        <button onclick="validateLogin()">Login</button>
+        <p class="error-message" id="error-message">Invalid matricule. Please try again.</p>
+    </div>
+
+    <script>
+        const validMatricules = [
+            "D000002", "D000004", "D000006", "D000010", "D000100", "D000103", "D000104", "D000108",
+            "D000109", "D000111", "D000112", "D000113", "D000114", "D000118", "D000120", "D000121",
+            "D000122", "D000127", "D000128", "D000131", "D000135", "D000136", "D000142", "D000147",
+            "D000148", "D000157", "D000158", "D000160", "D000163", "D000167", "D000180", "D000195",
+            "D000198", "D000199", "D000207", "D000208", "D000400", "D000402", "D000403", "D000405",
+            "D000406", "D000408", "D000414", "D000415", "D000417", "D000420", "D000421", "D000424",
+            "D000425", "D000427", "D000428", "D000429", "D000430", "D000434", "D000435", "D000436",
+            "D000440", "D000443", "D000444", "D000445", "D000450", "D000452", "D000457", "D000460",
+            "D000467", "D000469", "D000473", "D000484", "D000485", "D000489", "D000491", "D000492",
+            "D000493", "D000494", "D000501", "D000503", "D000510", "D000514", "D000537", "D000562",
+            "D000587", "D000594", "D000595", "D000596", "D000599", "D000605", "D000606", "D000610",
+            "D000612", "D000615", "D000630", "D000700", "D000707", "D000714", "D000717", "D000718",
+            "D000719", "D001000", "D001001", "D001003", "D001005", "D001006", "D001013", "D001014",
+            "D001022", "D001023", "D001024", "D001033", "D001038", "D001039", "D001041", "D001042",
+            "D001043", "D001045", "D001048", "D001049", "D001051", "D001052", "D001058", "D001061",
+            "D001063", "D001066", "D001069", "D001070", "D001075", "D001077", "D001078", "D001104",
+            "D001105", "D001107", "D001120", "D001301", "D001303", "D001304", "D001306", "D001308",
+            "D001600", "D001602", "D001603", "D001605", "D001607", "D001608", "D001613", "D001617",
+            "D001630", "D001635", "D001639", "D001640", "D001900", "D001901", "D001903", "D001906",
+            "D001907", "D001912", "D001914", "D001915", "D001924", "D001926", "D001932", "D001934",
+            "D001937", "D001953", "D001956", "D001957", "D001966", "D001969", "D001974", "D002200",
+            "D002202", "D002205", "D002210", "D002211", "D002213", "D002215", "D002219", "D002225",
+            "D002226", "D002228", "D002229", "D002230", "D002234", "D002236", "D002239", "D002246",
+            "D002255", "D002270", "D002272", "D002274", "D002276", "D002286", "D002292", "D002503",
+            "D002800", "D002803", "D002806", "D002809", "D002812", "D002820", "D002832", "D002843",
+            "D002846", "D002848", "D002850", "D003103", "D003104", "D003110", "D003113", "D003116",
+            "D003123", "D003125", "D003132", "D003165", "D003173", "D003175", "D003401", "D003403",
+            "D003404", "D003406", "D003408", "D003414", "D003415", "D003420", "D003421", "D003422",
+            "D003424", "D003426", "D003427", "D003433", "D003447", "D003448", "D003450", "D003451",
+            "D003702", "D003703", "D003709", "D003710", "D003721", "D003722", "D003727", "D003729",
+            "D003730", "D003732", "D003742", "D003743", "D003744", "D003750", "D003753", "D003755",
+            "D003761", "D003762", "D003766", "D003773", "D003774", "D003784", "D003787", "D003798",
+            "D003808", "D003809", "D003813", "D003821", "D003823", "D003825", "D003832", "D003835",
+            "D003844", "D004004", "D004007", "D004008", "D004011", "D004012", "D004017", "D004021",
+            "D004023", "D004030", "D004039", "D004304", "D005201", "D005203", "D005216", "D005222",
+            "D005223", "D005501", "D005502", "D005506", "D005509", "D005510", "D005514", "D005518",
+            "D005528", "D005532", "D005533", "D005535", "D005536", "D005550", "D005566", "D005567",
+            "D005571", "D005585", "D005586", "D005588", "D005589", "D005591", "D005599", "D005600",
+            "D005601", "D005801", "D005802", "D005804", "D005807", "D005810", "D005811", "D005816",
+            "D005823", "D005826", "D005832", "D005834", "D005836", "D005837", "D005846", "D005847",
+            "D005854", "D005855", "D005867", "D005880", "D005881", "D005892", "D005894", "D005895",
+            "D005896", "D005900", "D005904", "D006702", "D006706", "D006707", "D006708", "D007300",
+            "D007303", "D007601", "D007602", "D007605", "D007608", "D007618", "D007623"
+        ];
+
+        function validateLogin() {
+            const matriculeInput = document.getElementById('matricule').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            if (validMatricules.includes(matriculeInput)) {
+                errorMessage.style.display = 'none';
+                // Store matricule in sessionStorage to indicate successful login
+                sessionStorage.setItem('isAuthenticated', 'true');
+                window.location.href = 'lean-methods.html';
+            } else {
+                errorMessage.style.display = 'block';
+                document.getElementById('matricule').value = '';
+            }
+        }
+
+        // Allow Enter key to trigger login
+        document.getElementById('matricule').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                validateLogin();
+            }
+        });
+    </script>
+</body>
+</html>
