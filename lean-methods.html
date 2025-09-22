@@ -269,6 +269,19 @@
             transform: scale(1.1);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
+        /* Hamburger Menu Styles */
+        .hamburger {
+            display: none;
+            font-size: 1.8em;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .navbar.active {
+            display: flex;
+        }
         @keyframes footerFadeIn {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -293,10 +306,38 @@
             h2 { font-size: 1.8em; }
             h3 { font-size: 1.5em; }
             h4 { font-size: 1.3em; }
-            .navbar { flex-direction: column; gap: 10px; }
-            .navbar button { font-size: 1.1em; padding: 10px; }
-            .header-container { flex-direction: column; gap: 15px; }
-            .language-selector select { font-size: 0.95em; }
+            .header-container { 
+                flex-direction: column; 
+                gap: 15px; 
+                align-items: flex-start;
+            }
+            .hamburger {
+                display: block;
+            }
+            .navbar {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                padding: 15px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+            .navbar.active {
+                display: flex;
+            }
+            .navbar button {
+                font-size: 1.1em;
+                padding: 10px;
+                width: 100%;
+                text-align: left;
+            }
+            .language-selector select { 
+                font-size: 0.95em; 
+                width: 100%;
+            }
             .image-gallery { grid-template-columns: 1fr; }
             .container { padding: 0 15px; }
             .footer-logo { font-size: 1.5em; }
@@ -309,13 +350,14 @@
     <header>
         <div class="header-container">
             <h1>Presentation of Lean Methods</h1>
+            <button class="hamburger" onclick="toggleNavbar()">☰</button>
             <div class="navbar">
-                <button onclick="switchMethod('5s')" class="active">Lean 5S</button>
-                <button onclick="switchMethod('gemba')">Gemba</button>
-                <button onclick="switchMethod('kaizen')">Kaizen</button>
+                <button onclick="switchMethod('5s')" class="active" aria-label="View Lean 5S Method">Lean 5S</button>
+                <button onclick="switchMethod('gemba')" aria-label="View Gemba Method">Gemba</button>
+                <button onclick="switchMethod('kaizen')" aria-label="View Kaizen Method">Kaizen</button>
             </div>
             <div class="language-selector">
-                <select id="language-switcher" onchange="switchLanguage()">
+                <select id="language-switcher" onchange="switchLanguage()" aria-label="Select Language">
                     <option value="en">English</option>
                     <option value="fr">Français</option>
                     <option value="de">Deutsch</option>
@@ -333,7 +375,7 @@
                 <h3>Lean 5S Method</h3>
                 <p>The 5S methodology, originating from Japan, is a cornerstone of lean manufacturing aimed at optimizing workplace organization. It creates a disciplined, efficient, and safe environment by eliminating waste and standardizing processes.</p>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="Perfect 5S in Storage Area">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="Perfect 5S in Storage Area" loading="lazy">
                 </div>
                 <ul>
                     <li><strong>Sort (Seiri):</strong> Remove unnecessary items, keeping only essentials for daily tasks to reduce clutter.</li>
@@ -343,20 +385,20 @@
                     <li><strong>Sustain (Shitsuke):</strong> Embed a culture of discipline to maintain 5S standards through training and audits.</li>
                 </ul>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sort Before and After" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Set in Order Before and After" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Shine Before and After" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardize Before and After" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Sustain Before and After" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>Benefits:</strong> Reduced waste, improved productivity, enhanced safety, and higher employee satisfaction.</p>
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="5S Safety and ESG">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="5S Safety and ESG" loading="lazy">
                 </div>
                 <p>Implementing 5S in a pilot area can demonstrate its effectiveness before full-scale adoption.</p>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="5S Pilot Area">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="5S Pilot Area" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Supplies" loading="lazy">
                 </div>
                 <h3>5S Audit Process at WKW Automotive Tunisie</h3>
                 <p>At WKW Automotive Tunisie, the 5S audit process is streamlined using a digital approach to ensure compliance and continuous improvement.</p>
@@ -376,10 +418,10 @@
                 <h3>Gemba Method</h3>
                 <p>Gemba, meaning "the real place," refers to the location where value is created, such as the factory floor. The Gemba Walk is a lean practice where managers observe processes, engage with employees, and identify inefficiencies firsthand, fostering a culture of continuous improvement.</p>
                 <div class="image-gallery">
-                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="Gemba Walk Illustration">
-                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="Lean Management Principles">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="Gemba in Action">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="Gemba Process Observation">
+                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="Gemba Walk Illustration" loading="lazy">
+                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="Lean Management Principles" loading="lazy">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="Gemba in Action" loading="lazy">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="Gemba Process Observation" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>Benefits:</strong> Real-time issue detection, stronger employee collaboration, and informed decision-making.</p>
@@ -415,9 +457,9 @@
                 <h3>Method for Proposing Improvements (Kaizen)</h3>
                 <p>Kaizen, or "continuous improvement," is a philosophy that encourages all employees to suggest small, incremental changes to processes. Implemented through suggestion systems, team workshops, or improvement events, Kaizen drives efficiency and innovation.</p>
                 <div class="image-gallery">
-                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="Continuous Improvement">
-                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="Kaizen Process">
-                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="PDCA Cycle">
+                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="Continuous Improvement" loading="lazy">
+                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="Kaizen Process" loading="lazy">
+                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="PDCA Cycle" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>Benefits:</strong> Enhanced efficiency, employee empowerment, and sustainable process improvements.</p>
@@ -457,7 +499,7 @@
                 <h3>Méthode Lean 5S</h3>
                 <p>La méthodologie 5S, originaire du Japon, est un pilier de la fabrication lean visant à optimiser l'organisation du lieu de travail. Elle crée un environnement discipliné, efficace et sûr en éliminant les déchets et en standardisant les processus.</p>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="Espace de stockage parfait 5S">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="Espace de stockage parfait 5S" loading="lazy">
                 </div>
                 <ul>
                     <li><strong>Trier (Seiri):</strong> Supprimer les éléments inutiles, ne conservant que l'essentiel pour les tâches quotidiennes.</li>
@@ -467,20 +509,20 @@
                     <li><strong>Maintenir (Shitsuke):</strong> Intégrer une culture de discipline pour respecter les normes 5S via des formations et audits.</li>
                 </ul>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Trier avant et après">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Ranger avant et après">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Nettoyer avant et après">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardiser avant et après">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Maintenir avant et après">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Trier avant et après" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Ranger avant et après" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Nettoyer avant et après" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardiser avant et après" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Maintenir avant et après" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>Avantages :</strong> Réduction des déchets, amélioration de la productivité, sécurité renforcée et satisfaction accrue des employés.</p>
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="Sécurité et ESG 5S">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="Sécurité et ESG 5S" loading="lazy">
                 </div>
                 <p>Mettre en œuvre 5S dans une zone pilote peut démontrer son efficacité avant une adoption à grande échelle.</p>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="Zone pilote 5S">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="Fournitures 5S">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="Zone pilote 5S" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="Fournitures 5S" loading="lazy">
                 </div>
                 <h3>Processus d'audit 5S chez WKW Automotive Tunisie</h3>
                 <p>Chez WKW Automotive Tunisie, le processus d'audit 5S est optimisé grâce à une approche numérique pour garantir la conformité et l'amélioration continue.</p>
@@ -500,10 +542,10 @@
                 <h3>Méthode Gemba</h3>
                 <p>Gemba, signifiant « le lieu réel », désigne l'endroit où la valeur est créée, comme l'atelier de production. La marche Gemba est une pratique lean où les managers observent les processus, interagissent avec les employés et identifient les inefficacités de première main.</p>
                 <div class="image-gallery">
-                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="Illustration de la marche Gemba">
-                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="Principes de gestion lean">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="Gemba en action">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="Observation des processus Gemba">
+                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="Illustration de la marche Gemba" loading="lazy">
+                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="Principes de gestion lean" loading="lazy">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="Gemba en action" loading="lazy">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="Observation des processus Gemba" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>Avantages :</strong> Détection des problèmes en temps réel, meilleure collaboration avec les employés et prise de décision éclairée.</p>
@@ -539,9 +581,9 @@
                 <h3>Méthode de proposition d'amélioration (Kaizen)</h3>
                 <p>Kaizen, ou « amélioration continue », est une philosophie qui encourage tous les employés à proposer des changements progressifs aux processus. Mise en œuvre via des systèmes de suggestions, ateliers d'équipe ou événements d'amélioration, Kaizen stimule l'efficacité et l'innovation.</p>
                 <div class="image-gallery">
-                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="Amélioration continue">
-                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="Processus Kaizen">
-                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="Cycle PDCA">
+                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="Amélioration continue" loading="lazy">
+                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="Processus Kaizen" loading="lazy">
+                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="Cycle PDCA" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>Avantages :</strong> Efficacité accrue, autonomisation des employés et améliorations durables des processus.</p>
@@ -581,7 +623,7 @@
                 <h3>Lean 5S Methode</h3>
                 <p>Die 5S-Methodik, die aus Japan stammt, ist ein zentrales Element des Lean-Managements, das die Organisation am Arbeitsplatz optimiert. Sie schafft eine disziplinierte, effiziente und sichere Umgebung durch die Beseitigung von Verschwendung und die Standardisierung von Prozessen.</p>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="Perfekter 5S-Lagerbereich">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="Perfekter 5S-Lagerbereich" loading="lazy">
                 </div>
                 <ul>
                     <li><strong>Sortieren (Seiri):</strong> Unnötige Gegenstände entfernen, nur das Nötige für tägliche Aufgaben behalten.</li>
@@ -591,20 +633,20 @@
                     <li><strong>Erhalten (Shitsuke):</strong> Eine Kultur der Disziplin etablieren, um 5S-Standards durch Schulungen und Audits zu wahren.</li>
                 </ul>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sortieren vor und nach">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Ordnen vor und nach">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Reinigen vor und nach">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardisieren vor und nach">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Erhalten vor und nach">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="Sortieren vor und nach" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="Ordnen vor und nach" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="Reinigen vor und nach" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="Standardisieren vor und nach" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="Erhalten vor und nach" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>Vorteile:</strong> Reduzierte Verschwendung, verbesserte Produktivität, erhöhte Sicherheit und höhere Mitarbeiterzufriedenheit.</p>
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="5S Sicherheit und ESG">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="5S Sicherheit und ESG" loading="lazy">
                 </div>
                 <p>Die Implementierung von 5S in einem Pilotbereich kann seine Wirksamkeit vor einer flächendeckenden Einführung demonstrieren.</p>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="5S Pilotbereich">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Vorräte">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="5S Pilotbereich" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="5S Vorräte" loading="lazy">
                 </div>
                 <h3>5S Audit-Prozess bei WKW Automotive Tunisie</h3>
                 <p>Bei WKW Automotive Tunisie wird der 5S-Audit-Prozess durch einen digitalen Ansatz optimiert, um Konformität und kontinuierliche Verbesserung zu gewährleisten.</p>
@@ -624,10 +666,10 @@
                 <h3>Gemba Methode</h3>
                 <p>Gemba, was „der tatsächliche Ort“ bedeutet, bezieht sich auf den Ort, an dem Wert geschaffen wird, wie die Produktionshalle. Der Gemba Walk ist eine Lean-Praxis, bei der Führungskräfte Prozesse beobachten, mit Mitarbeitern interagieren und Ineffizienzen direkt erkennen.</p>
                 <div class="image-gallery">
-                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="Gemba Walk Illustration">
-                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="Lean-Management-Prinzipien">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="Gemba in Aktion">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="Gemba-Prozessbeobachtung">
+                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="Gemba Walk Illustration" loading="lazy">
+                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="Lean-Management-Prinzipien" loading="lazy">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="Gemba in Aktion" loading="lazy">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="Gemba-Prozessbeobachtung" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>Vorteile:</strong> Echtzeit-Problemidentifikation, stärkere Mitarbeiterzusammenarbeit und fundierte Entscheidungsfindung.</p>
@@ -663,9 +705,9 @@
                 <h3>Methode zur Vorschlag von Verbesserungen (Kaizen)</h3>
                 <p>Kaizen, oder „kontinuierliche Verbesserung“, ist eine Philosophie, die alle Mitarbeiter ermutigt, kleine, schrittweise Prozessverbesserungen vorzuschlagen. Umgesetzt durch Vorschlagssysteme, Teamworkshops oder Verbesserungsveranstaltungen, fördert Kaizen Effizienz und Innovation.</p>
                 <div class="image-gallery">
-                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="Kontinuierliche Verbesserung">
-                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="Kaizen-Prozess">
-                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="PDCA-Zyklus">
+                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="Kontinuierliche Verbesserung" loading="lazy">
+                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="Kaizen-Prozess" loading="lazy">
+                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="PDCA-Zyklus" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>Vorteile:</strong> Höhere Effizienz, Mitarbeiterbefähigung und nachhaltige Prozessverbesserungen.</p>
@@ -705,7 +747,7 @@
                 <h3>طريقة لين 5S</h3>
                 <p>طريقة 5S، التي نشأت في اليابان، هي ركيزة أساسية للتصنيع اللين تهدف إلى تحسين تنظيم مكان العمل. إنها تخلق بيئة منضبطة وفعالة وآمنة من خلال القضاء على الهدر وتوحيد العمليات.</p>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="منطقة تخزين مثالية 5S">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Perfect-5S-in-Storage-Area.png" alt="منطقة تخزين مثالية 5S" loading="lazy">
                 </div>
                 <ul>
                     <li><strong>الفرز (Seiri):</strong> إزالة العناصر غير الضرورية، والاحتفاظ فقط بما هو أساسي للمهام اليومية.</li>
@@ -715,20 +757,20 @@
                     <li><strong>الحفاظ (Shitsuke):</strong> إنشاء ثقافة الانضباط للحفاظ على معايير 5S من خلال التدريب والتدقيق.</li>
                 </ul>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="الفرز قبل وبعد">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="الترتيب قبل وبعد">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="التنظيف قبل وبعد">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="التوحيد قبل وبعد">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="الحفاظ قبل وبعد">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sort-Before-and-After.png" alt="الفرز قبل وبعد" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Set-in-Order-Before-and-After.png" alt="الترتيب قبل وبعد" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Shine-Before-and-After.png" alt="التنظيف قبل وبعد" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Standardize-Before-and-After.png" alt="التوحيد قبل وبعد" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-Sustain-Before-and-After.png" alt="الحفاظ قبل وبعد" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>الفوائد:</strong> تقليل الهدر، تحسين الإنتاجية، تعزيز السلامة، وزيادة رضا الموظفين.</p>
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="السلامة وESG 5S">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/5S-Safety-and-ESG-200x300.png" alt="السلامة وESG 5S" loading="lazy">
                 </div>
                 <p>تنفيذ 5S في منطقة تجريبية يمكن أن يظهر فعاليتها قبل التطبيق على نطاق واسع.</p>
                 <div class="image-gallery">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="منطقة تجريبية 5S">
-                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="إمدادات 5S">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Pilot-Area.png" alt="منطقة تجريبية 5S" loading="lazy">
+                    <img src="https://www.learnleansigma.com/wp-content/uploads/2023/05/LLS-Image-5S-Supplies.png" alt="إمدادات 5S" loading="lazy">
                 </div>
                 <h3>عملية تدقيق 5S في WKW Automotive Tunisie</h3>
                 <p>في WKW Automotive Tunisie، يتم تبسيط عملية تدقيق 5S باستخدام نهج رقمي لضمان الامتثال والتحسين المستمر.</p>
@@ -748,10 +790,10 @@
                 <h3>طريقة غيمبا</h3>
                 <p>غيمبا، وتعني "المكان الحقيقي"، تشير إلى الموقع الذي يتم فيه خلق القيمة، مثل أرضية المصنع. جولة غيمبا هي ممارسة لين حيث يراقب المديرون العمليات، ويتفاعلون مع الموظفين، ويكتشفون النواقص مباشرة.</p>
                 <div class="image-gallery">
-                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="رسم توضيحي لجولة غيمبا">
-                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="مبادئ الإدارة اللينة">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="غيمبا أثناء العمل">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="مراقبة عملية غيمبا">
+                    <img src="https://shizen.io/wp-content/uploads/2023/09/gemba-walk.png" alt="رسم توضيحي لجولة غيمبا" loading="lazy">
+                    <img src="https://copymate.app/wp-content/uploads/2024/02/lean-management-zasady-szczuplego-zarzadzania-procesami-produkcyjnymi-i-uslugowymi.jpg" alt="مبادئ الإدارة اللينة" loading="lazy">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQHOy4nqaS1HxQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1733239605722?e=2147483647&v=beta&t=a4sC4QDcV8f8f9967LcZzynDZpRxtuAruP2DzrH0ZPA" alt="غيمبا أثناء العمل" loading="lazy">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D12AQGW9IB0tmYlXw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1715014699629?e=2147483647&v=beta&t=C-mNe-rJ1fC7WYyBwwide1XcpE5yw2B-2POH-j-lhNU" alt="مراقبة عملية غيمبا" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>الفوائد:</strong> اكتشاف المشكلات في الوقت الفعلي، تعاون أقوى مع الموظفين، واتخاذ قرارات مستنيرة.</p>
@@ -787,9 +829,9 @@
                 <h3>طريقة اقتراح التحسينات (كايزن)</h3>
                 <p>كايزن، أو "التحسين المستمر"، هي فلسفة تشجع جميع الموظفين على اقتراح تغييرات صغيرة وتدريجية للعمليات. يتم تنفيذها من خلال أنظمة الاقتراحات، ورش العمل الجماعية، أو فعاليات التحسين، مما يعزز الكفاءة والابتكار.</p>
                 <div class="image-gallery">
-                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="التحسين المستمر">
-                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="عملية كايزن">
-                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="دورة PDCA">
+                    <img src="https://www.veilleformation.com/wp-content/uploads/2021/08/Amelioration-continue.png" alt="التحسين المستمر" loading="lazy">
+                    <img src="https://ahaslides.com/wp-content/uploads/2022/08/7456408-1024x1024.jpg" alt="عملية كايزن" loading="lazy">
+                    <img src="https://bestofbusinessanalyst.fr/wp-content/uploads/2018/06/RoueDeDemingPDCA.jpg" alt="دورة PDCA" loading="lazy">
                 </div>
                 <div class="benefit">
                     <p><strong>الفوائد:</strong> كفاءة محسنة، تمكين الموظفين، وتحسينات مستدامة للعمليات.</p>
@@ -816,7 +858,7 @@
                     <li>تحسين مستمر للسلامة، الجودة، والإنتاجية.</li>
                     <li>تقدير وتثمين الموظفين الملتزمين.</li>
                 </ul>
-                <div class="benefit">
+               <div class="benefit">
                     <p><strong>الفوائد:</strong> يمكّن هذا النهج الموظفين، ويعزز الابتكار، ويوائم التحسينات مع أهداف المنظمة.</p>
                 </div>
             </div>
@@ -830,54 +872,85 @@
             
     </footer>
 
-    <script>
-        function switchLanguage() {
-            const select = document.getElementById('language-switcher');
-            const currentLang = select.value;
-            const sections = document.querySelectorAll('.language-section');
-            const currentMethod = document.querySelector('.navbar button.active')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || '5s';
+   <script>
+function toggleNavbar() {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        navbar.classList.toggle('active');
+    } else {
+        console.error('Navbar element not found');
+    }
+}
 
-            sections.forEach(section => {
-                section.classList.remove('active');
-                if (section.id === currentLang) {
-                    section.classList.add('active');
-                    const methodSection = document.getElementById(`${currentMethod}-${currentLang}`);
-                    if (methodSection) {
-                       document.querySelectorAll(`#${currentLang} .method-section`).forEach(sec => sec.classList.remove('active'));
-                        methodSection.classList.add('active');
-                    } else {
-                        const defaultSection = document.getElementById(`5s-${currentLang}`);
-                        document.querySelectorAll(`#${currentLang} .method-section`).forEach(sec => sec.classList.remove('active'));
-                        defaultSection.classList.add('active');
-                        console.error(`Method section #${currentMethod}-${currentLang} not found, defaulting to 5S`);
-                    }
+function switchLanguage() {
+    const select = document.getElementById('language-switcher');
+    if (!select) {
+        console.error('Language switcher element not found');
+        return;
+    }
+    const currentLang = select.value;
+    const sections = document.querySelectorAll('.language-section');
+    const currentMethod = document.querySelector('.navbar button.active')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || '5s';
+
+    sections.forEach(section => {
+        section.classList.remove('active');
+        if (section.id === currentLang) {
+            section.classList.add('active');
+            const methodSection = document.getElementById(`${currentMethod}-${currentLang}`);
+            if (methodSection) {
+                document.querySelectorAll(`#${currentLang} .method-section`).forEach(sec => sec.classList.remove('active'));
+                methodSection.classList.add('active');
+            } else {
+                const defaultSection = document.getElementById(`5s-${currentLang}`);
+                if (defaultSection) {
+                    document.querySelectorAll(`#${currentLang} .method-section`).forEach(sec => sec.classList.remove('active'));
+                    defaultSection.classList.add('active');
                 }
-            });
+                console.error(`Method section #${currentMethod}-${currentLang} not found, defaulting to 5S`);
+            }
         }
+    });
+}
 
-        function switchMethod(method) {
-            const currentLang = document.getElementById('language-switcher').value;
-            const methodSections = document.querySelectorAll(`#${currentLang} .method-section`);
-            const navbarButtons = document.querySelectorAll('.navbar button');
+function switchMethod(method) {
+    const select = document.getElementById('language-switcher');
+    if (!select) {
+        console.error('Language switcher element not found');
+        return;
+    }
+    const currentLang = select.value;
+    const methodSections = document.querySelectorAll(`#${currentLang} .method-section`);
+    const navbarButtons = document.querySelectorAll('.navbar button');
+    const navbar = document.querySelector('.navbar');
 
-            methodSections.forEach(section => {
-                section.classList.remove('active');
-                if (section.id === `${method}-${currentLang}`) {
-                    section.classList.add('active');
-                }
-            });
-
-            navbarButtons.forEach(button => {
-                button.classList.remove('active');
-                if (button.getAttribute('onclick').includes(method)) {
-                    button.classList.add('active');
-                }
-            });
+    methodSections.forEach(section => {
+        section.classList.remove('active');
+        if (section.id === `${method}-${currentLang}`) {
+            section.classList.add('active');
         }
+    });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            switchLanguage();
-        });
-    </script>
+    navbarButtons.forEach(button => {
+        button.classList.remove('active');
+        if (button.getAttribute('onclick').includes(method)) {
+            button.classList.add('active');
+        }
+    });
+
+    // Close the navbar on mobile after selecting a method
+    if (window.innerWidth <= 768 && navbar) {
+        navbar.classList.remove('active');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('language-switcher');
+    if (select) {
+        switchLanguage();
+    } else {
+        console.error('Language switcher element not found on DOM load');
+    }
+});
+</script>
 </body>
 </html>
