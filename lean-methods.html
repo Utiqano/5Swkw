@@ -344,6 +344,84 @@
             .footer-socials { flex-wrap: wrap; justify-content: center; }
             .scroll-to-top { padding: 10px 20px; font-size: 0.9em; }
         }
+       {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        button {
+            position: relative;
+            padding: 14px 28px;
+            font-size: 18px;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            color: #808080; /* Gray text */
+            background-color: transparent;
+            border: 3px solid #808080; /* Gray border */
+            border-radius: 10px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            color: #fff; /* White text on hover */
+            background-color: rgba(255, 0, 0, 0.2); /* Red-tinted transparent background */
+            border-color: #ff0000; /* Red border */
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7), 0 0 25px rgba(255, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Ripple effect */
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+            pointer-events: none;
+        }
+
+        button:active::after {
+            width: 200px;
+            height: 200px;
+            opacity: 0;
+        }
+
+        /* Glowing animation */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); }
+        }
+
+        button:hover {
+            animation: glow 1.5s infinite;
+        }
     </style>
 </head>
 <body>
@@ -366,7 +444,56 @@
             </div>
         </div>
     </header>
+  <body>
+    <button onclick="watchVideo()">Watch Video proposition d'amélioration</button>
 
+    <script>
+        function watchVideo() {
+            // Replace with your video URL
+            window.open("https://www.youtube.com/embed/PlZpe_P7OU8");
+        }
+    </script>
+</body>
+ 
+    <button onclick="watchVideo()">Watch Video 5S</button>
+
+    <script>
+        function watchVideo() {
+            // Replace with your video URL
+            window.open("https://www.youtube.com/embed/ntKqMhbqTII");
+        }
+    </script>
+</body>
+  <body>
+    <button onclick="watchVideo()">Check liste 5S</button>
+
+    <script>
+        function watchVideo() {
+            // Replace with your video URL
+            window.open("https://forms.office.com/pages/responsepage.aspx?id=Yy2gqiIfe0W77Avd4jtr3wM3f1Qll_xKkMAzfzJQ_BRUNzQ4MldBM0dTVzc0MFRHVlc0UlU2VE9QRi4u&route=shorturl");
+        }
+    </script>
+</body>
+  <body>
+    <button onclick="watchVideo()">Check liste GEMBA OJT</button>
+
+    <script>
+        function watchVideo() {
+            // Replace with your video URL
+            window.open("https://forms.office.com/pages/responsepage.aspx?id=Yy2gqiIfe0W77Avd4jtr3wM3f1Qll_xKkMAzfzJQ_BRUM1hRVVYyQ0hBOFpGQ1lGMlgzSkpNS1BETC4u&route=shorturl");
+        }
+    </script>
+</body>
+  <body>
+    <button onclick="watchVideo()">Propositions d'amélioration</button>
+
+    <script>
+        function watchVideo() {
+            // Replace with your video URL
+            window.open("https://proposition-damelioration.web.app");
+        }
+    </script>
+</body>
     <div class="container">
         <!-- English Section -->
         <div id="en" class="language-section active">
