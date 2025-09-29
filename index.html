@@ -203,7 +203,7 @@
             pointer-events: none;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="email"] {
             width: 100%;
             padding: clamp(12px, 3.5vw, 18px);
             font-size: clamp(0.95rem, 2.7vw, 1.15rem);
@@ -229,23 +229,30 @@
         }
 
         input[type="text"]:focus,
-        input[type="text"]:not(:placeholder-shown) {
+        input[type="text"]:not(:placeholder-shown),
+        input[type="email"]:focus,
+        input[type="email"]:not(:placeholder-shown) {
             box-shadow: 0 2px 10px rgba(200, 16, 46, 0.25);
         }
 
         input[type="text"]:focus + label,
-        input[type="text"]:not(:placeholder-shown) + label {
+        input[type="text"]:not(:placeholder-shown) + label,
+        input[type="email"]:focus + label,
+        input[type="email"]:not(:placeholder-shown) + label {
             top: -12px;
             font-size: clamp(0.75rem, 2.2vw, 0.95rem);
             color: var(--primary-color);
         }
 
         input[type="text"]:focus ~ .input-group::before,
-        input[type="text"]:not(:placeholder-shown) ~ .input-group::before {
+        input[type="text"]:not(:placeholder-shown) ~ .input-group::before,
+        input[type="email"]:focus ~ .input-group::before,
+        input[type="email"]:not(:placeholder-shown) ~ .input-group::before {
             width: 100%;
         }
 
-        .input-group.invalid input[type="text"] {
+        .input-group.invalid input[type="text"],
+        .input-group.invalid input[type="email"] {
             animation: shake 0.4s ease-in-out;
         }
 
@@ -442,7 +449,7 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        @keyframes letterPop {
+        @keyframes letterPop Dark {
             0% { opacity: 0; transform: translateY(15px); }
             100% { opacity: 1; transform: translateY(0); }
         }
@@ -540,7 +547,7 @@
             .subtitle {
                 font-size: clamp(0.85rem, 2.5vw, 1.05rem);
             }
-            input[type="text"], button {
+            input[type="text"], input[type="email"], button {
                 font-size: clamp(0.85rem, 2.5vw, 1.05rem);
                 padding: clamp(10px, 3vw, 14px);
             }
@@ -583,7 +590,7 @@
             label {
                 font-size: clamp(0.85rem, 2.2vw, 1.05rem);
             }
-            input[type="text"], button {
+            input[type="text"], input[type="email"], button {
                 font-size: clamp(0.75rem, 2.2vw, 0.95rem);
                 padding: clamp(8px, 2.5vw, 12px);
             }
@@ -608,7 +615,7 @@
     </style>
 </head>
 <body>
-    <canvas class="ripples"></canvas>
+    <canvas class="ripples" aria-hidden="true"></canvas>
     <div class="login-container" id="login-container">
         <div class="logo-container">
             <img src="https://media.licdn.com/dms/image/v2/C510BAQFv4NwvhYRq8Q/company-logo_200_200/company-logo_200_200/0/1631351838133?e=2147483647&v=beta&t=pE5-TQRX2fd9oIfzQypoBLterLoj-X4wOnC3C8MMI4Q" alt="WKW Automotive Tunisie Logo" class="logo">
@@ -618,14 +625,18 @@
         <h1>
             <span>W</span><span>K</span><span>W</span> <span>A</span><span>u</span><span>t</span><span>o</span><span>m</span><span>o</span><span>t</span><span>i</span><span>v</span><span>e</span> <span>T</span><span>u</span><span>n</span><span>i</span><span>s</span><span>i</span><span>e</span>
         </h1>
-        <p class="subtitle">Lean Manufacturing Portal</p>
+        <p class="subtitle">Lean Manufacturing & KPI Portal</p>
         <div class="input-group">
             <input type="text" id="matricule" placeholder=" " aria-label="Matricule Input">
             <label for="matricule">Enter Matricule</label>
         </div>
+        <div class="input-group">
+            <input type="email" id="email" placeholder=" " aria-label="Email Input">
+            <label for="email">Enter Email</label>
+        </div>
         <button id="login-button" onclick="validateLogin()">Login</button>
-        <p class="error-message" id="error-message" aria-live="polite">Invalid matricule. Please try again.</p>
-        <div class="lean-info" onclick="toggleLeanInfo()">
+        <p class="error-message" id="error-message" aria-live="polite">Invalid matricule or email. Please try again.</p>
+        <div class="lean-info" onclick="toggleLeanInfo()" tabindex="0" role="button" onkeypress="if(event.key === 'Enter') toggleLeanInfo()">
             <h3>Key Lean Methods in Automotive</h3>
             <ul>
                 <li>Kaizen: Continuous improvement to eliminate waste.
@@ -691,33 +702,89 @@
             "D007303", "D007601", "D007602", "D007605", "D007608", "D007618", "D007623"
         ]);
 
+        const validEmails = new Set([
+            "amine.aloui@wkw-group.com",
+            "abdelkader.klai@wkw-group.com",
+            "ahmed.khamassi@wkw-group.com",
+            "tarek.jaouada@wkw-group.com",
+            "mohamed.chemsi@wkw-group.com"
+        ]);
+
         function validateLogin() {
             const matriculeInput = document.getElementById('matricule').value.trim();
+            const emailInput = document.getElementById('email').value.trim().toLowerCase();
             const errorMessage = document.getElementById('error-message');
             const loginButton = document.getElementById('login-button');
-            const inputGroup = document.getElementById('matricule').parentElement;
+            const matriculeGroup = document.getElementById('matricule').parentElement;
+            const emailGroup = document.getElementById('email').parentElement;
 
             loginButton.classList.add('loading');
+            errorMessage.style.display = 'none';
+            matriculeGroup.classList.remove('invalid');
+            emailGroup.classList.remove('invalid');
 
             setTimeout(() => {
-                const matriculePattern = /^D\d{6}$/;
-                if (!matriculePattern.test(matriculeInput)) {
-                    errorMessage.textContent = "Matricule must start with 'D' followed by six digits.";
+                // Check if both inputs are empty
+                if (!matriculeInput && !emailInput) {
+                    errorMessage.textContent = "Please enter a matricule or email.";
                     errorMessage.style.display = 'block';
-                    inputGroup.classList.add('invalid');
-                    document.getElementById('matricule').value = '';
-                } else if (validMatricules.has(matriculeInput)) {
-                    errorMessage.style.display = 'none';
-                    inputGroup.classList.remove('invalid');
-                    sessionStorage.setItem('isAuthenticated', 'true');
-                    window.location.href = 'lean-methods.html';
-                } else {
-                    errorMessage.textContent = "Matricule not found. Please try again.";
-                    errorMessage.style.display = 'block';
-                    inputGroup.classList.add('invalid');
-                    document.getElementById('matricule').value = '';
+                    matriculeGroup.classList.add('invalid');
+                    emailGroup.classList.add('invalid');
+                    loginButton.classList.remove('loading');
+                    return;
                 }
-                loginButton.classList.remove('loading');
+
+                // Validate matricule if provided
+                if (matriculeInput) {
+                    const matriculePattern = /^D\d{6}$/;
+                    if (!matriculePattern.test(matriculeInput)) {
+                        errorMessage.textContent = "Matricule must be 'D' followed by six digits (e.g., D123456).";
+                        errorMessage.style.display = 'block';
+                        matriculeGroup.classList.add('invalid');
+                        document.getElementById('matricule').value = '';
+                        loginButton.classList.remove('loading');
+                        return;
+                    } else if (validMatricules.has(matriculeInput)) {
+                        errorMessage.style.display = 'none';
+                        matriculeGroup.classList.remove('invalid');
+                        sessionStorage.setItem('isAuthenticated', 'true');
+                        window.location.href = 'lean-methods.html';
+                        return;
+                    } else {
+                        errorMessage.textContent = "Matricule not found. Please try again.";
+                        errorMessage.style.display = 'block';
+                        matriculeGroup.classList.add('invalid');
+                        document.getElementById('matricule').value = '';
+                        loginButton.classList.remove('loading');
+                        return;
+                    }
+                }
+
+                // Validate email if provided
+                if (emailInput) {
+                    const emailPattern = /^[^\s@]+@wkw-group\.com$/;
+                    if (!emailPattern.test(emailInput)) {
+                        errorMessage.textContent = "Email must be a valid @wkw-group.com address.";
+                        errorMessage.style.display = 'block';
+                        emailGroup.classList.add('invalid');
+                        document.getElementById('email').value = '';
+                        loginButton.classList.remove('loading');
+                        return;
+                    } else if (validEmails.has(emailInput)) {
+                        errorMessage.style.display = 'none';
+                        emailGroup.classList.remove('invalid');
+                        sessionStorage.setItem('isAuthenticated', 'true');
+                        window.location.href = 'kpi.html';
+                        return;
+                    } else {
+                        errorMessage.textContent = "Email not authorized for KPI access.";
+                        errorMessage.style.display = 'block';
+                        emailGroup.classList.add('invalid');
+                        document.getElementById('email').value = '';
+                        loginButton.classList.remove('loading');
+                        return;
+                    }
+                }
             }, 1000);
         }
 
@@ -727,10 +794,26 @@
             }
         });
 
+        document.getElementById('email').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                validateLogin();
+            }
+        });
+
         document.getElementById('matricule').addEventListener('input', function() {
             const inputGroup = this.parentElement;
             const matriculePattern = /^D\d{6}$/;
             if (this.value.trim() && !matriculePattern.test(this.value.trim())) {
+                inputGroup.classList.add('invalid');
+            } else {
+                inputGroup.classList.remove('invalid');
+            }
+        });
+
+        document.getElementById('email').addEventListener('input', function() {
+            const inputGroup = this.parentElement;
+            const emailPattern = /^[^\s@]+@wkw-group\.com$/;
+            if (this.value.trim() && !emailPattern.test(this.value.trim().toLowerCase())) {
                 inputGroup.classList.add('invalid');
             } else {
                 inputGroup.classList.remove('invalid');
@@ -786,15 +869,31 @@
         }
 
         canvas.addEventListener('click', (e) => {
-            ripplesArray.push(new Ripple(e.clientX, e.clientY));
+            if (ripplesArray.length < 20) {
+                ripplesArray.push(new Ripple(e.clientX, e.clientY));
+            }
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            if (ripplesArray.length < 20) {
+                ripplesArray.push(new Ripple(touch.clientX, touch.clientY));
+            }
         });
 
         animateRipples();
 
+        let resizeTimeout;
         window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }, 100);
         });
+
+        // Auto-focus matricule input on load
+        document.getElementById('matricule').focus();
     </script>
 </body>
 </html>
