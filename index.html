@@ -7,16 +7,17 @@
     <title>Login - WKW Automotive Tunisie</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Existing CSS styles remain unchanged */
         :root {
-            --primary-color: #1e90ff; /* Vibrant blue */
-            --secondary-color: #2d3436; /* Dark gray */
-            --accent-color: #dfe6e9; /* Light gray */
-            --error-color: #e63946; /* Softer red for errors */
-            --text-color: #2d3436; /* Dark text for light mode */
+            --primary-color: #1e90ff;
+            --secondary-color: #2d3436;
+            --accent-color: #dfe6e9;
+            --error-color: #e63946;
+            --text-color: #2d3436;
             --bg-light: rgba(255, 255, 255, 0.95);
-            --bg-dark: rgba(45, 52, 54, 0.95); /* Darker gray for dark mode */
+            --bg-dark: rgba(45, 52, 54, 0.95);
             --shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-            --glow: 0 0 12px rgba(30, 144, 255, 0.3); /* Blue glow */
+            --glow: 0 0 12px rgba(30, 144, 255, 0.3);
             --transition: all 0.3s ease;
             --animation-duration: 0.6s;
             --pulse-duration: 2s;
@@ -25,7 +26,7 @@
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-light: var(--bg-dark);
-                --text-color: #dfe6e9; /* Light text for dark mode */
+                --text-color: #dfe6e9;
             }
         }
 
@@ -435,7 +436,7 @@
             content: '✓';
             position: absolute;
             left: 0;
-            color: #00b894; /* Kept green for contrast */
+            color: #00b894;
             font-weight: bold;
             font-size: clamp(0.95rem, 2.7vw, 1.25rem);
         }
@@ -748,6 +749,21 @@
             "Houssine.Trabelsi@wkw-group.com"
         ]);
 
+        const departmentEmails = new Set([
+            "achat@wkw-group.com",
+            "logistique@wkw-group.com",
+            "rh@wkw-group.com",
+            "a.c@wkw-group.com",
+            "maintenance@wkw-group.com",
+            "methodes@wkw-group.com",
+            "mecanique@wkw-group.com",
+            "uap1@wkw-group.com",
+            "uap2@wkw-group.com",
+            "securite@wkw-group.com",
+            "informatique@wkw-group.com",
+            "qualite@wkw-group.com"
+        ]);
+
         document.addEventListener('DOMContentLoaded', () => {
             function validateLogin() {
                 const matriculeInput = document.getElementById('matricule').value.trim();
@@ -810,6 +826,12 @@
                             document.getElementById('email').value = '';
                             loginButton.classList.remove('loading');
                             return;
+                        } else if (departmentEmails.has(emailInput)) {
+                            emailError.style.display = 'none';
+                            emailGroup.classList.remove('invalid');
+                            sessionStorage.setItem('isAuthenticated', 'true');
+                            window.location.href = 'https://utiqano.github.io/VISITEUR-EXTERNE/';
+                            return;
                         } else if (validEmails.has(emailInput)) {
                             emailError.style.display = 'none';
                             emailGroup.classList.remove('invalid');
@@ -817,7 +839,7 @@
                             window.location.href = 'kpi.html';
                             return;
                         } else {
-                            emailError.textContent = "Email not authorized for KPI access.";
+                            emailError.textContent = "Email not authorized for access.";
                             emailError.style.display = 'block';
                             emailGroup.classList.add('invalid');
                             document.getElementById('email').value = '';
