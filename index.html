@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login portal for WKW Automotive Tunisie's Lean Manufacturing and KPI system.">
     <title>Login - WKW Automotive Tunisie</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -338,6 +339,20 @@
             border-left: 4px solid var(--error-color);
         }
 
+        .forgot-password {
+            display: block;
+            margin-top: clamp(10px, 2.5vw, 15px);
+            color: var(--primary-color);
+            font-size: clamp(0.85rem, 2.2vw, 1rem);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+            color: var(--secondary-color);
+        }
+
         .lean-info {
             margin-top: clamp(20px, 5vw, 30px);
             font-size: clamp(0.85rem, 2.2vw, 0.95rem);
@@ -425,7 +440,8 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        .lean-info li:hover .tooltip {
+        .lean-info li:hover .tooltip,
+        .lean-info li:focus-within .tooltip {
             visibility: visible;
             opacity: 1;
             transform: translateX(-50%) translateY(-12px);
@@ -449,7 +465,7 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        @keyframes letterPop Dark {
+        @keyframes letterPop {
             0% { opacity: 0; transform: translateY(15px); }
             100% { opacity: 1; transform: translateY(0); }
         }
@@ -627,15 +643,18 @@
         </h1>
         <p class="subtitle">Lean Manufacturing & KPI Portal</p>
         <div class="input-group">
-            <input type="text" id="matricule" placeholder=" " aria-label="Matricule Input">
+            <input type="text" id="matricule" placeholder=" " aria-label="Matricule Input" aria-describedby="matricule-error">
             <label for="matricule">Enter Matricule</label>
+            <span id="matricule-error" class="error-message" aria-live="polite"></span>
         </div>
         <div class="input-group">
-            <input type="email" id="email" placeholder=" " aria-label="Email Input">
+            <input type="email" id="email" placeholder=" " aria-label="Email Input" aria-describedby="email-error">
             <label for="email">Enter Email</label>
+            <span id="email-error" class="error-message" aria-live="polite"></span>
         </div>
-        <button id="login-button" onclick="validateLogin()">Login</button>
-        <p class="error-message" id="error-message" aria-live="polite">Invalid matricule or email. Please try again.</p>
+        <button id="login-button">Login</button>
+        <p class="error-message" id="general-error" aria-live="polite">Please enter a valid matricule or email.</p>
+        <a href="/forgot-password" class="forgot-password">Forgot Password?</a>
         <div class="lean-info" onclick="toggleLeanInfo()" tabindex="0" role="button" onkeypress="if(event.key === 'Enter') toggleLeanInfo()">
             <h3>Key Lean Methods in Automotive</h3>
             <ul>
@@ -707,194 +726,199 @@
             "abdelkader.klai@wkw-group.com",
             "ahmed.khamassi@wkw-group.com",
             "tarek.jaouada@wkw-group.com",
-            "mohamed.chemsi@wkw-group.com"
+            "mohamed.chemsi@wkw-group.com",
             "Houssine.Trabelsi@wkw-group.com"
         ]);
 
-        function validateLogin() {
-            const matriculeInput = document.getElementById('matricule').value.trim();
-            const emailInput = document.getElementById('email').value.trim().toLowerCase();
-            const errorMessage = document.getElementById('error-message');
-            const loginButton = document.getElementById('login-button');
-            const matriculeGroup = document.getElementById('matricule').parentElement;
-            const emailGroup = document.getElementById('email').parentElement;
+        document.addEventListener('DOMContentLoaded', () => {
+            function validateLogin() {
+                const matriculeInput = document.getElementById('matricule').value.trim();
+                const emailInput = document.getElementById('email').value.trim().toLowerCase();
+                const generalError = document.getElementById('general-error');
+                const matriculeError = document.getElementById('matricule-error');
+                const emailError = document.getElementById('email-error');
+                const loginButton = document.getElementById('login-button');
+                const matriculeGroup = document.getElementById('matricule').parentElement;
+                const emailGroup = document.getElementById('email').parentElement;
 
-            loginButton.classList.add('loading');
-            errorMessage.style.display = 'none';
-            matriculeGroup.classList.remove('invalid');
-            emailGroup.classList.remove('invalid');
+                loginButton.classList.add('loading');
+                generalError.style.display = 'none';
+                matriculeError.style.display = 'none';
+                emailError.style.display = 'none';
+                matriculeGroup.classList.remove('invalid');
+                emailGroup.classList.remove('invalid');
 
-            setTimeout(() => {
-                // Check if both inputs are empty
-                if (!matriculeInput && !emailInput) {
-                    errorMessage.textContent = "Please enter a matricule or email.";
-                    errorMessage.style.display = 'block';
-                    matriculeGroup.classList.add('invalid');
-                    emailGroup.classList.add('invalid');
-                    loginButton.classList.remove('loading');
-                    return;
-                }
-
-                // Validate matricule if provided
-                if (matriculeInput) {
-                    const matriculePattern = /^D\d{6}$/;
-                    if (!matriculePattern.test(matriculeInput)) {
-                        errorMessage.textContent = "Matricule must be 'D' followed by six digits (e.g., D123456).";
-                        errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    if (!matriculeInput && !emailInput) {
+                        generalError.textContent = "Please enter a matricule or email.";
+                        generalError.style.display = 'block';
                         matriculeGroup.classList.add('invalid');
-                        document.getElementById('matricule').value = '';
-                        loginButton.classList.remove('loading');
-                        return;
-                    } else if (validMatricules.has(matriculeInput)) {
-                        errorMessage.style.display = 'none';
-                        matriculeGroup.classList.remove('invalid');
-                        sessionStorage.setItem('isAuthenticated', 'true');
-                        window.location.href = 'lean-methods.html';
-                        return;
-                    } else {
-                        errorMessage.textContent = "Matricule not found. Please try again.";
-                        errorMessage.style.display = 'block';
-                        matriculeGroup.classList.add('invalid');
-                        document.getElementById('matricule').value = '';
+                        emailGroup.classList.add('invalid');
                         loginButton.classList.remove('loading');
                         return;
                     }
-                }
 
-                // Validate email if provided
-                if (emailInput) {
-                    const emailPattern = /^[^\s@]+@wkw-group\.com$/;
-                    if (!emailPattern.test(emailInput)) {
-                        errorMessage.textContent = "Email must be a valid @wkw-group.com address.";
-                        errorMessage.style.display = 'block';
-                        emailGroup.classList.add('invalid');
-                        document.getElementById('email').value = '';
-                        loginButton.classList.remove('loading');
-                        return;
-                    } else if (validEmails.has(emailInput)) {
-                        errorMessage.style.display = 'none';
-                        emailGroup.classList.remove('invalid');
-                        sessionStorage.setItem('isAuthenticated', 'true');
-                        window.location.href = 'kpi.html';
-                        return;
-                    } else {
-                        errorMessage.textContent = "Email not authorized for KPI access.";
-                        errorMessage.style.display = 'block';
-                        emailGroup.classList.add('invalid');
-                        document.getElementById('email').value = '';
-                        loginButton.classList.remove('loading');
-                        return;
+                    if (matriculeInput) {
+                        const matriculePattern = /^D\d{6}$/;
+                        if (!matriculePattern.test(matriculeInput)) {
+                            matriculeError.textContent = "Matricule must be 'D' followed by six digits (e.g., D123456).";
+                            matriculeError.style.display = 'block';
+                            matriculeGroup.classList.add('invalid');
+                            document.getElementById('matricule').value = '';
+                            loginButton.classList.remove('loading');
+                            return;
+                        } else if (validMatricules.has(matriculeInput)) {
+                            matriculeError.style.display = 'none';
+                            matriculeGroup.classList.remove('invalid');
+                            sessionStorage.setItem('isAuthenticated', 'true');
+                            window.location.href = 'lean-methods.html';
+                            return;
+                        } else {
+                            matriculeError.textContent = "Matricule not found. Please try again.";
+                            matriculeError.style.display = 'block';
+                            matriculeGroup.classList.add('invalid');
+                            document.getElementById('matricule').value = '';
+                            loginButton.classList.remove('loading');
+                            return;
+                        }
+                    }
+
+                    if (emailInput) {
+                        const emailPattern = /^[^\s@]+@wkw-group\.com$/;
+                        if (!emailPattern.test(emailInput)) {
+                            emailError.textContent = "Email must be a valid @wkw-group.com address.";
+                            emailError.style.display = 'block';
+                            emailGroup.classList.add('invalid');
+                            document.getElementById('email').value = '';
+                            loginButton.classList.remove('loading');
+                            return;
+                        } else if (validEmails.has(emailInput)) {
+                            emailError.style.display = 'none';
+                            emailGroup.classList.remove('invalid');
+                            sessionStorage.setItem('isAuthenticated', 'true');
+                            window.location.href = 'kpi.html';
+                            return;
+                        } else {
+                            emailError.textContent = "Email not authorized for KPI access.";
+                            emailError.style.display = 'block';
+                            emailGroup.classList.add('invalid');
+                            document.getElementById('email').value = '';
+                            loginButton.classList.remove('loading');
+                            return;
+                        }
+                    }
+                }, 1000);
+            }
+
+            document.getElementById('matricule').addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    validateLogin();
+                }
+            });
+
+            document.getElementById('email').addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    validateLogin();
+                }
+            });
+
+            document.getElementById('matricule').addEventListener('input', function() {
+                const inputGroup = this.parentElement;
+                const matriculePattern = /^D\d{6}$/;
+                if (this.value.trim() && !matriculePattern.test(this.value.trim())) {
+                    inputGroup.classList.add('invalid');
+                } else {
+                    inputGroup.classList.remove('invalid');
+                }
+            });
+
+            document.getElementById('email').addEventListener('input', function() {
+                const inputGroup = this.parentElement;
+                const emailPattern = /^[^\s@]+@wkw-group\.com$/;
+                if (this.value.trim() && !emailPattern.test(this.value.trim().toLowerCase())) {
+                    inputGroup.classList.add('invalid');
+                } else {
+                    inputGroup.classList.remove('invalid');
+                }
+            });
+
+            document.getElementById('login-button').addEventListener('click', validateLogin);
+
+            function toggleLeanInfo() {
+                const leanInfo = document.querySelector('.lean-info');
+                leanInfo.classList.toggle('active');
+            }
+
+            // Ripple Animation
+            const canvas = document.querySelector('.ripples');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const ripplesArray = [];
+
+            class Ripple {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.radius = 0;
+                    this.maxRadius = Math.random() * 100 + 50;
+                    this.speed = Math.random() * 2 + 1;
+                    this.opacity = 0.5;
+                }
+                update() {
+                    this.radius += this.speed;
+                    this.opacity -= 0.005;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(200, 16, 46, ${this.opacity})`; /* Red ripple */
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+
+            function animateRipples() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < ripplesArray.length; i++) {
+                    ripplesArray[i].update();
+                    ripplesArray[i].draw();
+                    if (ripplesArray[i].opacity <= 0 || ripplesArray[i].radius > ripplesArray[i].maxRadius) {
+                        ripplesArray.splice(i, 1);
+                        i--;
                     }
                 }
-            }, 1000);
-        }
-
-        document.getElementById('matricule').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                validateLogin();
+                requestAnimationFrame(animateRipples);
             }
-        });
 
-        document.getElementById('email').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                validateLogin();
-            }
-        });
-
-        document.getElementById('matricule').addEventListener('input', function() {
-            const inputGroup = this.parentElement;
-            const matriculePattern = /^D\d{6}$/;
-            if (this.value.trim() && !matriculePattern.test(this.value.trim())) {
-                inputGroup.classList.add('invalid');
-            } else {
-                inputGroup.classList.remove('invalid');
-            }
-        });
-
-        document.getElementById('email').addEventListener('input', function() {
-            const inputGroup = this.parentElement;
-            const emailPattern = /^[^\s@]+@wkw-group\.com$/;
-            if (this.value.trim() && !emailPattern.test(this.value.trim().toLowerCase())) {
-                inputGroup.classList.add('invalid');
-            } else {
-                inputGroup.classList.remove('invalid');
-            }
-        });
-
-        function toggleLeanInfo() {
-            const leanInfo = document.querySelector('.lean-info');
-            leanInfo.classList.toggle('active');
-        }
-
-        // Ripple Animation
-        const canvas = document.querySelector('.ripples');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const ripplesArray = [];
-
-        class Ripple {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.radius = 0;
-                this.maxRadius = Math.random() * 100 + 50;
-                this.speed = Math.random() * 2 + 1;
-                this.opacity = 0.5;
-            }
-            update() {
-                this.radius += this.speed;
-                this.opacity -= 0.005;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.strokeStyle = `rgba(200, 16, 46, ${this.opacity})`; /* Red ripple */
-                ctx.lineWidth = 2;
-                ctx.stroke();
-            }
-        }
-
-        function animateRipples() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < ripplesArray.length; i++) {
-                ripplesArray[i].update();
-                ripplesArray[i].draw();
-                if (ripplesArray[i].opacity <= 0 || ripplesArray[i].radius > ripplesArray[i].maxRadius) {
-                    ripplesArray.splice(i, 1);
-                    i--;
+            canvas.addEventListener('click', (e) => {
+                if (ripplesArray.length < 20) {
+                    ripplesArray.push(new Ripple(e.clientX, e.clientY));
                 }
-            }
-            requestAnimationFrame(animateRipples);
-        }
+            });
 
-        canvas.addEventListener('click', (e) => {
-            if (ripplesArray.length < 20) {
-                ripplesArray.push(new Ripple(e.clientX, e.clientY));
-            }
+            canvas.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                if (ripplesArray.length < 20) {
+                    ripplesArray.push(new Ripple(touch.clientX, touch.clientY));
+                }
+            });
+
+            animateRipples();
+
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }, 100);
+            });
+
+            // Auto-focus matricule input on load
+            document.getElementById('matricule').focus();
         });
-
-        canvas.addEventListener('touchstart', (e) => {
-            const touch = e.touches[0];
-            if (ripplesArray.length < 20) {
-                ripplesArray.push(new Ripple(touch.clientX, touch.clientY));
-            }
-        });
-
-        animateRipples();
-
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }, 100);
-        });
-
-        // Auto-focus matricule input on load
-        document.getElementById('matricule').focus();
     </script>
 </body>
 </html>
