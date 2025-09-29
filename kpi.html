@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Automotive homepage with performance audit results, resource links, monthly results histogram, and contact sections.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="keywords" content="automotive, audit, 5S, Gemba, Monsueal, histogram">
+    <meta name="author" content="WKW-Automotive">
+    <title>Automotive Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary-red: #b22222;
+            --secondary-gray: #333333;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease-in-out;
+            --score-red: #e74c3c;
+            --score-orange: #f39c12;
+            --score-green: #2ecc71;
+            --circle-size: clamp(3.5rem, 8vw, 4rem);
+            --glow-color: rgba(178, 34, 34, 0.3);
+            --border-radius: 6px;
+            --font-primary: 'Inter', 'Arial', sans-serif, 'Noto Sans Arabic';
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--secondary-gray);
+            background: var(--white);
+            overflow-x: hidden;
+        }
+
+        [lang="ar"] {
+            direction: rtl;
+            text-align: right;
+        }
+
+        header {
+            background: var(--white);
+            color: var(--secondary-gray);
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: var(--shadow);
+            border-bottom: 3px solid var(--primary-red);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        header img {
+            max-width: 120px;
+            height: auto;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        header img:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 2;
+        }
+
+        [lang="ar"] .language-selector {
+            right: auto;
+            left: 1rem;
+        }
+
+        .language-selector select {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            background: var(--white);
+            color: var(--secondary-gray);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .language-selector select:hover {
+            background: var(--light-gray);
+            border-color: var(--secondary-gray);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        footer {
+            background: var(--white);
+            color: var(--secondary-gray);
+            text-align: center;
+            padding: 1rem;
+            border-top: 3px solid var(--primary-red);
+            box-shadow: var(--shadow);
+        }
+
+        .section-toggle {
+            cursor: pointer;
+            background: var(--white);
+            color: var(--primary-red);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .section-toggle:hover {
+            background: var(--light-gray);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .section-toggle::after {
+            content: '▼';
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .section-toggle.active::after {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            max-height: 0;
+            opacity: 0;
+            background: var(--white);
+            padding: 0 1.5rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.4s ease-out, padding 0.4s ease-out;
+        }
+
+        .section-content.active {
+            max-height: 2000px;
+            opacity: 1;
+            padding: 1.5rem;
+        }
+
+        .month-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .month-toggle {
+            cursor: pointer;
+            background: var(--white);
+            color: var(--primary-red);
+            padding: 0.75rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            flex: 1 1 auto;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .month-toggle:hover {
+            background: var(--light-gray);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .month-toggle.active {
+            background: var(--primary-red);
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .month-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+        }
+
+        .month-content.active {
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        .performance-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .performance-data p {
+            background: var(--white);
+            padding: 1rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .performance-data p:hover {
+            background: var(--light-gray);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .percentage-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--circle-size);
+            height: var(--circle-size);
+            margin: 0.5rem 0;
+            background: var(--white);
+            border: 2px solid var(--primary-red);
+            border-radius: 50%;
+            box-shadow: var(--shadow);
+        }
+
+        .percentage-circle {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .percentage-circle circle {
+            fill: none;
+            stroke-width: 5;
+            stroke-linecap: round;
+            cx: 50;
+            cy: 50;
+            r: 40;
+        }
+
+        .percentage-circle .base {
+            stroke: var(--light-gray);
+        }
+
+        .percentage-circle .progress.red { stroke: var(--score-red); }
+        .percentage-circle .progress.orange { stroke: var(--score-orange); }
+        .percentage-circle .progress.green { stroke: var(--score-green); }
+
+        .percentage {
+            position: absolute;
+            font-weight: 600;
+            font-size: clamp(0.85rem, 2.5vw, 1rem);
+            z-index: 2;
+            color: var(--score-red);
+        }
+
+        .percentage.green { color: var(--score-green); }
+        .percentage.orange { color: var(--score-orange); }
+        .percentage.red { color: var(--score-red); }
+
+        .sparkles {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, var(--glow-color) 40%, transparent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 0.5s ease-out forwards;
+        }
+
+        .resource-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+
+        .resource-link {
+            background: var(--white);
+            padding: 1.5rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .resource-link:hover {
+            background: var(--light-gray);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .resource-link a {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .resource-link a:hover {
+            color: var(--secondary-gray);
+        }
+
+        .chart-container {
+            background: var(--white);
+            padding: 1.5rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        #audit-chart {
+            max-height: 400px;
+        }
+
+        .sparkle-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 0.7;
+                transform: scale(0.3) translate(var(--tx), var(--ty));
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1) translate(var(--tx), var(--ty));
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .resource-link, .section-toggle, .month-toggle, .performance-data p {
+                transition: none;
+            }
+            .sparkle {
+                animation: none;
+            }
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 0.8rem;
+            left: 1rem;
+            color: var(--secondary-gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        [lang="ar"] .form-group label {
+            left: unset;
+            right: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            background: var(--white);
+            font-size: 1rem;
+            font-weight: 400;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--secondary-gray);
+            box-shadow: var(--shadow);
+            outline: none;
+        }
+
+        .form-group input:focus + label,
+        .form-group textarea:focus + label,
+        .form-group input:not(:placeholder-shown) + label,
+        .form-group textarea:not(:placeholder-shown) + label {
+            top: -0.6rem;
+            left: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--primary-red);
+            background: var(--white);
+            padding: 0 0.2rem;
+        }
+
+        [lang="ar"] .form-group input:focus + label,
+        [lang="ar"] .form-group textarea:focus + label,
+        [lang="ar"] .form-group input:not(:placeholder-shown) + label,
+        [lang="ar"] .form-group textarea:not(:placeholder-shown) + label {
+            left: unset;
+            right: 0.5rem;
+        }
+
+        button {
+            background: var(--primary-red);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button:hover {
+            background: var(--white);
+            color: var(--primary-red);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .message-received {
+            background: var(--white);
+            padding: 1.5rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .message-received.active {
+            display: block;
+        }
+
+        .login-form {
+            display: none;
+            padding: 1.5rem;
+            background: var(--white);
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .message-list {
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            background: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .message-item {
+            background: var(--white);
+            padding: 1rem;
+            border: 2px solid var(--primary-red);
+            border-radius: var(--border-radius);
+            margin-bottom: 0.75rem;
+            box-shadow: var(--shadow);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-toggle, .month-toggle, .performance-data p, .resource-link, .chart-container {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            header img { max-width: 100px; }
+            .section-toggle { font-size: 1.5rem; padding: 0.8rem; }
+            .section-content.active { padding: 1rem; }
+            .month-toggle { font-size: 0.9rem; padding: 0.6rem; min-width: 90px; }
+            .percentage-container {
+                width: clamp(3rem, 7vw, 3.5rem);
+                height: clamp(3rem, 7vw, 3.5rem);
+            }
+            .percentage-circle circle {
+                stroke-width: 4;
+            }
+            .percentage {
+                font-size: clamp(0.8rem, 2vw, 0.9rem);
+            }
+            .chart-container {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .month-list { flex-direction: column; }
+            .month-toggle { font-size: 0.85rem; padding: 0.5rem; }
+            .percentage-container {
+                width: clamp(2.5rem, 6vw, 3rem);
+                height: clamp(2.5rem, 6vw, 3rem);
+            }
+            .percentage {
+                font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+            }
+        }
+
+        noscript {
+            .percentage-circle { display: none; }
+            .percentage { position: static; font-size: 1rem; }
+            .percentage::before { content: attr(data-value) '%'; }
+        }
+    </style>
+</head>
+<body lang="en">
+    <header>
+        <img src="https://ith-gmbh.de/wp-content/uploads/logo-wkwk.png" alt="Monsueal Automotive Logo" loading="lazy">
+        <h1 data-lang="title">Automotive</h1>
+        <div class="language-selector">
+            <select id="language">
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+    </header>
+
+    <main>
+        <div class="section-toggle" data-target="performance-content" data-lang="performance-title" role="button" aria-expanded="false" aria-controls="performance-content">Performance</div>
+        <div id="performance-content" class="section-content">
+            <div class="performance-data">
+                <p><strong data-lang="audit-gemba-uap1">Audit Gemba UAP 1:</strong> <span class="percentage-container" aria-label="Audit Gemba UAP 1: 88%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="88" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="90">0% Compliance</span><span class="sparkles"></span></span> <span data-lang="date">Juin 30, 2025</span></p>
+                <p><strong data-lang="audit-gemba-uap2">Audit Gemba UAP 2:</strong> <span class="percentage-container" aria-label="Audit Gemba UAP 2: 85%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="85" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="80">0% Compliance</span><span class="sparkles"></span></span></p>
+                <p><strong data-lang="audit-5s-uap1">Audit 5S UAP 1:</strong> <span class="percentage-container" aria-label="Audit 5S UAP 1: 90%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="90" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="64">0% Score</span><span class="sparkles"></span></span></p>
+                <p><strong data-lang="audit-5s-uap2">Audit 5S UAP 2:</strong> <span class="percentage-container" aria-label="Audit 5S UAP 2: 87%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="87" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="73">0% Score</span><span class="sparkles"></span></span></p>
+                <p><strong data-lang="audit-gemba-logistique">Audit Gemba Logistique:</strong> <span class="percentage-container" aria-label="Audit Gemba Logistique: 92%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="92" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="94">0% Efficiency</span><span class="sparkles"></span></span></p>
+                <p><strong data-lang="audit-5s-logistique">Audit 5S Logistique:</strong> <span class="percentage-container" aria-label="Audit 5S Logistique: 89%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="89" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="92">0% Score</span><span class="sparkles"></span></span></p>
+                <p><strong data-lang="trp-uap1">TRP UAP 1 (Mai):</strong> <span class="percentage-container" aria-label="TRP UAP 1: 55.1%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="55.1" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="55.1">0%</span><span class="sparkles"></span></span></p>
+                <p><strong data-lang="dle-uap1">DLE UAP 1 (Mai):</strong> <span class="percentage-container" aria-label="DLE UAP 1: 37.3%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="37.3" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="37.3">0%</span><span class="sparkles"></span></span></p>
+                <p><strong data-lang="trp-uap2">TRP UAP 2 (Mai):</strong> <span class="percentage-container" aria-label="TRP UAP 2: 77.2%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="77.2" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="77.2">0%</span><span class="sparkles"></span></span></p>
+                <p><strong data-lang="dle-uap2">DLE UAP 2 (Mai):</strong> <span class="percentage-container" aria-label="DLE UAP 2: 56.1%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="56.1" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="56.1">0%</span><span class="sparkles"></span></span></p>
+            </div>
+        </div>
+
+        <div class="section-toggle" data-target="resource-content" data-lang="resource-title" role="button" aria-expanded="false" aria-controls="resource-content">Resource</div>
+        <div id="resource-content" class="section-content">
+            <p data-lang="resource-desc">Access Automotive's audit forms, interactive tools, and submit improvement proposals below:</p>
+            <div class="resource-links">
+                <div class="resource-link"><a href="https://forms.office.com/e/1nWmJsVRNb" target="_blank" rel="noopener" data-lang="audit-gemba">Audit Gemba</a><span class="sparkle-effect"></span></div>
+                <div class="resource-link"><a href="https://forms.office.com/e/YNkFgkXXhn" target="_blank" rel="noopener" data-lang="audit-5s">Audit 5S</a><span class="sparkle-effect"></span></div>
+                <div class="resource-link"><a href="https://forms.office.com/e/Ps1y5HpJ8u" target="_blank" rel="noopener" data-lang="audit-logistique">Audit Logistique</a><span class="sparkle-effect"></span></div>
+                <div class="resource-link"><a href="https://forms.office.com/e/0nhbJYckHs" target="_blank" rel="noopener" data-lang="audit-mur-qualite">Audit Mur Qualité</a><span class="sparkle-effect"></span></div>
+                <div class="resource-link"><a href="https://game-5s.web.app/" target="_blank" rel="noopener" data-lang="game-5s">Game 5S</a><span class="sparkle-effect"></span></div>
+                <div class="resource-link"><a href="https://proposition-damelioration.web.app/" target="_blank" rel="noopener" data-lang="proposition-amelioration">Proposition d'amélioration</a><span class="sparkle-effect"></span></div>
+                <div class="resource-link"><a href="https://wkwgroup-my.sharepoint.com/:x:/r/personal/houssine_trabelsi_wkw-group_com/Documents/App%20PDF/Planning%205S.xlsx" target="_blank" rel="noopener" data-lang="planning-5s">Planning 5S</a><span class="sparkle-effect"></span></div>
+                <div class="resource-link"><a href="https://wkwgroup-my.sharepoint.com/:x:/r/personal/houssine_trabelsi_wkw-group_com/Documents/App%20PDF/Planning%20Gemba.xlsx" target="_blank" rel="noopener" data-lang="planning-gemba">Planning Gemba</a><span class="sparkle-effect"></span></div>
+                <div class="resource-link"><a href="https://wkwgroup-my.sharepoint.com/:x:/r/personal/houssine_trabelsi_wkw-group_com/Documents/App%20PDF/suivi%20mensuel%20Gemba%20et%205S.xlsx" target="_blank" rel="noopener" data-lang="suivi-mensuel-gemba-5s">Suivi Mensuel Gemba et 5S</a><span class="sparkle-effect"></span></div>
+            </div>
+            <div class="chart-container">
+                <h2 data-lang="monthly-audit-chart-title">Monthly Audit Results</h2>
+                <canvas id="audit-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="section-toggle" data-target="results-content" data-lang="results-title" role="button" aria-expanded="false" aria-controls="results-content">Results Monsueal</div>
+        <div id="results-content" class="section-content">
+            <p data-lang="results-desc">Select a month to view Monsueal audit results:</p>
+            <div class="month-list">
+                <div class="month-toggle" data-month="january" data-lang="month-january" role="button" aria-expanded="false" aria-controls="january-results" tabindex="0">January</div>
+                <div class="month-toggle" data-month="february" data-lang="month-february" role="button" aria-expanded="false" aria-controls="february-results" tabindex="0">February</div>
+                <div class="month-toggle" data-month="march" data-lang="month-march" role="button" aria-expanded="false" aria-controls="march-results" tabindex="0">March</div>
+                <div class="month-toggle" data-month="april" data-lang="month-april" role="button" aria-expanded="false" aria-controls="april-results" tabindex="0">April</div>
+                <div class="month-toggle" data-month="may" data-lang="month-may" role="button" aria-expanded="false" aria-controls="may-results" tabindex="0">May</div>
+                <div class="month-toggle" data-month="june" data-lang="month-june" role="button" aria-expanded="false" aria-controls="june-results" tabindex="0">June</div>
+            </div>
+            <div id="month-results">
+                <div id="january-results" class="month-content" data-month="january">
+                    <div class="performance-data">
+                        <p><strong data-lang="taux-audit-5s-usine">Taux Audit 5S Usine:</strong> <span class="percentage-container" aria-label="Audit 5S: 60%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="60" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="78">0% Score</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="taux-audit-gemba-usine">Taux Audit Gemba Usine:</strong> <span class="percentage-container" aria-label="Audit Gemba: 80%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="80" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="88">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="trp-usine">TRP Usine:</strong> <span class="percentage-container" aria-label="TRP Usine: 71.9%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="71.9" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="71.9">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="dle-usine">DLE Usine:</strong> <span class="percentage-container" aria-label="DLE Usine: 50.8%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="50.8" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="50.8">0%</span><span class="sparkles"></span></span></p>
+                    </div>
+                </div>
+                <div id="february-results" class="month-content" data-month="february">
+                    <div class="performance-data">
+                        <p><strong data-lang="taux-audit-5s-usine">Taux Audit 5S Usine:</strong> <span class="percentage-container" aria-label="Audit 5S: 30%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="30" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="71">0% Score</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="taux-audit-gemba-usine">Taux Audit Gemba Usine:</strong> <span class="percentage-container" aria-label="Audit Gemba: 60%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="60" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="75">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="trp-usine">TRP Usine:</strong> <span class="percentage-container" aria-label="TRP Usine: 67.5%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="67.5" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="67.5">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="dle-usine">DLE Usine:</strong> <span class="percentage-container" aria-label="DLE Usine: 47.1%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="47.1" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="47.1">0%</span><span class="sparkles"></span></span></p>
+                    </div>
+                </div>
+                <div id="march-results" class="month-content" data-month="march">
+                    <div class="performance-data">
+                        <p><strong data-lang="taux-audit-5s-usine">Taux Audit 5S Usine:</strong> <span class="percentage-container" aria-label="Audit 5S: 90%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="90" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="79">0% Score</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="taux-audit-gemba-usine">Taux Audit Gemba Usine:</strong> <span class="percentage-container" aria-label="Audit Gemba: 50%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="50" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="78">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="trp-usine">TRP Usine:</strong> <span class="percentage-container" aria-label="TRP Usine: 63.3%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="63.3" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="63.3">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="dle-usine">DLE Usine:</strong> <span class="percentage-container" aria-label="DLE Usine: 44.2%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="44.2" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="44.2">0%</span><span class="sparkles"></span></span></p>
+                    </div>
+                </div>
+                <div id="april-results" class="month-content" data-month="april">
+                    <div class="performance-data">
+                        <p><strong data-lang="taux-audit-5s-usine">Taux Audit 5S Usine:</strong> <span class="percentage-container" aria-label="Audit 5S: 65%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="65" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="76">0% Score</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="taux-audit-gemba-usine">Taux Audit Gemba Usine:</strong> <span class="percentage-container" aria-label="Audit Gemba: 50%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="50" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="92">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="trp-usine">TRP Usine:</strong> <span class="percentage-container" aria-label="TRP Usine: 68.9%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="68.9" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="74.9">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="dle-usine">DLE Usine:</strong> <span class="percentage-container" aria-label="DLE Usine: 47.2%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="47.2" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="52.7">0%</span><span class="sparkles"></span></span></p>
+                    </div>
+                </div>
+                <div id="may-results" class="month-content" data-month="may">
+                    <div class="performance-data">
+                        <p><strong data-lang="taux-audit-5s-usine">Taux Audit 5S Usine:</strong> <span class="percentage-container" aria-label="Audit 5S: 92%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="92" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="79">0% Score</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="taux-audit-gemba-usine">Taux Audit Gemba Usine:</strong> <span class="percentage-container" aria-label="Audit Gemba: 50%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="50" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="88">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="trp-usine">TRP Usine:</strong> <span class="percentage-container" aria-label="TRP Usine: 68.9%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="68.9" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="68.9">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="dle-usine">DLE Usine:</strong> <span class="percentage-container" aria-label="DLE Usine: 47.2%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="47.2" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="47.3">0%</span><span class="sparkles"></span></span></p>
+                    </div>
+                </div>
+                <div id="june-results" class="month-content" data-month="Juin">
+                    <div class="performance-data">
+                        <p><strong data-lang="taux-audit-5s-usine">Taux Audit 5S Usine:</strong> <span class="percentage-container" aria-label="Audit 5S: 94%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="94" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="78">0% Score</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="taux-audit-gemba-usine">Taux Audit Gemba Usine:</strong> <span class="percentage-container" aria-label="Audit Gemba: 55%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="55" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="86">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="trp-usine">TRP Usine:</strong> <span class="percentage-container" aria-label="TRP Usine: 70.5%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="70.5" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="70.5">0%</span><span class="sparkles"></span></span></p>
+                        <p><strong data-lang="dle-usine">DLE Usine:</strong> <span class="percentage-container" aria-label="DLE Usine: 48.9%"><svg class="percentage-circle" viewBox="0 0 100 100"><circle class="base" cx="50" cy="50" r="40"></circle><circle class="progress" data-value="48.9" cx="50" cy="50" r="40"></circle></svg><span class="percentage" data-value="48.9">0%</span><span class="sparkles"></span></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-toggle" data-target="contact-content" data-lang="contact-title" role="button" aria-expanded="false" aria-controls="contact-content">Contact Us</div>
+        <div id="contact-content" class="section-content">
+            <div id="contact-form-content">
+                <p data-lang="contact-desc">Reach out to our team for inquiries or support with Automotive solutions.</p>
+                <form id="contact-form">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" placeholder=" " required>
+                        <label for="name" data-lang="name-label">Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder=" " required>
+                        <label for="email" data-lang="email-label">Email</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" placeholder=" " rows="5" required></textarea>
+                        <label for="message" data-lang="message-label">Message</label>
+                    </div>
+                    <button type="submit" data-lang="submit-button">Send Message</button>
+                </form>
+            </div>
+            <div id="message-received" class="message-received">
+                <h2 data-lang="message-received-title">Message Received</h2>
+                <p><strong data-lang="name-label">Name:</strong> <span id="received-name"></span></p>
+                <p><strong data-lang="email-label">Email:</strong> <span id="received-email"></span></p>
+                <p><strong data-lang="message-label">Message:</strong> <span id="received-message"></span></p>
+                <button class="back-button" id="back-to-form" data-lang="back-button">Back to Form</button>
+            </div>
+        </div>
+
+        <div class="section-toggle" data-target="message-recu-content" data-lang="message-recu-title" role="button" aria-expanded="false" aria-controls="message-recu-content">Message Reçu</div>
+        <div id="message-recu-content" class="section-content">
+            <div id="login-form" class="login-form">
+                <h2 data-lang="login-title">Admin Login</h2>
+                <form id="admin-login-form">
+                    <div class="form-group">
+                        <input type="email" id="admin-email" name="admin-email" placeholder=" " required>
+                        <label for="admin-email" data-lang="email-label">Email</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="admin-password" name="password" placeholder=" " required>
+                        <label for="admin-password" data-lang="password-label">Password</label>
+                    </div>
+                    <button type="submit" data-lang="login-button">Login</button>
+                </form>
+                <p id="login-error" style="color: var(--score-red); display: none;"></p>
+            </div>
+            <div id="message-list" class="message-received" style="display: none;">
+                <h2 data-lang="message-recu-title">Message Reçu</h2>
+                <div id="messages" class="message-list"></div>
+                <button id="logout-button" data-lang="logout-button">Logout</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p data-meta="footer">© 2025 WKW-Automotive. All rights reserved.</p>
+    </footer>
+
+    <noscript>
+        <style>
+            .percentage-circle { display: none; }
+            .percentage { position: static; font-size: 1rem; }
+            .percentage::before { content: attr(data-value) '%'; }
+        </style>
+    </noscript>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJ5XTVCFCzo0Jqrj8m1hUdW4YFOy5ulFQ",
+            authDomain: "wkw-app.firebaseapp.com",
+            projectId: "wkw-app",
+            storageBucket: "wkw-app.firebasestorage.app",
+            messagingSenderId: "646523941245",
+            appId: "1:646523941245:web:329f75952021b48b7fdc14",
+            measurementId: "G-WVRCNDE2YQ"
+        };
+
+        let app, db, auth;
+        try {
+            console.log('Initializing Firebase');
+            app = initializeApp(firebaseConfig);
+            getAnalytics(app);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            console.log('Firebase initialized');
+        } catch (error) {
+            console.error('Firebase initialization failed:', error);
+        }
+
+        function toggleSection(targetId, toggle) {
+            console.log(`Toggling section: ${targetId}`);
+            const targetContent = document.getElementById(targetId);
+            if (!targetContent) {
+                console.error(`Target content ${targetId} not found`);
+                return;
+            }
+            const isActive = targetContent.classList.contains('active');
+
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('active');
+                content.setAttribute('aria-expanded', 'false');
+            });
+            document.querySelectorAll('.section-toggle').forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-expanded', 'false');
+            });
+
+            document.querySelectorAll('.month-content').forEach(content => {
+                content.classList.remove('active');
+                content.setAttribute('aria-expanded', 'false');
+            });
+            document.querySelectorAll('.month-toggle').forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-expanded', 'false');
+            });
+
+            if (!isActive) {
+                targetContent.classList.add('active');
+                targetContent.setAttribute('aria-expanded', 'true');
+                toggle.classList.add('active');
+                toggle.setAttribute('aria-expanded', 'true');
+                if (targetId === 'performance-content' || targetId === 'results-content') {
+                    animatePercentages(targetContent);
+                } else if (targetId === 'resource-content') {
+                    updateChart();
+                }
+            }
+        }
+
+        function initToggles() {
+            console.log('Initializing section toggles');
+            const toggles = document.querySelectorAll('.section-toggle');
+            toggles.forEach(toggle => {
+                const targetId = toggle.getAttribute('data-target');
+                toggle.addEventListener('click', () => toggleSection(targetId, toggle));
+                toggle.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleSection(targetId, toggle);
+                    }
+                });
+            });
+        }
+
+        function initMonthToggles() {
+            console.log('Initializing month toggles');
+            const monthToggles = document.querySelectorAll('.month-toggle');
+            if (monthToggles.length === 0) {
+                console.error('No month toggles found');
+            }
+            monthToggles.forEach(toggle => {
+                const month = toggle.getAttribute('data-month');
+                toggle.addEventListener('click', () => {
+                    console.log(`Month toggle clicked: ${month}`);
+                    toggleMonth(month, toggle);
+                });
+                toggle.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleMonth(month, toggle);
+                    }
+                });
+            });
+        }
+
+        function toggleMonth(month, toggle) {
+            console.log(`Toggling month: ${month}`);
+            const targetContent = document.getElementById(`${month}-results`);
+            if (!targetContent) {
+                console.error(`Month content ${month}-results not found`);
+                return;
+            }
+            const isActive = targetContent.classList.contains('active');
+
+            document.querySelectorAll('.month-content').forEach(content => {
+                content.classList.remove('active');
+                content.setAttribute('aria-expanded', 'false');
+            });
+            document.querySelectorAll('.month-toggle').forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-expanded', 'false');
+            });
+
+            if (!isActive) {
+                targetContent.classList.add('active');
+                targetContent.setAttribute('aria-expanded', 'true');
+                toggle.classList.add('active');
+                toggle.setAttribute('aria-expanded', 'true');
+                animatePercentages(targetContent);
+            }
+        }
+
+        function easeOutQuad(t) {
+            return 1 - (1 - t) * (1 - t);
+        }
+
+        function getColorClass(value, type) {
+            if (type === 'uap1') {
+                if (value >= 86) return 'green';
+                if (value >= 65) return 'orange';
+                return 'red';
+            } else if (type === 'uap2') {
+                if (value >= 96) return 'green';
+                if (value >= 85) return 'orange';
+                return 'red';
+            } else if (type === 'usine') {
+                if (value >= 86) return 'green';
+                if (value >= 62) return 'orange';
+                return 'red';
+            }
+            return 'red';
+        }
+
+        function animatePercentages(container) {
+            console.log('Animating percentages in:', container.id);
+            const percentages = container.querySelectorAll('.percentage');
+            percentages.forEach(p => {
+                const target = parseFloat(p.getAttribute('data-value')) || 0;
+                if (target < 0 || target > 100) {
+                    console.warn(`Invalid percentage: ${target}`);
+                    return;
+                }
+                const circle = p.previousElementSibling.querySelector('.progress');
+                const radius = 40;
+                const circumference = 2 * Math.PI * radius;
+                let startTime = null;
+                const duration = 1500;
+
+                const parent = p.closest('p');
+                const strong = parent.querySelector('strong');
+                const key = strong.getAttribute('data-lang').replace(/-/g, '_');
+                let type = 'usine';
+                if (key.includes('uap1')) type = 'uap1';
+                else if (key.includes('uap2')) type = 'uap2';
+
+                let colorClass = getColorClass(target, type);
+
+                p.classList.remove('red', 'orange', 'green');
+                p.classList.add(colorClass);
+                circle.classList.remove('red', 'orange', 'green');
+                circle.classList.add(colorClass);
+
+                function update(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const elapsed = timestamp - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easedProgress = easeOutQuad(progress);
+                    const current = easedProgress * target;
+                    const label = key === 'taux_audit_5s_usine' ? translations[document.getElementById('language').value].score_label : '';
+                    p.textContent = `${Math.round(current * 10) / 10}% ${label}`;
+                    circle.style.strokeDashoffset = circumference * (1 - current / 100);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    } else {
+                        p.textContent = `${target}% ${label}`;
+                        circle.style.strokeDashoffset = circumference * (1 - target / 100);
+                        p.classList.add('completed');
+                        const sparkles = p.nextElementSibling;
+                        for (let i = 0; i < 10; i++) {
+                            const sparkle = document.createElement('span');
+                            sparkle.className = 'sparkle';
+                            const angle = Math.random() * 360;
+                            const dist = 15 + Math.random() * 10;
+                            sparkle.style.width = `${3 + Math.random() * 3}px`;
+                            sparkle.style.height = sparkle.style.width;
+                            sparkle.style.setProperty('--tx', `${Math.cos(angle * Math.PI / 180) * dist}px`);
+                            sparkle.style.setProperty('--ty', `${Math.sin(angle * Math.PI / 180) * dist}px`);
+                            sparkle.style.animationDelay = `${i * 0.06}s`;
+                            sparkles.appendChild(sparkle);
+                            setTimeout(() => sparkle.remove(), 600);
+                        }
+                    }
+                }
+
+                circle.style.strokeDasharray = circumference;
+                circle.style.strokeDashoffset = circumference;
+                p.textContent = `0%`;
+                requestAnimationFrame(update);
+            });
+        }
+
+        function throttle(func, limit) {
+            let inThrottle;
+            return function (...args) {
+                if (!inThrottle) {
+                    func.apply(this, args);
+                    inThrottle = true;
+                    setTimeout(() => (inThrottle = false), limit);
+                }
+            };
+        }
+
+        function animateResourceLinks() {
+            const resourceLinks = document.querySelectorAll('.resource-link');
+            resourceLinks.forEach(link => {
+                const sparkleContainer = link.querySelector('.sparkle-effect');
+                sparkleContainer.innerHTML = '';
+                const animateSparkles = throttle(() => {
+                    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                        return;
+                    }
+                    for (let i = 0; i < 5; i++) {
+                        const sparkle = document.createElement('span');
+                        sparkle.className = 'sparkle';
+                        const angle = Math.random() * 360;
+                        const dist = 15 + Math.random() * 20;
+                        sparkle.style.setProperty('--tx', `${Math.cos(angle * Math.PI / 180) * dist}px`);
+                        sparkle.style.setProperty('--ty', `${Math.sin(angle * Math.PI / 180) * dist}px`);
+                        sparkle.style.animationDelay = `${i * 0.05}s`;
+                        sparkle.style.width = `${2 + Math.random() * 2}px`;
+                        sparkle.style.height = sparkle.style.width;
+                        sparkleContainer.appendChild(sparkle);
+                        setTimeout(() => sparkle.remove(), 600);
+                    }
+                }, 200);
+                link.addEventListener('mouseenter', animateSparkles);
+                link.addEventListener('mousemove', animateSparkles);
+            });
+        }
+
+        function changeLanguage() {
+            const lang = document.getElementById('language').value;
+            document.body.setAttribute('lang', lang);
+            document.querySelectorAll('[data-lang]').forEach(elem => {
+                const key = elem.getAttribute('data-lang').replace(/-/g, '_');
+                elem.textContent = translations[lang][key] || elem.textContent;
+            });
+            document.querySelectorAll('.percentage').forEach(p => {
+                const parent = p.closest('p');
+                const strong = parent.querySelector('strong');
+                const key = strong.getAttribute('data-lang').replace(/-/g, '_');
+                const label = key === 'taux_audit_5s_usine' ? translations[lang].score_label : '';
+                p.textContent = `${p.getAttribute('data-value')}% ${label}`;
+            });
+            updateChart();
+        }
+
+        function getColor(value, type) {
+            if (type === 'uap1') {
+                if (value >= 86) return '#2ecc71';
+                if (value >= 65) return '#f39c12';
+                return '#e74c3c';
+            } else if (type === 'uap2') {
+                if (value >= 96) return '#2ecc71';
+                if (value >= 85) return '#f39c12';
+                return '#e74c3c';
+            } else if (type === 'usine') {
+                if (value >= 86) return '#2ecc71';
+                if (value >= 62) return '#f39c12';
+                return '#e74c3c';
+            }
+            return '#e74c3c';
+        }
+
+        let auditChart = null;
+
+        function updateChart() {
+            const canvas = document.getElementById('audit-chart');
+            if (!canvas) {
+                console.error('Canvas #audit-chart not found');
+                return;
+            }
+            const ctx = canvas.getContext('2d');
+            const lang = document.getElementById('language').value;
+            const months = ['january', 'february', 'march', 'april', 'may', 'june'];
+            const audit5sData = [];
+            const auditGembaData = [];
+            const trpUap1Data = [];
+            const dleUap1Data = [];
+            const trpUap2Data = [];
+            const dleUap2Data = [];
+            const backgroundColors5s = [];
+            const backgroundColorsGemba = [];
+            const backgroundColorsTrpUap1 = [];
+            const backgroundColorsDleUap1 = [];
+            const backgroundColorsTrpUap2 = [];
+            const backgroundColorsDleUap2 = [];
+
+            months.forEach(month => {
+                const monthContent = document.getElementById(`${month}-results`);
+                if (monthContent) {
+                    const percentages = monthContent.querySelectorAll('.percentage');
+                    percentages.forEach(p => {
+                        const value = parseFloat(p.getAttribute('data-value')) || 0;
+                        const key = p.closest('p').querySelector('strong').getAttribute('data-lang');
+                        if (key === 'taux-audit-5s-usine') {
+                            audit5sData.push(value);
+                            backgroundColors5s.push(getColor(value, 'usine'));
+                        } else if (key === 'taux-audit-gemba-usine') {
+                            auditGembaData.push(value);
+                            backgroundColorsGemba.push(getColor(value, 'usine'));
+                        } else if (key === 'trp-usine') {
+                            trpUap1Data.push(value);
+                            backgroundColorsTrpUap1.push(getColor(value, 'usine'));
+                        } else if (key === 'dle-usine') {
+                            dleUap1Data.push(value);
+                            backgroundColorsDleUap1.push(getColor(value, 'usine'));
+                        }
+                    });
+                }
+            });
+
+            if (auditChart) {
+                auditChart.destroy();
+            }
+
+            auditChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: months.map(month => translations[lang][`month_${month}`] || month),
+                    datasets: [
+                        {
+                            label: translations[lang].taux_audit_5s_usine || 'Audit 5S Usine',
+                            data: audit5sData,
+                            backgroundColor: backgroundColors5s,
+                            borderColor: '#b22222',
+                            borderWidth: 2
+                        },
+                        {
+                            label: translations[lang].taux_audit_gemba_usine || 'Audit Gemba Usine',
+                            data: auditGembaData,
+                            backgroundColor: backgroundColorsGemba,
+                            borderColor: '#b22222',
+                            borderWidth: 2
+                        },
+                        {
+                            label: translations[lang].trp_usine || 'TRP Usine',
+                            data: trpUap1Data,
+                            backgroundColor: backgroundColorsTrpUap1,
+                            borderColor: '#b22222',
+                            borderWidth: 2
+                        },
+                        {
+                            label: translations[lang].dle_usine || 'DLE Usine',
+                            data: dleUap1Data,
+                            backgroundColor: backgroundColorsDleUap1,
+                            borderColor: '#b22222',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'Inter', 'Arial', sans-serif",
+                                    size: 14
+                                },
+                                color: '#333333'
+                            }
+                        },
+                        title: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: translations[lang].month_label || 'Month',
+                                font: {
+                                    family: "'Inter', 'Arial', sans-serif",
+                                    size: 16,
+                                    weight: '600'
+                                },
+                                color: '#333333'
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Inter', 'Arial', sans-serif",
+                                    size: 12
+                                },
+                                color: '#333333'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: translations[lang].percentage_label || 'Percentage (%)',
+                                font: {
+                                    family: "'Inter', 'Arial', sans-serif",
+                                    size: 16,
+                                    weight: '600'
+                                },
+                                color: '#333333'
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Inter', 'Arial', sans-serif",
+                                    size: 12
+                                },
+                                color: '#333333'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function loadMessages() {
+            const messagesContainer = document.getElementById('messages');
+            messagesContainer.innerHTML = '';
+            if (!app) return;
+            try {
+                const messageQuery = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
+                const querySnapshot = await getDocs(messageQuery);
+                if (querySnapshot.empty) {
+                    messagesContainer.innerHTML = `<p>${translations[document.getElementById('language').value].no_messages}</p>`;
+                    return;
+                }
+                let delay = 0;
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const messageItem = document.createElement('div');
+                    messageItem.className = 'message-item';
+                    messageItem.style.animationDelay = `${delay}s`;
+                    messageItem.innerHTML = `
+                        <p><strong>${translations[document.getElementById('language').value].name_label}:</strong> ${data.name || 'N/A'}</p>
+                        <p><strong>${translations[document.getElementById('language').value].email_label}:</strong> ${data.email || 'N/A'}</p>
+                        <p><strong>${translations[document.getElementById('language').value].message_label}:</strong> ${data.message || 'N/A'}</p>
+                        <p><strong>${translations[document.getElementById('language').value].date}:</strong> ${data.timestamp ? new Date(data.timestamp.toMillis()).toLocaleString() : 'N/A'}</p>
+                    `;
+                    messagesContainer.appendChild(messageItem);
+                    delay += 0.1;
+                });
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+
+        function showContactForm() {
+            document.getElementById('contact-form-content').style.display = 'block';
+            document.getElementById('message-received').classList.remove('active');
+        }
+
+        const translations = {
+            en: {
+                title: "Automotive",
+                performance_title: "Performance",
+                audit_gemba_uap1: "Audit Gemba UAP 1",
+                audit_gemba_uap2: "Audit Gemba UAP 2",
+                audit_5s_uap1: "Audit 5S UAP 1",
+                audit_5s_uap2: "Audit 5S UAP 2",
+                audit_gemba_logistique: "Audit Gemba Logistique",
+                audit_5s_logistique: "Audit 5S Logistique",
+                trp_uap1: "TRP UAP 1",
+                dle_uap1: "DLE UAP 1",
+                trp_uap2: "TRP UAP 2",
+                dle_uap2: "DLE UAP 2",
+                date: "JUIN 30, 2025",
+                resource_title: "Resource",
+                resource_desc: "Access Automotive's audit forms, interactive tools, and submit improvement proposals below:",
+                audit_gemba: "Audit Gemba",
+                audit_5s: "Audit 5S",
+                audit_logistique: "Audit Logistique",
+                audit_mur_qualite: "Audit Mur Qualité",
+                game_5s: "Game 5S",
+                proposition_amelioration: "Improvement Proposition",
+                planning_5s: "Planning 5S",
+                planning_gemba: "Planning Gemba",
+                suivi_mensuel_gemba_5s: "Monthly Gemba and 5S Follow-up",
+                monthly_audit_chart_title: "Monthly Audit Results",
+                results_title: "Results Monsueal",
+                results_desc: "Select a month to view Monsueal audit results:",
+                taux_audit_5s_usine: "Taux Audit 5S Usine",
+                taux_audit_gemba_usine: "Taux Audit Gemba Usine",
+                trp_usine: "TRP Usine",
+                dle_usine: "DLE Usine",
+                month_label: "Month",
+                percentage_label: "Percentage (%)",
+                contact_title: "Contact Us",
+                contact_desc: "Reach out to our team for inquiries or support with Automotive solutions.",
+                name_label: "Name",
+                email_label: "Email",
+                message_label: "Message",
+                submit_button: "Send Message",
+                footer: "© 2025 Automotive. All rights reserved.",
+                message_received_title: "Message Received",
+                message_recu_title: "Received Messages",
+                back_button: "Back to Form",
+                login_title: "Admin Login",
+                password_label: "Password",
+                login_button: "Login",
+                logout_button: "Logout",
+                no_messages: "No messages found",
+                error_loading: "Failed to load messages.",
+                month_january: "January",
+                month_february: "February",
+                month_march: "March",
+                month_april: "April",
+                month_may: "May",
+                month_june: "June",
+                score_label: "Score"
+            },
+            ar: {
+                title: "مونسويل للسيارات",
+                performance_title: "الأداء",
+                audit_gemba_uap1: "تدقيق جمبا UAP 1",
+                audit_gemba_uap2: "تدقيق جمبا UAP 2",
+                audit_5s_uap1: "تدقيق 5S UAP 1",
+                audit_5s_uap2: "تدقيق 5S UAP 2",
+                audit_gemba_logistique: "تدقيق جمبا اللوجستيات",
+                audit_5s_logistique: "تدقيق 5S اللوجستيات",
+                trp_uap1: "TRP UAP 1",
+                dle_uap1: "DLE UAP 1",
+                trp_uap2: "TRP UAP 2",
+                dle_uap2: "DLE UAP 2",
+                date: "27 مايو 2025",
+                resource_title: "الموارد",
+                resource_desc: "الوصول إلى نماذج التدقيق الخاصة بمونسويل للسيارات والأدوات التفاعلية وتقديم مقترحات التحسين أدناه:",
+                audit_gemba: "تدقيق جمبا",
+                audit_5s: "تدقيق 5S",
+                audit_logistique: "تدقيق اللوجستيات",
+                audit_mur_qualite: "تدقيق جدار الجودة",
+                game_5s: "لعبة 5S",
+                proposition_amelioration: "اقتراح تحسين",
+                planning_5s: "تخطيط 5S",
+                planning_gemba: "تخطيط جمبا",
+                suivi_mensuel_gemba_5s: "المتابعة الشهرية لجمبا و5S",
+                monthly_audit_chart_title: "نتائج التدقيق الشهرية",
+                results_title: "نتائج مونسويل",
+                results_desc: "اختر شهرًا لعرض نتائج تدقيق مونسويل:",
+                taux_audit_5s_usine: "نسبة تدقيق 5S المصنع",
+                taux_audit_gemba_usine: "نسبة تدقيق جمبا المصنع",
+                trp_usine: "TRP المصنع",
+                dle_usine: "DLE المصنع",
+                month_label: "الشهر",
+                percentage_label: "النسبة المئوية (%)",
+                contact_title: "اتصل بنا",
+                 contact_desc: "تواصل مع فريقنا للاستفسارات أو الدعم مع حلول مونسويل للسيارات.",
+                name_label: "الاسم",
+                email_label: "البريد الإلكتروني",
+                message_label: "الرسالة",
+                submit_button: "إرسال الرسالة",
+                footer: "© 2025 مونسويل للسيارات. جميع الحقوق محفوظة.",
+                message_received_title: "تم استلام الرسالة",
+                message_recu_title: "الرسائل المستلمة",
+                back_button: "العودة إلى النموذج",
+                login_title: "تسجيل دخول المشرف",
+                password_label: "كلمة المرور",
+                login_button: "تسجيل الدخول",
+                logout_button: "تسجيل الخروج",
+                no_messages: "لم يتم العثور على رسائل",
+                error_loading: "فشل تحميل الرسائل.",
+                month_january: "يناير",
+                month_february: "فبراير",
+                month_march: "مارس",
+                month_april: "أبريل",
+                month_may: "مايو",
+                score_label: "النقاط"
+            },
+            fr: {
+                title: "Monsueal Automobile",
+                performance_title: "Performance",
+                audit_gemba_uap1: "Audit Gemba UAP 1",
+                audit_gemba_uap2: "Audit Gemba UAP 2",
+                audit_5s_uap1: "Audit 5S UAP 1",
+                audit_5s_uap2: "Audit 5S UAP 2",
+                audit_gemba_logistique: "Audit Gemba Logistique",
+                audit_5s_logistique: "Audit 5S Logistique",
+                trp_uap1: "TRP UAP 1",
+                dle_uap1: "DLE UAP 1",
+                trp_uap2: "TRP UAP 2",
+                dle_uap2: "DLE UAP 2",
+                date: "27 mai 2025",
+                resource_title: "Ressources",
+                resource_desc: "Accédez aux formulaires d'audit de Monsueal Automobile, aux outils interactifs et soumettez des propositions d'amélioration ci-dessous :",
+                audit_gemba: "Audit Gemba",
+                audit_5s: "Audit 5S",
+                audit_logistique: "Audit Logistique",
+                audit_mur_qualite: "Audit Mur Qualité",
+                game_5s: "Jeu 5S",
+                proposition_amelioration: "Proposition d'amélioration",
+                planning_5s: "Planification 5S",
+                planning_gemba: "Planification Gemba",
+                suivi_mensuel_gemba_5s: "Suivi Mensuel Gemba et 5S",
+                monthly_audit_chart_title: "Résultats d'Audit Mensuels",
+                results_title: "Résultats Monsueal",
+                results_desc: "Sélectionnez un mois pour voir les résultats d'audit Monsueal :",
+                taux_audit_5s_usine: "Taux Audit 5S Usine",
+                taux_audit_gemba_usine: "Taux Audit Gemba Usine",
+                month_label: "Mois",
+                percentage_label: "Pourcentage (%)",
+                contact_title: "Contactez-nous",
+                contact_desc: "Contactez notre équipe pour des questions ou un soutien avec les solutions Monsueal Automobile.",
+                name_label: "Nom",
+                email_label: "Email",
+                message_label: "Message",
+                submit_button: "Envoyer le Message",
+                footer: "© 2025 Monsueal Automobile. Tous droits réservés.",
+                message_received_title: "Message Reçu",
+                message_recu_title: "Messages Reçus",
+                back_button: "Retour au Formulaire",
+                login_title: "Connexion Admin",
+                password_label: "Mot de Passe",
+                login_button: "Connexion",
+                logout_button: "Déconnexion",
+                no_messages: "Aucun message trouvé",
+                error_loading: "Échec du chargement des messages.",
+                month_january: "Janvier",
+                month_february: "Février",
+                month_march: "Mars",
+                month_april: "Avril",
+                month_may: "Mai",
+              month_may: "Juin",
+                score_label: "Score"
+            },
+            de: {
+                title: "Automotive",
+                performance_title: "Leistung",
+                audit_gemba_uap1: "Audit Gemba UAP 1",
+                audit_gemba_uap2: "Audit Gemba UAP 2",
+                audit_5s_uap1: "Audit 5S UAP 1",
+                audit_5s_uap2: "Audit 5S UAP 2",
+                audit_gemba_logistique: "Audit Gemba Logistik",
+                audit_5s_logistique: "Audit 5S Logistik",
+                trp_uap1: "TRP UAP 1",
+                dle_uap1: "DLE UAP 1",
+                trp_uap2: "TRP UAP 2",
+                dle_uap2: "DLE UAP 2",
+                date: "30. Juin 2025",
+                resource_title: "Ressourcen",
+                resource_desc: "Greifen Sie auf die Audit-Formulare von Automotive zu, interaktive Tools und reichen Sie Verbesserungsvorschläge ein:",
+                audit_gemba: "Audit Gemba",
+                audit_5s: "Audit 5S",
+                audit_logistique: "Audit Logistik",
+                audit_mur_qualite: "Audit Qualitätswand",
+                game_5s: "Spiel 5S",
+                proposition_amelioration: "Verbesserungsvorschlag",
+                planning_5s: "Planung 5S",
+                planning_gemba: "Planung Gemba",
+                suivi_mensuel_gemba_5s: "Monatliche Gemba- und 5S-Nachverfolgung",
+                monthly_audit_chart_title: "Monatliche Audit-Ergebnisse",
+                results_title: "Ergebnisse Monsueal",
+                results_desc: "Wählen Sie einen Monat, um die Audit-Ergebnisse von Monsueal anzuzeigen:",
+                taux_audit_5s_usine: "Quote Audit 5S Werk",
+                taux_audit_gemba_usine: "Quote Audit Gemba Werk",
+                month_label: "Monat",
+                percentage_label: "Prozentsatz (%)",
+                contact_title: "Kontaktieren Sie uns",
+                contact_desc: "Kontaktieren Sie unser Team für Anfragen oder Unterstützung mit Automotive-Lösungen.",
+                name_label: "Name",
+                email_label: "E-Mail",
+                message_label: "Nachricht",
+                submit_button: "Nachricht senden",
+                footer: "© 2025 Automotive. Alle Rechte vorbehalten.",
+                message_received_title: "Nachricht erhalten",
+                message_recu_title: "Erhaltene Nachrichten",
+                back_button: "Zurück zum Formular",
+                login_title: "Admin-Login",
+                password_label: "Passwort",
+                login_button: "Login",
+                logout_button: "Logout",
+                no_messages: "Keine Nachrichten gefunden",
+                error_loading: "Fehler beim Laden der Nachrichten.",
+                month_january: "Januar",
+                month_february: "Februar",
+                month_march: "März",
+                month_april: "April",
+                month_may: "Mai",
+                score_label: "Punktzahl"
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const languageSelect = document.getElementById('language');
+                const contactForm = document.getElementById('contact-form');
+                const backButton = document.getElementById('back-to-form');
+                const loginForm = document.getElementById('admin-login-form');
+                const logoutButton = document.getElementById('logout-button');
+
+                languageSelect.addEventListener('change', changeLanguage);
+                if (contactForm) {
+                    contactForm.addEventListener('submit', async e => {
+                        e.preventDefault();
+                        if (!app) return;
+                        const name = document.getElementById('name').value.trim();
+                        const email = document.getElementById('email').value.trim();
+                        const message = document.getElementById('message').value.trim();
+                        try {
+                            await addDoc(collection(db, 'messages'), {
+                                name, email, message, timestamp: serverTimestamp()
+                            });
+                            document.getElementById('received-name').textContent = name;
+                            document.getElementById('received-email').textContent = email;
+                            document.getElementById('received-message').textContent = message;
+                            document.getElementById('contact-form-content').style.display = 'none';
+                            document.getElementById('message-received').classList.add('active');
+                            contactForm.reset();
+                        } catch (e) {
+                            console.error('Error submitting form:', e);
+                        }
+                    });
+                }
+                if (backButton) backButton.addEventListener('click', showContactForm);
+                if (loginForm) {
+                    loginForm.addEventListener('submit', async e => {
+                        e.preventDefault();
+                        if (!auth) return;
+                        const email = document.getElementById('admin-email').value;
+                        const password = document.getElementById('admin-password').value;
+                        try {
+                            await signInWithEmailAndPassword(auth, email, password);
+                            document.getElementById('login-form').style.display = 'none';
+                            document.getElementById('message-list').style.display = 'block';
+                            await loadMessages();
+                        } catch (e) {
+                            console.error('Login error:', e);
+                            document.getElementById('login-error').style.display = 'block';
+                            document.getElementById('login-error').textContent = translations[document.getElementById('language').value].error_loading;
+                        }
+                    });
+                }
+                if (logoutButton) {
+                    logoutButton.addEventListener('click', async () => {
+                        if (auth) await signOut(auth);
+                        document.getElementById('login-form').style.display = 'block';
+                        document.getElementById('message-list').style.display = 'none';
+                        document.getElementById('messages').innerHTML = '';
+                    });
+                }
+                if (auth) {
+                    onAuthStateChanged(auth, user => {
+                        if (user && user.email === 'admin@wkw.com') {
+                            document.getElementById('login-form').style.display = 'none';
+                            document.getElementById('message-list').style.display = 'block';
+                            loadMessages();
+                        } else {
+                            document.getElementById('login-form').style.display = 'block';
+                            document.getElementById('message-list').style.display = 'none';
+                        }
+                    });
+                }
+
+                initToggles();
+                initMonthToggles();
+                changeLanguage();
+                animateResourceLinks();
+                updateChart();
+            } catch (e) {
+                console.error('Initialization error:', e);
+            }
+        });
+    </script>
+</body>
+</html>
